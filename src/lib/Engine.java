@@ -12,6 +12,7 @@ public class Engine extends JPanel {
         this.currentScene = scene;
         lastTime = System.nanoTime();
 
+        Input.attach(this);
         new Thread(this::gameLoop).start();
     }
 
@@ -41,5 +42,10 @@ public class Engine extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         currentScene.render((Graphics2D)g);
+    }
+
+    @Override
+    public Point getMousePosition() throws HeadlessException {
+        return super.getMousePosition();
     }
 }

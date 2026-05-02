@@ -6,10 +6,10 @@ import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
 
 public class Object2D {
-    public int xPos;
-    public int yPos;
-    public int xSize;
-    public int ySize;
+    public float xPos;
+    public float yPos;
+    public float xSize;
+    public float ySize;
     public float rotation;
 
     public BufferedImage texture;
@@ -34,7 +34,7 @@ public class Object2D {
                 null
         );
         BufferedImage tinted = op.filter(texture, null);
-        g.drawImage(tinted, -xSize/2, -ySize/2, xSize, ySize, null);
+        g.drawImage(tinted, (int) (-xSize/2), (int) (-ySize/2), (int) xSize, (int) ySize, null);
         g.setTransform(old);
     }
 }

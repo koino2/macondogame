@@ -1,4 +1,5 @@
 import lib.Engine;
+import lib.Input;
 import lib.Object2D;
 import lib.Scene;
 
@@ -12,14 +13,12 @@ public class Main {
     public static void main(String[] args) {
         JFrame window = new JFrame("Untitled Macondo Game");
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        window.setLayout(null);
         window.setSize(1200, 700);
         window.setLocationRelativeTo(null);
 
-        window.setVisible(true);
-
         SampleScene sampleScene = new SampleScene();
         Engine engine = new Engine(sampleScene);
-        window.add(engine);
+        window.setContentPane(engine);
+        window.setVisible(true);
     }
 }

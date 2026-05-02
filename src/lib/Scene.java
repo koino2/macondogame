@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Timer;
 
 public abstract class Scene {
-    public abstract void update(double dt);
     public abstract void start();
+    public abstract void update(double deltaTime);
 
     public List<Object2D> objects = new ArrayList<>();
 
