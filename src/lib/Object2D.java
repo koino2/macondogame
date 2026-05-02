@@ -1,3 +1,5 @@
+package lib;
+
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -12,6 +14,7 @@ public class Object2D {
 
     public BufferedImage texture;
     public Color color = new Color(255, 255, 255);
+    public int zIndex = 0;
 
     public Object2D(int xPos, int yPos, int xSize, int ySize, float rotation){
         this.xPos = xPos;

@@ -1,3 +1,5 @@
+package lib;
+
 import java.awt.*;
 
 public class Particle {
