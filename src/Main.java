@@ -1,3 +1,4 @@
+import lib.Engine;
 import lib.Object2D;
 import lib.Scene;
 
@@ -17,25 +18,8 @@ public class Main {
 
         window.setVisible(true);
 
-        Scene scene = new Scene() {
-            @Override
-            public void update(double dt) {
-                objects.get(0).xSize+=1;
-            }
-
-            @Override
-            public void start() {
-                Object2D player = new Object2D(200, 200, 50, 50, 0);
-                try {
-                    player.texture = ImageIO.read(new File("src/assets/player.png"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                this.objects.add(player);
-            }
-        };
-
-        window.setContentPane(scene);
-        window.repaint();
+        SampleScene sampleScene = new SampleScene();
+        Engine engine = new Engine(sampleScene);
+        window.add(engine);
     }
 }
