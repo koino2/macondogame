@@ -13,6 +13,10 @@ public class Input {
     private static final Set<Integer> keys = new HashSet<>();
     private static Point mousePos = new Point(100,100);
 
+    private static final Set<Integer> mouseButtons = new HashSet<>();
+    private static final Set<Integer> mousePressed = new HashSet<>();
+    private static final Set<Integer> mouseReleased = new HashSet<>();
+
     public static void attach(JPanel panel){
         panel.addKeyListener(new KeyAdapter() {
             @Override
@@ -36,14 +40,41 @@ public class Input {
                 mousePos = e.getPoint();
             }
         });
+        panel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                mouseButtons.add(e.getButton());
+                mousePressed.add(e.getButton());
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                mouseButtons.remove(e.getButton());
+                mouseReleased.add(e.getButton());
+            }
+        });
 
         panel.setFocusable(true);
         panel.requestFocus();
     }
+    public static void endFrame(){
+        mousePressed.clear();
+        mouseReleased.clear();
+    }
+
     public static boolean isKeyDown(int key){
         return keys.contains(key);
     }
     public static Point getMousePosition(){
         return mousePos;
+    }
+    public static boolean isMouseDown(int button){
+        return mouseButtons.contains(button);
+    }
+    public static boolean isMousePressed(int button){
+        return mousePressed.contains(button);
+    }
+    public static boolean isMouseReleased(int button){
+        return mouseReleased.contains(button);
     }
 }

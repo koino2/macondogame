@@ -5,6 +5,7 @@ import lib.Scene;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -17,6 +18,10 @@ public class SampleScene extends Scene {
             int xDist = (int) (point.x - player.xPos);
             int yDist = (int) (point.y - player.yPos);
             player.rotation = (float) Math.toDegrees(Math.atan2(yDist, xDist));
+        }
+
+        if (Input.isMousePressed(MouseEvent.BUTTON1)){
+            System.out.println("pew!");
         }
 
         if(Input.isKeyDown(KeyEvent.VK_W)){player.yPos-=200 * deltaTime;}

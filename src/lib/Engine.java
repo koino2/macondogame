@@ -28,6 +28,7 @@ public class Engine extends JPanel {
             }
 
             currentScene.update(dt);
+            Input.endFrame();
             repaint();
 
             try {
