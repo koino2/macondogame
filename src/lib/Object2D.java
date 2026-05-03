@@ -16,6 +16,19 @@ public class Object2D {
     public Color color = new Color(255, 255, 255);
     public int zIndex = 0;
 
+    public float xVelocity;
+    public float yVelocity;
+    public float xAcceleration;
+    public float yAcceleration;
+
+    public void update(double deltaTime){
+        xVelocity += (float) (xAcceleration * deltaTime);
+        yVelocity += (float) (yAcceleration * deltaTime);
+
+        xPos += (float) (xVelocity * deltaTime);
+        yPos += (float) (yVelocity * deltaTime);
+    }
+
     public Object2D(int xPos, int yPos, int xSize, int ySize, float rotation){
         this.xPos = xPos;
         this.yPos = yPos;

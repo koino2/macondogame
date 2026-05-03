@@ -24,10 +24,34 @@ public class SampleScene extends Scene {
             System.out.println("pew!");
         }
 
-        if(Input.isKeyDown(KeyEvent.VK_W)){player.yPos-=200 * deltaTime;}
-        if(Input.isKeyDown(KeyEvent.VK_S)){player.yPos+=200 * deltaTime;}
-        if(Input.isKeyDown(KeyEvent.VK_A)){player.xPos-=200 * deltaTime;}
-        if(Input.isKeyDown(KeyEvent.VK_D)){player.xPos+=200 * deltaTime;}
+        player.xAcceleration = 0;
+        player.yAcceleration = 0;
+
+        float acceleration = 600;
+        float damping = 1f;
+
+        if(Input.isKeyDown(KeyEvent.VK_W) || Input.isKeyDown(KeyEvent.VK_S)) {
+
+            if (Input.isKeyDown(KeyEvent.VK_W)) {
+                player.yAcceleration = -acceleration;
+            }
+            if (Input.isKeyDown(KeyEvent.VK_S)) {
+                player.yAcceleration = acceleration;
+            }
+        } else{
+            player.yVelocity *= (float) Math.exp(-damping * deltaTime);
+            // no idea how you can exponentiate a decimal but ok chatgpt it works
+        }
+        if(Input.isKeyDown(KeyEvent.VK_A) || Input.isKeyDown(KeyEvent.VK_D)) {
+            if (Input.isKeyDown(KeyEvent.VK_A)) {
+                player.xAcceleration = -acceleration;
+            }
+            if (Input.isKeyDown(KeyEvent.VK_D)) {
+                player.xAcceleration = acceleration;
+            }
+        } else{
+            player.xVelocity *= (float) Math.exp(-damping * deltaTime);
+        }
     }
 
     @Override

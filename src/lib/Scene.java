@@ -15,6 +15,12 @@ public abstract class Scene {
 
     public boolean started = false;
 
+    public void defaultUpdate(double dt){
+        for (int i = 0; i < objects.size(); i++) {
+            objects.get(i).update(dt);
+        }
+    }
+
     public void render(Graphics g) {
         objects.sort(Comparator.comparingInt(o -> o.zIndex));
         for (int i = 0; i < objects.size(); i++) {
