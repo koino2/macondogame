@@ -43,7 +43,8 @@ public class Engine extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        currentScene.render((Graphics2D)g);
+        currentScene.render(g);
+        currentScene.renderUI(g);
     }
 
     @Override

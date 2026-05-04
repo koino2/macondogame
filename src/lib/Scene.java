@@ -10,6 +10,7 @@ import java.util.Timer;
 public abstract class Scene {
     public abstract void start();
     public abstract void update(double deltaTime);
+    public abstract void renderUI(Graphics g);
 
     public List<Object2D> objects = new ArrayList<>();
 
