@@ -11,6 +11,7 @@ import java.io.IOException;
 
 public class SampleScene extends Scene {
     Object2D player;
+
     @Override
     public void update(double deltaTime) {
         Point point = Input.getMousePosition();
@@ -20,8 +21,32 @@ public class SampleScene extends Scene {
             player.rotation = (float) Math.toDegrees(Math.atan2(yDist, xDist));
         }
 
-        if (Input.isMousePressed(MouseEvent.BUTTON1)){
-            System.out.println("pew!");
+        if (Input.isMousePressed(MouseEvent.BUTTON1) && point != null) {
+            float distanceX = point.x - player.xPos;
+            float distanceY = point.y - player.yPos;
+
+            float hypotenuse = (float) Math.sqrt(distanceX*distanceX + distanceY*distanceY);
+
+            distanceX /= hypotenuse;
+            distanceY /= hypotenuse;
+
+            float rotation = (float) Math.toDegrees(Math.atan2(distanceY, distanceX));
+
+            float offsetX = 50;
+            float offsetY = 5;
+
+            float rad = (float) Math.toRadians(player.rotation);
+
+            float rotatedX = (float)(offsetX * Math.cos(rad) - offsetY * Math.sin(rad));
+            float rotatedY = (float)(offsetX * Math.sin(rad) + offsetY * Math.cos(rad)); // gpt did that i have no idea what cos, sin is
+
+            Object2D bullet = new Object2D(player.xPos+rotatedX, player.yPos+rotatedY, 10,10, rotation);
+            bullet.color = new Color(255, 203, 26);
+
+            bullet.xVelocity = distanceX * 500;
+            bullet.yVelocity = distanceY * 500;
+
+            objects.add(bullet);
         }
 
         player.xAcceleration = 0;
@@ -40,7 +65,6 @@ public class SampleScene extends Scene {
             }
         } else{
             player.yVelocity *= (float) Math.exp(-damping * deltaTime);
-            // no idea how you can exponentiate a decimal but ok chatgpt it works
         }
         if(Input.isKeyDown(KeyEvent.VK_A) || Input.isKeyDown(KeyEvent.VK_D)) {
             if (Input.isKeyDown(KeyEvent.VK_A)) {
@@ -51,6 +75,13 @@ public class SampleScene extends Scene {
             }
         } else{
             player.xVelocity *= (float) Math.exp(-damping * deltaTime);
+        }
+
+        if(Input.isKeyDown(KeyEvent.VK_E)){
+            player.xSize += 1;
+        }
+        if(Input.isKeyDown(KeyEvent.VK_Q)){
+            player.xSize -= 1;
         }
     }
 
