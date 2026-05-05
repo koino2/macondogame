@@ -8,5 +8,3 @@ One More Run
 Parallel You
 Residual
 Trace
-Repeat State
-Time Residue

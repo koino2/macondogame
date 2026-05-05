@@ -1,12 +1,11 @@
-import lib.Input;
-import lib.Object2D;
-import lib.Scene;
-import lib.StaticTextures;
+import lib.*;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
 
@@ -100,10 +99,23 @@ public class SampleScene extends Scene {
             player.xSize -= 1;
         }
 
-        if(player.intersects(block)){
-            block.color = new Color(255, 94, 94);
-        } else {
-            block.color = new Color(94, 255, 94);
+        Point2D.Float mtv = player.getMTV(block);
+
+        if (mtv != null) {
+
+            player.xPos -= mtv.x;
+            player.yPos -= mtv.y;
+
+            float len = (float)Math.sqrt(mtv.x * mtv.x + mtv.y * mtv.y);
+            if (len != 0) {
+                float nx = mtv.x / len;
+                float ny = mtv.y / len;
+
+                float dot = player.xVelocity * nx + player.yVelocity * ny;
+
+                player.xVelocity -= dot * nx;
+                player.yVelocity -= dot * ny;
+            }
         }
     }
 

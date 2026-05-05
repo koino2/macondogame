@@ -63,6 +63,61 @@ public class Object2D {
     // |  |  |  |  |  |  |  |  |  |  |  |
     // V  V  V  V  V  V  V  V  V  V  V  V
 
+    public Point2D.Float getMTV(Object2D other){
+        Point2D.Float[] a = this.getVertices();
+        Point2D.Float[] b = other.getVertices();
+
+        float smallestOverlap = Float.MAX_VALUE;
+        float mtvX = 0;
+        float mtvY = 0;
+
+        for (int pass = 0; pass < 2; pass++) {
+            Point2D.Float[] verts = (pass == 0)? a : b;
+
+            for (int i = 0; i < 4; i++) {
+                Point2D.Float p1 = verts[i];
+                Point2D.Float p2 = verts[(i+1)%4];
+
+                float edgeX = p2.x - p1.x;
+                float edgeY = p2.y - p1.y;
+
+                float axisX = -edgeY;
+                float axisY = edgeX;
+
+                float len = (float)Math.sqrt(axisX*axisX + axisY*axisY);
+                if (len == 0) continue;
+
+                axisX /= len;
+                axisY /= len;
+
+                float[] projA = project(a, axisX, axisY);
+                float[] projB = project(b, axisX, axisY);
+
+                float overlap = Math.min(projA[1],projB[1]) - Math.max(projA[0], projB[0]);
+
+                if(overlap <= 0){
+                    return null;
+                }
+
+                if(overlap < smallestOverlap){
+                    smallestOverlap = overlap;
+                    mtvX = axisX;
+                    mtvY = axisY;
+                }
+            }
+        }
+
+        float dx = other.xPos - this.xPos;
+        float dy = other.yPos - this.yPos;
+
+        if(dx * mtvX + dy * mtvY < 0){
+            mtvX = -mtvX;
+            mtvY = -mtvY;
+        }
+
+        return new Point2D.Float(mtvX * smallestOverlap, mtvY * smallestOverlap);
+    }
+
     float[] project(Point2D.Float[] verts, float axisX, float axisY) {
         float min = dot(verts[0], axisX, axisY);
         float max = min;
@@ -128,7 +183,9 @@ public class Object2D {
             float[] projA = project(a, axisX, axisY);
             float[] projB = project(b, axisX, axisY);
 
-            if(projA[1] < projB[0] || projB[1] < projA[0]){
+            float overlap = Math.min(projA[1],projB[1]) - Math.max(projA[0], projB[0]);
+
+            if(overlap <= 0){
                 return false;
             }
         }
