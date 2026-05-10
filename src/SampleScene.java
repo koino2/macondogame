@@ -1,4 +1,10 @@
 import lib.*;
+import lib.postProcessEffects.Bloom;
+import lib.postProcessEffects.ChromaticAberration;
+import lib.postProcessEffects.Vignette;
+import scripts.CollisionScript;
+import scripts.FPSTimer;
+import scripts.PlayerController;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -8,122 +14,22 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SampleScene extends Scene {
     Object2D player;
     Object2D block;
 
-    double fps;
-    double fpsTimer = 0;
-    int fpsFrames = 0;
-
     @Override
     public void update(double deltaTime) {
-
-        fpsTimer += deltaTime;
-        fpsFrames++;
-
-        if (fpsTimer >= 1.0) {
-            fps = fpsFrames;
-            fpsFrames = 0;
-            fpsTimer = 0;
-        }
-
-        Point point = Input.getMousePosition();
-        if (point != null) {
-            int xDist = (int) (point.x - player.xPos);
-            int yDist = (int) (point.y - player.yPos);
-            player.rotation = (float) Math.toDegrees(Math.atan2(yDist, xDist));
-        }
-
-        if (Input.isMousePressed(MouseEvent.BUTTON1) && point != null) {
-            float distanceX = point.x - player.xPos;
-            float distanceY = point.y - player.yPos;
-
-            float hypotenuse = (float) Math.sqrt(distanceX*distanceX + distanceY*distanceY);
-
-            distanceX /= hypotenuse;
-            distanceY /= hypotenuse;
-
-            float rotation = (float) Math.toDegrees(Math.atan2(distanceY, distanceX));
-
-            float offsetX = 50;
-            float offsetY = 5;
-
-            float rad = (float) Math.toRadians(player.rotation);
-
-            float rotatedX = (float)(offsetX * Math.cos(rad) - offsetY * Math.sin(rad));
-            float rotatedY = (float)(offsetX * Math.sin(rad) + offsetY * Math.cos(rad)); // gpt did that i have no idea what cos, sin is
-
-            Object2D bullet = new Object2D(player.xPos+rotatedX, player.yPos+rotatedY, 10,10, rotation);
-            bullet.color = new Color(255, 203, 26);
-
-            bullet.xVelocity = distanceX * 500;
-            bullet.yVelocity = distanceY * 500;
-
-            objects.add(bullet);
-        }
-
-        player.xAcceleration = 0;
-        player.yAcceleration = 0;
-
-        float acceleration = 600;
-        float damping = 1f;
-
-        if(Input.isKeyDown(KeyEvent.VK_W) || Input.isKeyDown(KeyEvent.VK_S)) {
-
-            if (Input.isKeyDown(KeyEvent.VK_W)) {
-                player.yAcceleration = -acceleration;
-            }
-            if (Input.isKeyDown(KeyEvent.VK_S)) {
-                player.yAcceleration = acceleration;
-            }
-        } else{
-            player.yVelocity *= (float) Math.exp(-damping * deltaTime);
-        }
-        if(Input.isKeyDown(KeyEvent.VK_A) || Input.isKeyDown(KeyEvent.VK_D)) {
-            if (Input.isKeyDown(KeyEvent.VK_A)) {
-                player.xAcceleration = -acceleration;
-            }
-            if (Input.isKeyDown(KeyEvent.VK_D)) {
-                player.xAcceleration = acceleration;
-            }
-        } else{
-            player.xVelocity *= (float) Math.exp(-damping * deltaTime);
-        }
-
-        if(Input.isKeyDown(KeyEvent.VK_E)){
-            player.xSize += 1;
-        }
-        if(Input.isKeyDown(KeyEvent.VK_Q)){
-            player.xSize -= 1;
-        }
-
-        Point2D.Float mtv = player.getMTV(block);
-
-        if (mtv != null) {
-
-            player.xPos -= mtv.x;
-            player.yPos -= mtv.y;
-
-            float len = (float)Math.sqrt(mtv.x * mtv.x + mtv.y * mtv.y);
-            if (len != 0) {
-                float nx = mtv.x / len;
-                float ny = mtv.y / len;
-
-                float dot = player.xVelocity * nx + player.yVelocity * ny;
-
-                player.xVelocity -= dot * nx;
-                player.yVelocity -= dot * ny;
-            }
-        }
+        lights.get(0).x = player.xPos;
+        lights.get(0).y = player.yPos;
     }
 
     @Override
     public void renderUI(Graphics g){
-        g.setColor(Color.black);
-        g.setFont(new Font("Segoe UI", Font.PLAIN, 25));
-        g.drawString("FPS: "+fps, 20, 35);
+
     }
 
     @Override
@@ -134,11 +40,49 @@ public class SampleScene extends Scene {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        objects.add(player);
+        addObject(player);
 
         block = new Object2D(500,500,200,200,45);
-        block.texture = StaticTextures.square();
+        block.color = new Color(117, 255, 117);
         block.zIndex = -1;
-        objects.add(block);
+        addObject(block);
+
+        player.addScript(new FPSTimer());
+        player.addScript(new PlayerController());
+        CollisionScript collisionScript = new CollisionScript();
+        collisionScript.collidableObjects.add(block);
+        player.addScript(collisionScript);
+
+        Object2D bg = new Object2D(
+                engine.getWidth()/2f,
+                engine.getHeight()/2f,
+                engine.getWidth(),
+                engine.getHeight(),
+                0
+        );
+        bg.color = new Color(255, 255, 255);
+        bg.zIndex = -20;
+        addObject(bg);
+
+        ambientColor = new Color(45, 47, 62, 255);
+        Light light = new Light();
+        light.x = player.xPos;
+        light.y = player.yPos;
+        light.color = new Color(255, 255, 255, 140);
+        light.radius = 200;
+        lights.add(light);
+
+        Vignette vignette = new Vignette();
+        vignette.size = 0.1f;
+        vignette.priority = 999;
+        postProcessEffects.add(vignette);
+
+        Bloom bloom = new Bloom();
+        bloom.threshold = 0.3f;
+        bloom.radius = 3;
+        postProcessEffects.add(bloom);
+
+        ChromaticAberration chromaticAberration = new ChromaticAberration();
+        postProcessEffects.add(chromaticAberration);
     }
 }

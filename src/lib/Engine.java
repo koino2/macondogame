@@ -22,13 +22,24 @@ public class Engine extends JPanel {
             double dt = (now - lastTime) / 1_000_000_000.0;
             lastTime = now;
 
+            currentScene.engine = this;
+
             if(currentScene.started == false){
+                while (getWidth() == 0){
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
                 currentScene.start();
                 currentScene.started = true;
+
+                currentScene.startObjects();
             }
 
-            currentScene.defaultUpdate(dt);
             currentScene.update(dt);
+            currentScene.updateObjects(dt);
             Input.endFrame();
             repaint();
 
@@ -45,6 +56,7 @@ public class Engine extends JPanel {
         super.paintComponent(g);
         currentScene.render(g);
         currentScene.renderUI(g);
+        currentScene.renderUIObjects(g);
     }
 
     @Override

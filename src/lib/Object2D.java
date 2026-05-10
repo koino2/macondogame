@@ -5,6 +5,8 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Object2D {
     public float xPos;
@@ -22,12 +24,37 @@ public class Object2D {
     public float xAcceleration;
     public float yAcceleration;
 
+    public Scene scene;
+    public List<Script> scripts = new ArrayList<>();
+
+    public void start(){
+        for (int i = 0; i < scripts.size(); i++) {
+            scripts.get(i).start();
+            scripts.get(i).started = true;
+        }
+    }
+
     public void update(double deltaTime){
         xVelocity += (float) (xAcceleration * deltaTime);
         yVelocity += (float) (yAcceleration * deltaTime);
 
         xPos += (float) (xVelocity * deltaTime);
         yPos += (float) (yVelocity * deltaTime);
+
+        for (int i = 0; i < scripts.size(); i++) {
+            scripts.get(i).update(deltaTime);
+        }
+    }
+
+    public void renderUI(Graphics g){
+        for (int i = 0; i < scripts.size(); i++) {
+            scripts.get(i).renderUI(g);
+        }
+    }
+
+    public void addScript(Script script){
+        scripts.add(script);
+        script.object = this;
     }
 
     public Object2D(float xPos, float yPos, float xSize, float ySize, float rotation){
