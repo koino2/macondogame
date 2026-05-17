@@ -100,11 +100,11 @@ public class SampleScene extends Scene {
         vignette.priority = 999;
         postProcessEffects.add(vignette); // -3 fps
 
-        Bloom4 bloom4 = new Bloom4();
-        bloom4.threshold = 0.3f;
-        bloom4.radius = 2;
-        bloom4.reduction = 4;
-        postProcessEffects.add(bloom4); // -12
+        Bloom4 bloom = new Bloom4();
+        bloom.threshold = 0.3f;
+        bloom.radius = 2;
+        bloom.reduction = 4;
+        postProcessEffects.add(bloom); // -12
 
         ChromaticAberration chromaticAberration = new ChromaticAberration();
         postProcessEffects.add(chromaticAberration); //-3 fps
