@@ -14,6 +14,7 @@ public abstract class Scene {
     public List<Object2D> objects = new ArrayList<>();
     public List<Light> lights = new ArrayList<>();
     public List<PostProcessEffect> postProcessEffects = new ArrayList<>();
+    public boolean postProcessingEnabled = true;
 
     public boolean started = false;
 
@@ -49,6 +50,8 @@ public abstract class Scene {
     public Color ambientColor = new Color(255, 255, 255);
 
     public void render(Graphics g) {
+        //double startTime = System.nanoTime();
+
         BufferedImage sceneBuffer = new BufferedImage(engine.getWidth(), engine.getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D bufferGraphics = sceneBuffer.createGraphics();
 
@@ -56,6 +59,8 @@ public abstract class Scene {
         for (int i = 0; i < objects.size(); i++) {
             objects.get(i).render(bufferGraphics);
         }
+
+        //double objectRenderTime = System.nanoTime() - startTime;
 
         BufferedImage lightMap = new BufferedImage(engine.getWidth(), engine.getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D lg = lightMap.createGraphics();
@@ -106,13 +111,27 @@ public abstract class Scene {
             }
         }
 
-        postProcessEffects.sort(Comparator.comparingInt(p -> p.priority));
-        for (int i = 0; i < postProcessEffects.size(); i++) {
-            if(postProcessEffects.get(i).enabled == true) {
-                finalImage = postProcessEffects.get(i).apply(finalImage);
+        //double lightingTime = System.nanoTime() - startTime;
+
+        if(postProcessingEnabled) {
+            postProcessEffects.sort(Comparator.comparingInt(p -> p.priority));
+            for (int i = 0; i < postProcessEffects.size(); i++) {
+                if (postProcessEffects.get(i).enabled == true) {
+                    finalImage = postProcessEffects.get(i).apply(finalImage);
+                }
             }
         }
 
+        //double postProcessingTime = System.nanoTime() - startTime;
+
         g.drawImage(finalImage, 0, 0, null);
+
+        //double finalRenderTime = System.nanoTime() - startTime;
+
+        //System.out.println("Object Render Time: "+(objectRenderTime/1_000_000)+" millis.");
+        //System.out.println("Lighting Time: "+(lightingTime/1_000_000)+" millis. ( +"+((lightingTime-objectRenderTime)/1_000_000)+" millis )");
+        //System.out.println("Post Processing Time:  "+(postProcessingTime/1_000_000)+ " millis. ( +"+((postProcessingTime-lightingTime)/1_000_000)+" millis )");
+        //System.out.println("Final Render Time: "+(finalRenderTime/1_000_000)+" millis. ( +"+((finalRenderTime-postProcessingTime)/1_000_000)+" millis )");
+        //System.out.println("-----------------------------------------------------");
     }
 }

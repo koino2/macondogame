@@ -2,12 +2,23 @@ package lib.postProcessEffects;
 
 import lib.PostProcessEffect;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
 public class Bloom extends PostProcessEffect {
     public float threshold = 0.3f;
-    public int radius = 3;
+    public int radius = 2;
+
+    public float blurSizeMultiplier = 0.25f;
+
+    private final float[] kernel = {
+            0.06136f,
+            0.24477f,
+            0.38774f,
+            0.24477f,
+            0.06136f
+    };
 
     @Override
     public BufferedImage apply(BufferedImage image) {
@@ -32,7 +43,6 @@ public class Bloom extends PostProcessEffect {
             }
         }
 
-        float blurSizeMultiplier = 0.5f;
         int smallWidth = (int) (image.getWidth() * blurSizeMultiplier);
         int smallHeight = (int) (image.getHeight()*blurSizeMultiplier);
 
@@ -49,6 +59,8 @@ public class Bloom extends PostProcessEffect {
         }
 
         int[] blur = new int[smallWidth * smallHeight];
+
+        int[] temp = new int[smallWidth * smallHeight];
 
         int threads = Runtime.getRuntime().availableProcessors();
         Thread[] workers = new Thread[threads];
@@ -112,6 +124,21 @@ public class Bloom extends PostProcessEffect {
             }
         }
 
+        /*float reduction = 3;
+        int width = (int) Math.ceil(smallWidth/reduction);
+        int height = (int) Math.ceil(smallWidth/reduction);
+        BufferedImage blurImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D blurGraphics = blurImage.createGraphics();
+        blurGraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        blurGraphics.drawImage(smallBright, 0, 0, width, height, null);
+
+        BufferedImage blurImageBig = new BufferedImage(smallWidth, smallHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D bigBlurGraphics = blurImageBig.createGraphics();
+        bigBlurGraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        bigBlurGraphics.drawImage(blurImage, 0, 0, smallWidth, smallHeight, null);
+
+        blur = ((DataBufferInt)(blurImageBig.getRaster().getDataBuffer())).getData();*/
+
         int[] finalPixels = new int[image.getWidth() * image.getHeight()];
 
         for (int y = 0; y < image.getHeight(); y++) {
@@ -128,7 +155,7 @@ public class Bloom extends PostProcessEffect {
 
                 int originalR = (originalRGB >> 16) & 0xFF;
                 int originalG = (originalRGB >> 8) & 0xFF;
-                int originalB = originalRGB & 0xFF;
+                int originalB = originalRGB & 0xFF;;
 
                 int blurR = (blurRGB >> 16) & 0xFF;
                 int blurG = (blurRGB >> 8) & 0xFF;

@@ -20,30 +20,49 @@ public class ChromaticAberration extends PostProcessEffect {
         int[] input = ((DataBufferInt) (image.getRaster().getDataBuffer())).getData();
         int[] out = ((DataBufferInt) (output.getRaster().getDataBuffer())).getData();
 
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                float centerX = width / 2f;
-                float centerY = height / 2f;
+        int threads = Runtime.getRuntime().availableProcessors();
+        Thread[] workers = new Thread[threads];
 
-                float dx = x - centerX;
-                float dy = y - centerY;
+        int rowsPerThread = height / threads;
 
-                float distanceFromCenter = (float) Math.sqrt(dx * dx + dy * dy);
-                float dist = (float) distanceFromCenter / Math.max(width, height);
-                float offset = dist * strength;
+        for (int thread = 0; thread < threads; thread++) {
+            int startY = thread * rowsPerThread;
+            int endY = (thread == threads - 1) ? height : startY + rowsPerThread;
+            workers[thread] = new Thread(() -> {
+                for (int y = startY; y < endY; y++) {
+                    for (int x = 0; x < width; x++) {
+                        float centerX = width / 2f;
+                        float centerY = height / 2f;
 
-                int rx = (int) Math.max(0, Math.min(width-1, x-offset));
-                int bx = (int) Math.max(0, Math.min(width-1, x+offset));
+                        float dx = x - centerX;
+                        float dy = y - centerY;
 
-                int rRGB = input[rx + y * width];
-                int gRGB = input[x + y * width];
-                int bRGB = input[bx + y * width];
+                        float distanceFromCenter = (float) Math.sqrt(dx * dx + dy * dy);
+                        float dist = (float) distanceFromCenter / Math.max(width, height);
+                        float offset = dist * strength;
 
-                int r = (rRGB >> 16) & 0xFF;
-                int g = (gRGB >> 8) & 0xFF;
-                int b = bRGB & 0xFF;
+                        int rx = (int) Math.max(0, Math.min(width - 1, x - offset));
+                        int bx = (int) Math.max(0, Math.min(width - 1, x + offset));
 
-                out[x+y*width] = spam.convertToARGB(255,r,g,b);
+                        int rRGB = input[rx + y * width];
+                        int gRGB = input[x + y * width];
+                        int bRGB = input[bx + y * width];
+
+                        int r = (rRGB >> 16) & 0xFF;
+                        int g = (gRGB >> 8) & 0xFF;
+                        int b = bRGB & 0xFF;
+
+                        out[x + y * width] = spam.convertToARGB(255, r, g, b);
+                    }
+                }
+            });
+            workers[thread].start();
+        }
+        for (int i = 0; i < workers.length; i++) {
+            try {
+                workers[i].join();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         }
         return output;

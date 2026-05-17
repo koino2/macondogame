@@ -1,7 +1,5 @@
 import lib.*;
-import lib.postProcessEffects.Bloom;
-import lib.postProcessEffects.ChromaticAberration;
-import lib.postProcessEffects.Vignette;
+import lib.postProcessEffects.*;
 import scripts.CollisionScript;
 import scripts.FPSTimer;
 import scripts.PlayerController;
@@ -23,13 +21,25 @@ public class SampleScene extends Scene {
 
     @Override
     public void update(double deltaTime) {
-        lights.get(0).x = player.xPos;
-        lights.get(0).y = player.yPos;
+        if(!lights.isEmpty()) {
+            lights.get(0).x = player.xPos;
+            lights.get(0).y = player.yPos;
+        }
     }
 
+
+    boolean before = false;
     @Override
     public void renderUI(Graphics g){
+        if(Input.isKeyDown(KeyEvent.VK_B)){
+            if(!before) {
+                postProcessingEnabled = !postProcessingEnabled;
+            }
 
+            before = true;
+        } else{
+            before = false;
+        }
     }
 
     @Override
@@ -53,6 +63,19 @@ public class SampleScene extends Scene {
         collisionScript.collidableObjects.add(block);
         player.addScript(collisionScript);
 
+        /*Color wallColor = new Color(46, 255, 239, 255);
+        int wallZindex = 5;
+        Object2D wall1 = new Object2D(0, 350, 50,  700, 0);
+        wall1.color = wallColor;
+        wall1.zIndex = wallZindex;
+        addObject(wall1);
+        collisionScript.collidableObjects.add(wall1);
+        Object2D wall2 = new Object2D(1200, 350, 50,  700, 0);
+        wall2.color = wallColor;
+        wall2.zIndex = wallZindex;
+        addObject(wall2);
+        collisionScript.collidableObjects.add(wall2);*/
+
         Object2D bg = new Object2D(
                 engine.getWidth()/2f,
                 engine.getHeight()/2f,
@@ -75,14 +98,15 @@ public class SampleScene extends Scene {
         Vignette vignette = new Vignette();
         vignette.size = 0.1f;
         vignette.priority = 999;
-        postProcessEffects.add(vignette);
+        postProcessEffects.add(vignette); // -3 fps
 
-        Bloom bloom = new Bloom();
-        bloom.threshold = 0.3f;
-        bloom.radius = 3;
-        postProcessEffects.add(bloom);
+        Bloom4 bloom4 = new Bloom4();
+        bloom4.threshold = 0.3f;
+        bloom4.radius = 2;
+        bloom4.reduction = 4;
+        postProcessEffects.add(bloom4); // -12
 
         ChromaticAberration chromaticAberration = new ChromaticAberration();
-        postProcessEffects.add(chromaticAberration);
+        postProcessEffects.add(chromaticAberration); //-3 fps
     }
 }
