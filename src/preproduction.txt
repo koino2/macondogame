@@ -1,3 +1,8 @@
+IDEA
+A top down shooter about killing enemy robots. The robots outnumber you and are way more powerful than you. As you play, your movements and actions are recorded, and once you die, your 'ghost' plays back those actions. These ghosts can stack every time you die
+
+A top-down shooter where the player is heavily outnumbered and outmatched by enemy robots. Each attempt captures the player’s movements and actions, and upon death, a “ghost” replay of that run is spawned into the world, repeating the recorded behavior. With every new death, additional ghosts accumulate, layering past attempts into the current run and turning previous failures into support for future survival.
+
 GAME NAME IDEAS
 pick: Dead Again
 

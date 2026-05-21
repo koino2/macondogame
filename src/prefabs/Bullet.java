@@ -1,4 +1,4 @@
-package scripts;
+package prefabs;
 
 import lib.Light;
 import lib.Object2D;
@@ -26,6 +26,8 @@ public class Bullet extends Object2D {
         color = new Color(255, 179, 50);
 
         addScript(new BulletLightScript());
+
+        tags.add("bullet");
 
         xVelocity = distanceX * 500;
         yVelocity = distanceY * 500;

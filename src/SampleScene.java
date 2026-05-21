@@ -1,21 +1,28 @@
 import lib.*;
 import lib.postProcessEffects.*;
 import scripts.CollisionScript;
-import scripts.FPSTimer;
+import scripts.DebugText;
 import scripts.PlayerController;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SampleScene extends Scene {
+    public static void main(String[] args) {
+        JFrame window = new JFrame("Untitled Macondo Game");
+        window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        window.setSize(1200, 700);
+        window.setLocationRelativeTo(null);
+
+        SampleScene scene = new SampleScene();
+        Engine engine = new Engine(scene);
+        window.setContentPane(engine);
+        window.setVisible(true);
+    }
     Object2D player;
     Object2D block;
 
@@ -57,9 +64,14 @@ public class SampleScene extends Scene {
         block.zIndex = -1;
         addObject(block);
 
-        player.addScript(new FPSTimer());
+        player.addScript(new DebugText());
         player.addScript(new PlayerController());
-        CollisionScript collisionScript = new CollisionScript();
+        CollisionScript collisionScript = new CollisionScript() {
+            @Override
+            public void onCollide(Object2D other) {
+                resolveCollision(other);
+            }
+        };
         collisionScript.collidableObjects.add(block);
         player.addScript(collisionScript);
 
@@ -108,5 +120,12 @@ public class SampleScene extends Scene {
 
         ChromaticAberration chromaticAberration = new ChromaticAberration();
         postProcessEffects.add(chromaticAberration); //-3 fps
+
+        Camera camera = new Camera(0,0, 0);
+        camera.scale = 0.75f;
+        camera.parent = player;
+        player.children.add(camera);
+        objects.add(camera);
+        this.camera = camera;
     }
 }

@@ -1,13 +1,6 @@
+import levels.Level1;
 import lib.Engine;
-import lib.Input;
-import lib.Object2D;
-import lib.Scene;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
@@ -16,8 +9,8 @@ public class Main {
         window.setSize(1200, 700);
         window.setLocationRelativeTo(null);
 
-        SampleScene sampleScene = new SampleScene();
-        Engine engine = new Engine(sampleScene);
+        Level1 scene = new Level1();
+        Engine engine = new Engine(scene);
         window.setContentPane(engine);
         window.setVisible(true);
     }

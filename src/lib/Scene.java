@@ -3,6 +3,7 @@ package lib;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -11,10 +12,13 @@ import java.util.Timer;
 public abstract class Scene {
     public Engine engine;
 
+    public Camera camera;
     public List<Object2D> objects = new ArrayList<>();
     public List<Light> lights = new ArrayList<>();
     public List<PostProcessEffect> postProcessEffects = new ArrayList<>();
     public boolean postProcessingEnabled = true;
+
+    public Color ambientColor = new Color(255, 255, 255);
 
     public boolean started = false;
 
@@ -47,26 +51,47 @@ public abstract class Scene {
         }
     }
 
-    public Color ambientColor = new Color(255, 255, 255);
+    public double startTime;
+    public double objectRenderTime;
+    public double lightingTime;
+    public double postProcessingTime;
+    public double finalRenderTime;
 
     public void render(Graphics g) {
-        //double startTime = System.nanoTime();
+        if(camera == null){
+            camera = new Camera(0,0,0);
+        }
+        startTime = System.nanoTime();
+        int width = engine.getWidth();
+        int height = engine.getHeight();
 
-        BufferedImage sceneBuffer = new BufferedImage(engine.getWidth(), engine.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        BufferedImage sceneBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D bufferGraphics = sceneBuffer.createGraphics();
+
+        bufferGraphics.setColor(ambientColor);
+        bufferGraphics.fillRect(0,0,engine.getWidth(), engine.getHeight());
+
+        bufferGraphics.translate(width/2, height/2);
+        bufferGraphics.scale(camera.scale, camera.scale);
+        bufferGraphics.translate(-camera.globalX, -camera.globalY);
 
         objects.sort(Comparator.comparingInt(o -> o.zIndex));
         for (int i = 0; i < objects.size(); i++) {
             objects.get(i).render(bufferGraphics);
         }
 
-        //double objectRenderTime = System.nanoTime() - startTime;
+        objectRenderTime = System.nanoTime() - startTime;
 
-        BufferedImage lightMap = new BufferedImage(engine.getWidth(), engine.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        BufferedImage lightMap = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D lg = lightMap.createGraphics();
 
         lg.setColor(ambientColor);
         lg.fillRect(0,0,engine.getWidth(), engine.getHeight());
+
+        lg.translate(width/2, height/2);
+        lg.scale(camera.scale, camera.scale);
+        lg.translate(-camera.globalX, -camera.globalY);
+
         lg.setComposite(AlphaComposite.SrcOver);
 
         for (int i = 0; i < lights.size(); i++) {
@@ -85,18 +110,19 @@ public abstract class Scene {
             lg.fillOval((int) (light.x- light.radius), (int) (light.y-light.radius), (int) (light.radius*2), (int) (light.radius*2));
         }
 
-        BufferedImage finalImage = new BufferedImage(engine.getWidth(), engine.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        for (int y = 0; y < finalImage.getHeight(); y++) {
-            for (int x = 0; x < finalImage.getWidth(); x++) {
+        BufferedImage finalImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        int[] finalPixels = ((DataBufferInt)(finalImage.getRaster().getDataBuffer())).getData();
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+
                 int sceneRGB = sceneBuffer.getRGB(x,y);
                 int lightRGB = lightMap.getRGB(x,y);
 
-                int sceneA = (sceneRGB >> 24) & 0xFF;
                 int sceneR = (sceneRGB >> 16) & 0xFF;
                 int sceneG = (sceneRGB >> 8) & 0xFF;
                 int sceneB = sceneRGB & 0xFF;
 
-                int lightA = (lightRGB >> 24) & 0xFF;
                 int lightR = (lightRGB >> 16) & 0xFF;
                 int lightG = (lightRGB >> 8) & 0xFF;
                 int lightB = lightRGB & 0xFF;
@@ -107,11 +133,11 @@ public abstract class Scene {
 
                 int finalRGB = (255 << 24) | (finalR << 16) | (finalG << 8) | finalB;
 
-                finalImage.setRGB(x,y, finalRGB);
+                finalPixels[x+y*finalImage.getWidth()] = finalRGB;
             }
         }
 
-        //double lightingTime = System.nanoTime() - startTime;
+        lightingTime = System.nanoTime() - startTime;
 
         if(postProcessingEnabled) {
             postProcessEffects.sort(Comparator.comparingInt(p -> p.priority));
@@ -122,16 +148,17 @@ public abstract class Scene {
             }
         }
 
-        //double postProcessingTime = System.nanoTime() - startTime;
+        postProcessingTime = System.nanoTime() - startTime;
 
         g.drawImage(finalImage, 0, 0, null);
 
-        //double finalRenderTime = System.nanoTime() - startTime;
+        finalRenderTime = System.nanoTime() - startTime;
 
-        //System.out.println("Object Render Time: "+(objectRenderTime/1_000_000)+" millis.");
-        //System.out.println("Lighting Time: "+(lightingTime/1_000_000)+" millis. ( +"+((lightingTime-objectRenderTime)/1_000_000)+" millis )");
-        //System.out.println("Post Processing Time:  "+(postProcessingTime/1_000_000)+ " millis. ( +"+((postProcessingTime-lightingTime)/1_000_000)+" millis )");
-        //System.out.println("Final Render Time: "+(finalRenderTime/1_000_000)+" millis. ( +"+((finalRenderTime-postProcessingTime)/1_000_000)+" millis )");
+        //renderDebugText1 = ("Object Render Time: "+(objectRenderTime/1_000_000)+" millis.");
+        //renderDebugText2 = ("Lighting Time: "+(lightingTime/1_000_000)+" millis. ( +"+((lightingTime-objectRenderTime)/1_000_000)+" millis )");
+        //renderDebugText3 = ("Post Processing Time:  "+(postProcessingTime/1_000_000)+ " millis. ( +"+((postProcessingTime-lightingTime)/1_000_000)+" millis )");
+        //renderDebugText4 = ("Final Render Time: "+(finalRenderTime/1_000_000)+" millis. ( +"+((finalRenderTime-postProcessingTime)/1_000_000)+" millis )");
         //System.out.println("-----------------------------------------------------");
     }
+
 }

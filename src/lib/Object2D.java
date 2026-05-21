@@ -9,11 +9,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Object2D {
+    public float globalX;
+    public float globalY;
     public float xPos;
     public float yPos;
     public float xSize;
     public float ySize;
     public float rotation;
+
+    public List<String> tags = new ArrayList<>();
+
+    public Object2D parent;
+    public List<Object2D> children = new ArrayList<>();
 
     public BufferedImage texture = StaticTextures.square();
     public Color color = new Color(255, 255, 255);
@@ -35,6 +42,14 @@ public class Object2D {
     }
 
     public void update(double deltaTime){
+        if(parent != null){
+            globalX = parent.globalX + xPos;
+            globalY = parent.globalY + yPos;
+        } else{
+            globalX = xPos;
+            globalY = yPos;
+        }
+
         xVelocity += (float) (xAcceleration * deltaTime);
         yVelocity += (float) (yAcceleration * deltaTime);
 
@@ -57,9 +72,9 @@ public class Object2D {
         script.object = this;
     }
 
-    public Object2D(float xPos, float yPos, float xSize, float ySize, float rotation){
-        this.xPos = xPos;
-        this.yPos = yPos;
+    public Object2D(float x, float y, float xSize, float ySize, float rotation){
+        this.xPos = x;
+        this.yPos = y;
         this.xSize = xSize;
         this.ySize = ySize;
         this.rotation = rotation;
@@ -67,7 +82,7 @@ public class Object2D {
 
     public void render(Graphics2D g){
         AffineTransform old = g.getTransform();
-        g.translate(xPos,yPos);
+        g.translate(globalX,globalY);
         g.rotate(Math.toRadians(rotation));
         RescaleOp op = new RescaleOp(
                 new float[]{(float) color.getRed() /255, (float) color.getGreen() /255, (float) color.getBlue() /255, (float) color.getAlpha() /255},
@@ -134,8 +149,8 @@ public class Object2D {
             }
         }
 
-        float dx = other.xPos - this.xPos;
-        float dy = other.yPos - this.yPos;
+        float dx = other.globalX - this.globalX;
+        float dy = other.globalY - this.globalY;
 
         if(dx * mtvX + dy * mtvY < 0){
             mtvX = -mtvX;
@@ -190,7 +205,7 @@ public class Object2D {
             float rx = localX * cos - localY * sin;
             float ry = localX * sin + localY * cos;
 
-            vertices[i] = new Point2D.Float(rx + xPos, ry + yPos);
+            vertices[i] = new Point2D.Float(rx + globalX, ry + globalY);
         }
 
         return vertices;
