@@ -71,7 +71,7 @@ public class Bloom2 extends PostProcessEffect {
     public BufferedImage extractBrightAreas(BufferedImage image, BufferedImage save){
         int[] brightPass = new int[image.getHeight() * image.getWidth()];
 
-        int[] imagePixels = ((java.awt.image.DataBufferInt)
+        int[] imagePixels = ((DataBufferInt)
                 image.getRaster().getDataBuffer()
         ).getData();
         for (int y = 0; y < image.getHeight(); y++) {
@@ -116,7 +116,7 @@ public class Bloom2 extends PostProcessEffect {
     }
 
     public void combine(BufferedImage image, BufferedImage save){
-        int[] imagePixels = ((java.awt.image.DataBufferInt)
+        int[] imagePixels = ((DataBufferInt)
                 image.getRaster().getDataBuffer()
         ).getData();
 

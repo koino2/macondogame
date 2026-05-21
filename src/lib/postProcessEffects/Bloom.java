@@ -25,7 +25,7 @@ public class Bloom extends PostProcessEffect {
 
         int[] brightPass = new int[image.getHeight() * image.getWidth()];
 
-        int[] imagePixels = ((java.awt.image.DataBufferInt)
+        int[] imagePixels = ((DataBufferInt)
                 image.getRaster().getDataBuffer()
         ).getData();
         for (int y = 0; y < image.getHeight(); y++) {
