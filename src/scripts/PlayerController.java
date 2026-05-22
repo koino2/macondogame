@@ -39,6 +39,22 @@ public class PlayerController extends Script {
             }
         }
 
+        float scrollDelta = Input.scrollDelta;
+        if(scrollDelta < 0){
+            object.scene.camera.scale += 0.1f;
+        } else if (scrollDelta > 0){
+            object.scene.camera.scale -= 0.1f;
+        }
+
+        float minZoom = 0.1f;
+        if(object.scene.camera.scale < minZoom){
+            object.scene.camera.scale = minZoom;
+        }
+        float maxZoom = 2f;
+        if(object.scene.camera.scale > maxZoom){
+            object.scene.camera.scale = maxZoom;
+        }
+
         player.xAcceleration = 0;
         player.yAcceleration = 0;
 

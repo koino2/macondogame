@@ -2,10 +2,7 @@ package lib;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,6 +13,8 @@ public class Input {
     private static final Set<Integer> mouseButtons = new HashSet<>();
     private static final Set<Integer> mousePressed = new HashSet<>();
     private static final Set<Integer> mouseReleased = new HashSet<>();
+
+    public static float scrollDelta = 0;
 
     public static void attach(JPanel panel){
         panel.addKeyListener(new KeyAdapter() {
@@ -54,12 +53,20 @@ public class Input {
             }
         });
 
+        panel.addMouseWheelListener(new MouseWheelListener() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                scrollDelta = e.getWheelRotation();
+            }
+        });
+
         panel.setFocusable(true);
         panel.requestFocus();
     }
     public static void endFrame(){
         mousePressed.clear();
         mouseReleased.clear();
+        scrollDelta = 0;
     }
 
     public static boolean isKeyDown(int key){
