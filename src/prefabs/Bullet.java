@@ -37,20 +37,15 @@ class BulletLightScript extends Script{
     Light light;
     @Override
     public void start() {
-        light = new Light();
-        light.x = object.xPos;
-        light.y = object.yPos;
-        light.radius = 5;
+        light = new Light(0, 0, 5);
         light.color = new Color(255, 232, 126, 255);
+        object.children.add(light);
         object.scene.lights.add(light);
     }
 
     @Override
     public void update(double deltaTime) {
-        if(light != null) {
-            light.x = object.xPos;
-            light.y = object.yPos;
-        }
+
     }
 
     @Override

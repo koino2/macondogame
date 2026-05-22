@@ -28,10 +28,7 @@ public class SampleScene extends Scene {
 
     @Override
     public void update(double deltaTime) {
-        if(!lights.isEmpty()) {
-            lights.get(0).x = player.xPos;
-            lights.get(0).y = player.yPos;
-        }
+
     }
 
 
@@ -100,11 +97,10 @@ public class SampleScene extends Scene {
         addObject(bg);
 
         ambientColor = new Color(45, 47, 62, 255);
-        Light light = new Light();
-        light.x = player.xPos;
-        light.y = player.yPos;
+        Light light = new Light(0, 0, 200);
+        player.children.add(light);
+        light.parent = player;
         light.color = new Color(255, 255, 255, 140);
-        light.radius = 200;
         lights.add(light);
 
         Vignette vignette = new Vignette();

@@ -15,5 +15,6 @@ public class Main {
         window.setVisible(true);
 
         // RANDOM COMMENT TO SEE IF MY VCS FIXED
+        // it fixed :D
     }
 }

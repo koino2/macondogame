@@ -97,8 +97,8 @@ public abstract class Scene {
         for (int i = 0; i < lights.size(); i++) {
             Light light = lights.get(i);
             RadialGradientPaint paint = new RadialGradientPaint(
-                    light.x,
-                    light.y,
+                    light.globalX,
+                    light.globalY,
                     light.radius,
                     new float[]{0,1},
                     new Color[]{
@@ -107,7 +107,7 @@ public abstract class Scene {
                     }
             );
             lg.setPaint(paint);
-            lg.fillOval((int) (light.x- light.radius), (int) (light.y-light.radius), (int) (light.radius*2), (int) (light.radius*2));
+            lg.fillOval((int) (light.globalX- light.radius), (int) (light.globalY-light.radius), (int) (light.radius*2), (int) (light.radius*2));
         }
 
         BufferedImage finalImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);

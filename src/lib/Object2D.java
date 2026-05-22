@@ -49,6 +49,9 @@ public class Object2D {
             globalX = xPos;
             globalY = yPos;
         }
+        for (int i = 0; i < children.size(); i++) {
+            children.get(i).update(deltaTime);
+        }
 
         xVelocity += (float) (xAcceleration * deltaTime);
         yVelocity += (float) (yAcceleration * deltaTime);
