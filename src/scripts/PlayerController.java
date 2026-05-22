@@ -1,5 +1,6 @@
 package scripts;
 
+import lib.Camera;
 import lib.Input;
 import lib.Object2D;
 import lib.Script;
@@ -37,22 +38,6 @@ public class PlayerController extends Script {
                 object.scene.addObject(new Bullet(player.xPos, player.yPos, new Point((int) mouseWorldX, (int) mouseWorldY), player, 60, 5));
                 lastShot = timeNow;
             }
-        }
-
-        float scrollDelta = Input.scrollDelta;
-        if(scrollDelta < 0){
-            object.scene.camera.scale += 0.1f;
-        } else if (scrollDelta > 0){
-            object.scene.camera.scale -= 0.1f;
-        }
-
-        float minZoom = 0.1f;
-        if(object.scene.camera.scale < minZoom){
-            object.scene.camera.scale = minZoom;
-        }
-        float maxZoom = 2f;
-        if(object.scene.camera.scale > maxZoom){
-            object.scene.camera.scale = maxZoom;
         }
 
         player.xAcceleration = 0;

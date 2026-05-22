@@ -32,8 +32,8 @@ public class Player extends Object2D {
                 if(other instanceof Enemy){
                     health -= 10;
                     System.out.println(health);
-                    resolveCollision(other);
                 }
+                resolveCollision(other);
             }
         };
         addScript(collisionScript);

@@ -5,6 +5,7 @@ import lib.Object2D;
 import lib.Scene;
 import prefabs.Enemy;
 import prefabs.Player;
+import scripts.CameraController;
 import scripts.DebugText;
 
 import java.awt.*;
@@ -23,11 +24,10 @@ public class Level1 extends Scene {
         //ambientColor = Color.black;
 
         Camera camera = new Camera(0,0, 0);
-        camera.scale = 0.75f;
-        camera.parent = player;
-        player.children.add(camera);
-        objects.add(camera);
+        camera.scale = 2f;
+        addObject(camera);
         this.camera = camera;
+        camera.addScript(new CameraController(player));
 
         // WALLS
         Color wallColor = new Color(176, 255, 225);
