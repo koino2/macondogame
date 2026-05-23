@@ -82,7 +82,7 @@ public class Level1 extends Scene {
         player.addChild(playerLight2);
 
         Bloom4 bloom4 = new Bloom4();
-        postProcessEffects.add(bloom4);
+        //postProcessEffects.add(bloom4);
 
         postProcessEffects.add(new EdgeBlur());
     }
