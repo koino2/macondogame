@@ -9,6 +9,7 @@ import java.awt.*;
 public class Bullet extends Object2D {
 
     Light light;
+    float damage = 10;
 
     public Bullet(float xPos, float yPos, Point target, Object2D player, int offsetX, int offsetY) {
 
@@ -25,31 +26,29 @@ public class Bullet extends Object2D {
 
         color = new Color(255, 179, 50);
 
-        addScript(new BulletLightScript());
+        addScript(new Script() {
+            @Override
+            public void start() {
+                light = new Light(0, 0, 10);
+                light.color = new Color(255, 232, 126, 255);
+                object.addChild(light);
+                //scene.addObject(light);
+            }
+
+            @Override
+            public void update(double deltaTime) {
+
+            }
+
+            @Override
+            public void renderUI(Graphics g) {
+
+            }
+        });
 
         tags.add("bullet");
 
         xVelocity = distanceX * 500;
         yVelocity = distanceY * 500;
-    }
-}
-class BulletLightScript extends Script{
-    Light light;
-    @Override
-    public void start() {
-        light = new Light(0, 0, 5);
-        light.color = new Color(255, 232, 126, 255);
-        object.children.add(light);
-        object.scene.lights.add(light);
-    }
-
-    @Override
-    public void update(double deltaTime) {
-
-    }
-
-    @Override
-    public void renderUI(Graphics g) {
-
     }
 }

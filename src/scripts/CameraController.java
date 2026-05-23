@@ -26,7 +26,8 @@ public class CameraController extends Script {
 
     @Override
     public void start() {
-        //target = object;
+        object.scene.camera.xPos = target.xPos;
+        object.scene.camera.yPos = target.yPos;
     }
 
     @Override

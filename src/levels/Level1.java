@@ -1,8 +1,11 @@
 package levels;
 
 import lib.Camera;
+import lib.Light;
 import lib.Object2D;
 import lib.Scene;
+import lib.postProcessEffects.Bloom4;
+import lib.postProcessEffects.EdgeBlur;
 import prefabs.Enemy;
 import prefabs.Player;
 import scripts.CameraController;
@@ -21,7 +24,7 @@ public class Level1 extends Scene {
         player.addScript(new DebugText());
         addObject(player);
 
-        //ambientColor = Color.black;
+        ambientColor = new Color(0, 0, 0);
 
         Camera camera = new Camera(0,0, 0);
         camera.scale = 2f;
@@ -30,7 +33,8 @@ public class Level1 extends Scene {
         camera.addScript(new CameraController(player));
 
         // WALLS
-        Color wallColor = new Color(176, 255, 225);
+        Color wallColor = new Color(255, 255, 255);
+        Color floorColor = new Color(65, 73, 73);
         int wallWidth = engine.getWidth();
         int wallHeight = engine.getHeight();
         int wallThickness = 50;
@@ -55,6 +59,12 @@ public class Level1 extends Scene {
         wall4.tags.add("wall");
         objects.add(wall4);
 
+        Object2D floor = new Object2D(wallWidth/2f, wallHeight/2f, wallWidth, wallHeight, 0);
+        floor.color = floorColor;
+        floor.tags.add("noCollision");
+        floor.zIndex = -100;
+        objects.add(floor);
+
         Object2D block = new Object2D(300, 300, 100, 100, 0);
         block.color = new Color(107, 255, 84);
         block.tags.add("wall");
@@ -63,6 +73,18 @@ public class Level1 extends Scene {
         Enemy enemy = new Enemy(500, 400, 0);
         enemy.collisionScript.collidableObjects = objects;
         addObject(enemy);
+
+        Light playerLight = new Light(0,0,300);
+        playerLight.color = new Color(255,255,255,50);
+        player.addChild(playerLight);
+        Light playerLight2 = new Light(0,0,800);
+        playerLight2.color = new Color(255, 255, 255, 50);
+        player.addChild(playerLight2);
+
+        Bloom4 bloom4 = new Bloom4();
+        postProcessEffects.add(bloom4);
+
+        postProcessEffects.add(new EdgeBlur());
     }
 
     @Override

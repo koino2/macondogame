@@ -14,7 +14,7 @@ public abstract class Scene {
 
     public Camera camera;
     public List<Object2D> objects = new ArrayList<>();
-    public List<Light> lights = new ArrayList<>();
+    private List<Light> lights = new ArrayList<>();
     public List<PostProcessEffect> postProcessEffects = new ArrayList<>();
     public boolean postProcessingEnabled = true;
 
@@ -51,6 +51,18 @@ public abstract class Scene {
         }
     }
 
+    public void updateLights(){
+        lights.clear();
+        for (int i = 0; i < objects.size(); i++) {
+            List<Object2D> descendants = objects.get(i).getDescendants();
+            for (int j = 0; j < descendants.size(); j++) {
+                if(descendants.get(j) instanceof Light){
+                    lights.add((Light) descendants.get(j));
+                }
+            }
+        }
+    }
+
     public double startTime;
     public double objectRenderTime;
     public double lightingTime;
@@ -58,9 +70,12 @@ public abstract class Scene {
     public double finalRenderTime;
 
     public void render(Graphics g) {
+        updateLights();
+
         if(camera == null){
             camera = new Camera(0,0,0);
         }
+
         startTime = System.nanoTime();
         int width = engine.getWidth();
         int height = engine.getHeight();
@@ -103,7 +118,7 @@ public abstract class Scene {
                     new float[]{0,1},
                     new Color[]{
                             light.color,
-                            ambientColor
+                            new Color(light.color.getRed(), light.color.getGreen(), light.color.getBlue(), 0)
                     }
             );
             lg.setPaint(paint);

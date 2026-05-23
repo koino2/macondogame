@@ -56,18 +56,18 @@ public class DebugText extends Script {
         }
 
         g.setColor(Color.white);
-        g.setFont(new Font("Segoe UI", Font.PLAIN, 25));
+        g.setFont(new Font("Segoe UI Light", Font.PLAIN, 25));
         g.drawString("FPS: "+fps, 20, 35);
-        g.setColor(Color.black);
-        g.setFont(new Font("Segoe UI", Font.PLAIN, 25));
-        g.drawString("FPS: "+fps, 21, 36);
+        //g.setColor(Color.black);
+        //g.setFont(new Font("Segoe UI", Font.PLAIN, 25));
+        //g.drawString("FPS: "+fps, 21, 36);
 
         frameTime = (System.nanoTime() - lastRender)/1_000_000_000.0;
         lastRender = System.nanoTime();
 
         g.drawString("UPS: "+ ups, 20, 70);
 
-        g.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+        g.setFont(new Font("Segoe UI Light", Font.PLAIN, 15));
         g.drawString(rdt1, 20, 100);
         g.drawString(rdt2, 20, 120);
         g.drawString(rdt3, 20, 140);

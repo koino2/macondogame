@@ -1,5 +1,6 @@
 import lib.*;
 import lib.postProcessEffects.*;
+import scripts.CameraController;
 import scripts.CollisionScript;
 import scripts.DebugText;
 import scripts.PlayerController;
@@ -101,7 +102,6 @@ public class SampleScene extends Scene {
         player.children.add(light);
         light.parent = player;
         light.color = new Color(255, 255, 255, 140);
-        lights.add(light);
 
         Vignette vignette = new Vignette();
         vignette.size = 0.1f;
@@ -119,9 +119,8 @@ public class SampleScene extends Scene {
 
         Camera camera = new Camera(0,0, 0);
         camera.scale = 0.75f;
-        camera.parent = player;
-        player.children.add(camera);
-        objects.add(camera);
+        camera.addScript(new CameraController(player));
+        addObject(camera);
         this.camera = camera;
     }
 }

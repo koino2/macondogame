@@ -31,9 +31,10 @@ public class Player extends Object2D {
             public void onCollide(Object2D other) {
                 if(other instanceof Enemy){
                     health -= 10;
-                    System.out.println(health);
                 }
-                resolveCollision(other);
+                if(!other.tags.contains("noCollision")) {
+                    resolveCollision(other);
+                }
             }
         };
         addScript(collisionScript);

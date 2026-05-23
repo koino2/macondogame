@@ -34,6 +34,14 @@ public class Object2D {
     public Scene scene;
     public List<Script> scripts = new ArrayList<>();
 
+    public Object2D(float x, float y, float xSize, float ySize, float rotation){
+        this.xPos = x;
+        this.yPos = y;
+        this.xSize = xSize;
+        this.ySize = ySize;
+        this.rotation = rotation;
+    }
+
     public void start(){
         for (int i = 0; i < scripts.size(); i++) {
             scripts.get(i).start();
@@ -75,12 +83,37 @@ public class Object2D {
         script.object = this;
     }
 
-    public Object2D(float x, float y, float xSize, float ySize, float rotation){
-        this.xPos = x;
-        this.yPos = y;
-        this.xSize = xSize;
-        this.ySize = ySize;
-        this.rotation = rotation;
+    public void destroy(){
+        for (int i = 0; i < children.size(); i++) {
+            children.get(i).destroy();
+        }
+
+        if(parent != null){
+            parent.children.remove(this);
+        }
+
+        scene.objects.remove(this);
+
+        for (int i = 0; i < scripts.size(); i++) {
+            scripts.get(i).onDestroy();
+        }
+    }
+
+    public List<Object2D> getDescendants(){
+        List<Object2D> descendants = new ArrayList<>();
+        for (int i = 0; i < children.size(); i++) {
+            descendants.add(children.get(i));
+            descendants.addAll(children.get(i).getDescendants());
+        }
+        return descendants;
+    }
+
+    public void addChild(Object2D child){
+        children.add(child);
+        child.parent = this;
+        if(!scene.objects.contains(child)) {
+            scene.addObject(child);
+        }
     }
 
     public void render(Graphics2D g){

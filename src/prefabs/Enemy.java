@@ -26,7 +26,13 @@ public class Enemy extends Object2D {
         collisionScript = new CollisionScript() {
             @Override
             public void onCollide(Object2D other) {
-
+                if(other instanceof Bullet){
+                    health -= (int) ((Bullet) other).damage;
+                    if(health <= 0){
+                        destroy();
+                    }
+                    other.destroy();
+                }
             }
         };
         collisionScript.collidableTags.add("bullet");
