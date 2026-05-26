@@ -8,17 +8,17 @@ import lib.Script;
 import java.awt.*;
 
 public class CameraController extends Script {
-    Object2D target;
+    public Object2D target;
 
-    float scrollSpeed = 1.2f;
-    float minZoom = 0.5f;
-    float maxZoom = 2f;
-    float scrollSmoothing = 10f;
-    float targetScale = 1f;
+    public float scrollSpeed = 1.2f;
+    public float minZoom = 0.5f;
+    public float maxZoom = 2f;
+    public float scrollSmoothing = 10f;
+    public float targetScale = 1f;
 
-    float targetX;
-    float targetY;
-    float moveSmoothing = 10f;
+    public float targetX;
+    public float targetY;
+    public float moveSmoothing = 5f;
 
     public CameraController(Object2D target){
         this.target = target;

@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class Engine extends JPanel {
 
-    Scene currentScene;
+    public Scene currentScene;
     long lastTime;
 
     public Engine(Scene scene){

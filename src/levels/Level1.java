@@ -1,9 +1,6 @@
 package levels;
 
-import lib.Camera;
-import lib.Light;
-import lib.Object2D;
-import lib.Scene;
+import lib.*;
 import lib.postProcessEffects.Bloom4;
 import lib.postProcessEffects.EdgeBlur;
 import prefabs.Enemy;
@@ -11,9 +8,11 @@ import prefabs.Player;
 import scripts.CameraController;
 import scripts.DebugText;
 
+import javax.sound.sampled.FloatControl;
 import java.awt.*;
 
 public class Level1 extends Scene {
+
     @Override
     public void start() {
         Player player = new Player(100, 300, 0);
@@ -24,7 +23,7 @@ public class Level1 extends Scene {
         player.addScript(new DebugText());
         addObject(player);
 
-        ambientColor = new Color(0, 0, 0);
+        ambientColor = new Color(40, 53, 55);
 
         Camera camera = new Camera(0,0, 0);
         camera.scale = 2f;
@@ -75,17 +74,17 @@ public class Level1 extends Scene {
         addObject(enemy);
 
         Light playerLight = new Light(0,0,300);
-        playerLight.color = new Color(255,255,255,50);
+        playerLight.color = new Color(255,255,255,255);
         player.addChild(playerLight);
         Light playerLight2 = new Light(0,0,800);
         playerLight2.color = new Color(255, 255, 255, 50);
         player.addChild(playerLight2);
 
         Bloom4 bloom4 = new Bloom4();
-        //postProcessEffects.add(bloom4);
-
-        postProcessEffects.add(new EdgeBlur());
+        postProcessEffects.add(bloom4);
     }
+
+    double time = 0;
 
     @Override
     public void update(double deltaTime) {

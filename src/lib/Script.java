@@ -9,6 +9,6 @@ public abstract class Script {
 
     public abstract void start();
     public abstract void update(double deltaTime);
-    public abstract void renderUI(Graphics g);
+    public void renderUI(Graphics g){};
     public void onDestroy(){};
 }

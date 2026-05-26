@@ -7,20 +7,18 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EnemyScript extends Script {
+public abstract class EnemyScript extends Script {
     List<String> targetTags = new ArrayList<>();
-    public EnemyScript() {
-
-    }
 
     @Override
     public void start() {
 
     }
 
+    public abstract void behaviour(double deltaTime);
     @Override
     public void update(double deltaTime) {
-        Object2D closest = null;
+        /*Object2D closest = null;
         float closestHypot = 0;
         for(int i = 0; i < object.scene.objects.size(); i++){
             float distX = Math.abs(object.scene.objects.get(i).xPos - object.xPos);
@@ -32,7 +30,8 @@ public class EnemyScript extends Script {
                     closest = object.scene.objects.get(i);
                 }
             }
-        }
+        }*/
+        behaviour(deltaTime);
     }
 
     @Override

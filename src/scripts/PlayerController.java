@@ -1,17 +1,17 @@
 package scripts;
 
-import lib.Camera;
-import lib.Input;
-import lib.Object2D;
-import lib.Script;
+import lib.*;
 import prefabs.Bullet;
 
+import javax.sound.sampled.Clip;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 public class PlayerController extends Script {
     Object2D player;
+
+    Sound footstepsSound = new Sound("src/assets/footsteps.wav");
 
     @Override
     public void start() {
@@ -33,6 +33,9 @@ public class PlayerController extends Script {
         if (Input.isMouseDown(MouseEvent.BUTTON1) && point != null) {
             long timeNow = System.nanoTime();
             if(timeNow - lastShot > 0.2f * 1_000_000_000) {
+                Sound sound = new Sound("src/assets/shoot.wav");
+                sound.setVolume(0.5f);
+                sound.play();
                 float mouseWorldX = (float)((point.x-object.scene.engine.getWidth()/2.0)/object.scene.camera.scale+object.scene.camera.globalX);
                 float mouseWorldY = (float)((point.y-object.scene.engine.getHeight()/2.0)/object.scene.camera.scale+object.scene.camera.globalY);
                 object.scene.addObject(new Bullet(player.xPos, player.yPos, new Point((int) mouseWorldX, (int) mouseWorldY), player, 60, 5));
@@ -67,13 +70,23 @@ public class PlayerController extends Script {
         } else {
             player.xVelocity *= (float) Math.exp(-damping * deltaTime);
         }
+        footstepsSound.clip.loop(-1);
+        if(Input.isKeyDown(KeyEvent.VK_W) || Input.isKeyDown(KeyEvent.VK_S) || Input.isKeyDown(KeyEvent.VK_A) || Input.isKeyDown(KeyEvent.VK_D)){
+            //if(player.xVelocity + player.yVelocity > 50) {
+                footstepsSound.resume();
+            //} else{
+                //footstepsSound.pause();
+            //}
+        } else{
+            footstepsSound.stop();
+        }
 
-        if (Input.isKeyDown(KeyEvent.VK_E)) {
+        /*if (Input.isKeyDown(KeyEvent.VK_E)) {
             player.xSize += 1;
         }
         if (Input.isKeyDown(KeyEvent.VK_Q)) {
             player.xSize -= 1;
-        }
+        }*/
     }
 
     @Override

@@ -40,7 +40,28 @@ public class Enemy extends Object2D {
         tags.add("enemy");
         addScript(collisionScript);
 
-        enemyScript = new EnemyScript();
+        enemyScript = new EnemyScript() {
+            double attackTimer = 0;
+            float attackInterval = 1f;
+            float attackRadius = 200;
+            float attackDamage = 20;
+            @Override
+            public void behaviour(double deltaTime) {
+                attackTimer += deltaTime;
+
+                if (attackTimer >= attackInterval) {
+                    for (int i = 0; i < object.scene.objects.size(); i++) {
+                        Object2D object2D = object.scene.objects.get(i);
+                        if(object2D.tags.contains("player")) {
+                            if (Math.hypot(object2D.xPos - object.xPos, object2D.yPos - object.yPos) < attackRadius) {
+                                ((Player)(object2D)).healthScript.damage(attackDamage);
+                                attackTimer = 0;
+                            }
+                        }
+                    }
+                }
+            }
+        };
         addScript(enemyScript);
     }
 }

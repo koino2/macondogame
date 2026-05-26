@@ -24,12 +24,12 @@ public class Vignette extends PostProcessEffect {
                 color.getRed(),
                 color.getGreen(),
                 color.getBlue(),
-                (int)(color.getAlpha() * strength)
+                (int)Math.min((color.getAlpha() * strength), 255)
         );
 
         RadialGradientPaint paint = new RadialGradientPaint(
                 new Point(width / 2, height / 2),
-                radius,
+                Math.max(1, radius),
                 new float[]{0f, size, 1f},
                 new Color[]{
                         new Color(0,0,0,0),

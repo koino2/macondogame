@@ -116,15 +116,27 @@ public class Object2D {
         }
     }
 
-    public void render(Graphics2D g){
-        AffineTransform old = g.getTransform();
-        g.translate(globalX,globalY);
-        g.rotate(Math.toRadians(rotation));
-        RescaleOp op = new RescaleOp(
+    RescaleOp op;
+    void refreshOP(){
+        op = new RescaleOp(
                 new float[]{(float) color.getRed() /255, (float) color.getGreen() /255, (float) color.getBlue() /255, (float) color.getAlpha() /255},
                 new float[4],
                 null
         );
+    }
+    public void setColor(Color newColor){
+        this.color = newColor;
+        refreshOP();
+    }
+
+    public void render(Graphics2D g){
+        if(op == null){
+            refreshOP();
+        }
+        AffineTransform old = g.getTransform();
+        g.translate(globalX,globalY);
+        g.rotate(Math.toRadians(rotation));
+
         BufferedImage tinted = op.filter(texture, null);
         g.drawImage(tinted, (int) (-xSize/2), (int) (-ySize/2), (int) xSize, (int) ySize, null);
         g.setTransform(old);
