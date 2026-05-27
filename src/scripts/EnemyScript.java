@@ -18,19 +18,6 @@ public abstract class EnemyScript extends Script {
     public abstract void behaviour(double deltaTime);
     @Override
     public void update(double deltaTime) {
-        /*Object2D closest = null;
-        float closestHypot = 0;
-        for(int i = 0; i < object.scene.objects.size(); i++){
-            float distX = Math.abs(object.scene.objects.get(i).xPos - object.xPos);
-            float distY = Math.abs(object.scene.objects.get(i).yPos - object.yPos);
-            float hypot = (float) Math.hypot(distX, distY);
-            if(object.scene.objects.get(i) != object) {
-                if(closest == null || hypot < closestHypot) {
-                    closestHypot = hypot;
-                    closest = object.scene.objects.get(i);
-                }
-            }
-        }*/
         behaviour(deltaTime);
     }
 
