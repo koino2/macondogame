@@ -1,11 +1,11 @@
-package levels;
+package game.levels;
 
 import lib.*;
 import lib.postProcessEffects.*;
-import scripts.CameraController;
-import scripts.CollisionScript;
-import scripts.DebugText;
-import scripts.PlayerController;
+import game.scripts.player.CameraController;
+import lib.CollisionScript;
+import game.scripts.ui.DebugText;
+import game.scripts.player.PlayerController;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -110,7 +110,7 @@ public class SampleScene extends Scene {
         vignette.priority = 999;
         postProcessEffects.add(vignette); // -3 fps
 
-        Bloom4 bloom = new Bloom4();
+        Bloom bloom = new Bloom();
         bloom.threshold = 0.3f;
         bloom.radius = 2;
         bloom.reduction = 4;

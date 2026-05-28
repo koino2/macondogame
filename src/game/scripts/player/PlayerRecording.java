@@ -1,4 +1,4 @@
-package scripts;
+package game.scripts.player;
 
 public class PlayerRecording {
     public double time;

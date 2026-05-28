@@ -1,10 +1,10 @@
-package prefabs;
+package game.prefabs;
 
 import lib.Light;
 import lib.Object2D;
 import lib.Script;
-import scripts.CollisionScript;
-import scripts.HealthScript;
+import lib.CollisionScript;
+import game.scripts.misc.HealthScript;
 
 import java.awt.*;
 

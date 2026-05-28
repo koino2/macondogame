@@ -1,7 +1,4 @@
-package scripts;
-
-import lib.Object2D;
-import lib.Script;
+package lib;
 
 import java.awt.*;
 import java.awt.geom.Point2D;

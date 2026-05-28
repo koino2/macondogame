@@ -1,15 +1,12 @@
-package levels;
+package game.levels;
 
 import lib.*;
-import lib.postProcessEffects.Bloom4;
-import lib.postProcessEffects.EdgeBlur;
-import prefabs.Enemy;
-import prefabs.Player;
-import scripts.CameraController;
-import scripts.DebugText;
-import scripts.PlayerRecording;
+import lib.postProcessEffects.Bloom;
+import game.prefabs.Enemy;
+import game.prefabs.Player;
+import game.scripts.player.CameraController;
+import game.scripts.ui.DebugText;
 
-import javax.sound.sampled.FloatControl;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -92,8 +89,8 @@ public class Level1 extends Scene {
         playerLight2.color = new Color(255, 255, 255, 50);
         player.addChild(playerLight2);
 
-        Bloom4 bloom4 = new Bloom4();
-        postProcessEffects.add(bloom4);
+        Bloom bloom = new Bloom();
+        postProcessEffects.add(bloom);
     }
 
     double time = 0;

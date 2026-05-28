@@ -1,14 +1,10 @@
-package prefabs;
+package game.prefabs;
 
-import levels.Level1;
-import levels.SampleScene;
 import lib.Object2D;
-import lib.Scene;
-import lib.Script;
 import lib.postProcessEffects.Vignette;
-import scripts.CollisionScript;
-import scripts.HealthScript;
-import scripts.PlayerController;
+import lib.CollisionScript;
+import game.scripts.misc.HealthScript;
+import game.scripts.player.PlayerController;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -18,6 +14,7 @@ import java.io.IOException;
 public class Player extends Object2D {
     static int width = 100;
     static int height = 100;
+    Vignette healthVignette;
 
     public PlayerController playerControllerScript;
     public CollisionScript collisionScript;
@@ -61,7 +58,7 @@ public class Player extends Object2D {
             @Override
             public void onDamage(float damageAmount) {
                 healthVignette.strength += 1f;
-                healthVignette.radiusMultiplier -= 0.1f;
+                healthVignette.radiusMultiplier = (maxHealth-health);
 
                 if(health <= 0){
                     onDeath();

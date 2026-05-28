@@ -1,4 +1,4 @@
-import levels.Level1;
+import game.levels.Level1;
 import lib.Engine;
 import javax.swing.*;
 

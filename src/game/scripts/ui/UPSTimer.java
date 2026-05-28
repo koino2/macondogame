@@ -1,4 +1,4 @@
-package scripts;
+package game.scripts.ui;
 
 import lib.Script;
 

@@ -1,7 +1,7 @@
-package scripts;
+package game.scripts.player;
 
 import lib.*;
-import prefabs.Bullet;
+import game.prefabs.Bullet;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;

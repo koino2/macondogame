@@ -1,4 +1,4 @@
-package scripts;
+package game.scripts.player;
 
 import lib.Camera;
 import lib.Input;

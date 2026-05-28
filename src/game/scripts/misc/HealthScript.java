@@ -1,9 +1,6 @@
-package scripts;
+package game.scripts.misc;
 
-import lib.Scene;
 import lib.Script;
-
-import java.awt.*;
 
 public abstract class HealthScript extends Script {
     public float maxHealth = 100;
