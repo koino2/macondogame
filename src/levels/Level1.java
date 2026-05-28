@@ -7,15 +7,27 @@ import prefabs.Enemy;
 import prefabs.Player;
 import scripts.CameraController;
 import scripts.DebugText;
+import scripts.PlayerRecording;
 
 import javax.sound.sampled.FloatControl;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Level1 extends Scene {
 
+    List<ArrayList> recordings = new ArrayList<>();
+
     @Override
     public void start() {
-        Player player = new Player(100, 300, 0);
+        Player player = new Player(100, 300, 0){
+            @Override
+            public void onDeath(){
+                healthScript.health = 100;
+                xPos = 100;
+                yPos = 300;
+            }
+        };
         player.tags.add("player");
         player.collisionScript.collidableObjects = objects;
         player.collisionScript.collidableTags.add("block2");

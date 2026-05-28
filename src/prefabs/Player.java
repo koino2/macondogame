@@ -1,5 +1,6 @@
 package prefabs;
 
+import levels.Level1;
 import levels.SampleScene;
 import lib.Object2D;
 import lib.Scene;
@@ -21,6 +22,8 @@ public class Player extends Object2D {
     public PlayerController playerControllerScript;
     public CollisionScript collisionScript;
     public HealthScript healthScript;
+
+    public void onDeath() {}
 
     public Player(float xPos, float yPos, float rotation){
 
@@ -60,9 +63,8 @@ public class Player extends Object2D {
                 healthVignette.strength += 1f;
                 healthVignette.radiusMultiplier -= 0.1f;
 
-                if (health <= 0) {
-                    System.out.println("you died");
-                    object.scene.engine.currentScene = new SampleScene();
+                if(health <= 0){
+                    onDeath();
                 }
             }
 
