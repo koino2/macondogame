@@ -1,40 +1,60 @@
 package game.scripts.player;
 
+import game.scripts.weapons.Pistol;
 import lib.*;
-import game.prefabs.Bullet;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 public class PlayerController extends Script {
     Object2D player;
 
     Sound footstepsSound = new Sound("src/assets/footsteps.wav");
 
-    public List<PlayerRecording> recording = new ArrayList<>();
-    public double time;
+    Pistol pistol;
+
+    public boolean shot = false;
+    public float shotX = 0;
+    public float shotY = 0;
 
     @Override
     public void start() {
         player = object;
+
+        pistol = new Pistol(0, 0, "player");
+        pistol.cooldown = 0.2f;
+        pistol.offsetX = 60;
+        pistol.offsetY = 5;
+        pistol.bulletColor = new Color(255, 179, 50);
+
+        object.sounds.add(footstepsSound);
+        object.addScript(pistol);
     }
 
-    long lastShot;
     @Override
     public void update(double deltaTime) {
+        shot = false;
+
         Point point = Input.getMousePosition();
+        float mouseWorldX = 0;
+        float mouseWorldY = 0;
         if (point != null) {
-            float mouseWorldX = (float)((point.x-object.scene.engine.getWidth()/2.0)/object.scene.camera.scale+object.scene.camera.globalX);
-            float mouseWorldY = (float)((point.y-object.scene.engine.getHeight()/2.0)/object.scene.camera.scale+object.scene.camera.globalY);
+            mouseWorldX = (float)((point.x-object.scene.engine.getWidth()/2.0)/object.scene.camera.scale+object.scene.camera.globalX);
+            mouseWorldY = (float)((point.y-object.scene.engine.getHeight()/2.0)/object.scene.camera.scale+object.scene.camera.globalY);
             int xDist = (int) (mouseWorldX - player.globalX);
             int yDist = (int) (mouseWorldY - player.globalY);
             player.rotation = (float) Math.toDegrees(Math.atan2(yDist, xDist));
         }
 
-        boolean shot = false;
+        if(Input.isMouseDown(MouseEvent.BUTTON1) && point != null){
+            pistol.fire(new Point((int) mouseWorldX, (int) mouseWorldY));
+            shot = true;
+            shotX = mouseWorldX;
+            shotY = mouseWorldY;
+        }
+
+        /*boolean shot = false;
         int shotX = 0;
         int shotY = 0;
 
@@ -54,7 +74,7 @@ public class PlayerController extends Script {
                 shotX = (int) mouseWorldX;
                 shotY = (int) mouseWorldY;
             }
-        }
+        }*/
 
         player.xAcceleration = 0;
         player.yAcceleration = 0;
@@ -96,16 +116,6 @@ public class PlayerController extends Script {
         if (Input.isKeyDown(KeyEvent.VK_Q)) {
             player.xSize -= 1;
         }*/
-
-        time += deltaTime;
-        PlayerRecording tickRecording = new PlayerRecording();
-        tickRecording.time = time;
-        tickRecording.x = player.xPos;
-        tickRecording.y = player.yPos;
-        tickRecording.shot = shot;
-        tickRecording.shotX = shotX;
-        tickRecording.shotY = shotY;
-        recording.add(tickRecording);
     }
 
     @Override

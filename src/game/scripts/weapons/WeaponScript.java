@@ -4,11 +4,14 @@ import lib.Object2D;
 import lib.Script;
 import lib.Sound;
 
+import java.awt.*;
+
 public abstract class WeaponScript extends Script {
 
-    String soundPath = "src/assets/shoot.wav";
+    public String soundPath = "src/assets/shoot.wav";
+    public float soundVolume = 0.5f;
 
-    public float cooldown = 0.5f;
+    public float cooldown = 0.1f;
 
     public double timer = 0;
 
@@ -29,14 +32,12 @@ public abstract class WeaponScript extends Script {
     public void resetTimer(){
         timer = 0;
     }
-
-    public void fire(Object2D target){
-        if(canFire()){
-            new Sound(soundPath).play();
-
-            // ADD CODE HERE
-
-            resetTimer();
-        }
+    public void playSound(){
+        Sound sound = new Sound(soundPath);
+        sound.setVolume(soundVolume);
+        sound.play();
     }
+
+    public abstract void fireAtObject(Object2D target);
+    public abstract void fire(Point target);
 }

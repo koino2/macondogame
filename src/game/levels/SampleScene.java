@@ -96,13 +96,13 @@ public class SampleScene extends Scene {
                 0
         );
         bg.color = new Color(255, 255, 255);
+        bg.tags.add("noCollision");
         bg.zIndex = -20;
         addObject(bg);
 
         ambientColor = new Color(45, 47, 62, 255);
         Light light = new Light(0, 0, 200);
-        player.children.add(light);
-        light.parent = player;
+        player.addChild(light);
         light.color = new Color(255, 255, 255, 140);
 
         Vignette vignette = new Vignette();

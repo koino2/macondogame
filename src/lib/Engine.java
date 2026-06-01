@@ -51,6 +51,11 @@ public class Engine extends JPanel {
         }
     }
 
+    public void changeScene (Scene newScene){
+        currentScene.destroy();
+        currentScene = newScene;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

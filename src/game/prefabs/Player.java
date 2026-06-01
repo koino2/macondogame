@@ -1,5 +1,6 @@
 package game.prefabs;
 
+import game.scripts.player.recording.PlayerRecorder;
 import lib.Object2D;
 import lib.postProcessEffects.Vignette;
 import lib.CollisionScript;
@@ -19,6 +20,7 @@ public class Player extends Object2D {
     public PlayerController playerControllerScript;
     public CollisionScript collisionScript;
     public HealthScript healthScript;
+    public PlayerRecorder playerRecorder;
 
     public void onDeath() {}
 
@@ -33,6 +35,9 @@ public class Player extends Object2D {
 
         playerControllerScript = new PlayerController();
         addScript(playerControllerScript);
+
+        playerRecorder = new PlayerRecorder(this);
+        addScript(playerRecorder);
 
         healthScript = new HealthScript() {
             Vignette healthVignette;

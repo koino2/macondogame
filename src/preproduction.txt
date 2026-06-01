@@ -1,3 +1,6 @@
+PREPRODUCTION
+(game designing stuff, mostly ai slop lol)
+
 IDEA
 A top down shooter about killing enemy robots. The robots outnumber you and are way more powerful than you. As you play, your movements and actions are recorded, and once you die, your 'ghost' plays back those actions. These ghosts can stack every time you die
 
@@ -13,3 +16,21 @@ One More Run
 Parallel You
 Residual
 Trace
+
+Run 1
+0s  -> Player #1 spawns
+10s -> Run ends automatically
+      Recording #1 saved
+
+Run 2
+0s  -> Ghost #1 starts
+10s -> Player #2 spawns
+
+Run ends ONLY when all ghosts + player are dead
+
+Run 3
+0s  -> Ghost #1 starts
+0s  -> Ghost #2 starts
+10s -> Player #3 starts
+
+Run ends ONLY when all ghosts + player are dead

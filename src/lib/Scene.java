@@ -63,6 +63,12 @@ public abstract class Scene {
         }
     }
 
+    public void destroy(){
+        for (int i = 0; i < objects.size(); i++) {
+            objects.get(i).destroy();
+        }
+    }
+
     public double startTime;
     public double objectRenderTime;
     public double lightingTime;

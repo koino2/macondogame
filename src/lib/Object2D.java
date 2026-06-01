@@ -19,8 +19,12 @@ public class Object2D {
 
     public List<String> tags = new ArrayList<>();
 
+    public List<Sound> sounds = new ArrayList<>();
+
     public Object2D parent;
     public List<Object2D> children = new ArrayList<>();
+
+    public boolean destroyed = false;
 
     public BufferedImage texture = StaticTextures.square();
     public Color color = new Color(255, 255, 255);
@@ -50,6 +54,29 @@ public class Object2D {
     }
 
     public void update(double deltaTime){
+
+        if(destroyed){
+            for (int i = 0; i < sounds.size(); i++) {
+                sounds.get(i).stop();
+            }
+
+            for (int i = 0; i < children.size(); i++) {
+                children.get(i).destroy();
+            }
+
+            if(parent != null){
+                parent.children.remove(this);
+            }
+
+            if(scene != null) {
+                scene.objects.remove(this);
+            }
+
+            for (int i = 0; i < scripts.size(); i++) {
+                scripts.get(i).onDestroy();
+            }
+        }
+
         if(parent != null){
             globalX = parent.globalX + xPos;
             globalY = parent.globalY + yPos;
@@ -84,19 +111,7 @@ public class Object2D {
     }
 
     public void destroy(){
-        for (int i = 0; i < children.size(); i++) {
-            children.get(i).destroy();
-        }
-
-        if(parent != null){
-            parent.children.remove(this);
-        }
-
-        scene.objects.remove(this);
-
-        for (int i = 0; i < scripts.size(); i++) {
-            scripts.get(i).onDestroy();
-        }
+        destroyed = true;
     }
 
     public List<Object2D> getDescendants(){
@@ -111,6 +126,7 @@ public class Object2D {
     public void addChild(Object2D child){
         children.add(child);
         child.parent = this;
+        child.scene = scene;
         if(!scene.objects.contains(child)) {
             scene.addObject(child);
         }
