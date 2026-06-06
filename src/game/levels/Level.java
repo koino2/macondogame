@@ -51,7 +51,6 @@ public abstract class Level extends Scene {
         ghostColors.add(player.color);
 
         recordings.add(player.playerRecorder.recording);
-        System.out.println(recordings.get(0).frames.size());
         player.playerRecorder.stopRecording();
     }
 
