@@ -3,6 +3,7 @@ package game.scripts.player;
 import game.scripts.weapons.Pistol;
 import lib.*;
 
+import javax.sound.sampled.Clip;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -103,11 +104,13 @@ public class PlayerController extends Script {
         } else {
             player.xVelocity *= (float) Math.exp(-damping * deltaTime);
         }
-        footstepsSound.clip.loop(-1);
         if(Input.isKeyDown(KeyEvent.VK_W) || Input.isKeyDown(KeyEvent.VK_S) || Input.isKeyDown(KeyEvent.VK_A) || Input.isKeyDown(KeyEvent.VK_D)){
             footstepsSound.resume();
+            if(footstepsSound.clip.getFramePosition() > footstepsSound.clip.getFrameLength() - 50){
+                footstepsSound.clip.setFramePosition(0);
+            }
         } else{
-            footstepsSound.stop();
+            footstepsSound.pause();
         }
 
         /*if (Input.isKeyDown(KeyEvent.VK_E)) {

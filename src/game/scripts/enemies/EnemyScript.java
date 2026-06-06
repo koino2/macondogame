@@ -15,8 +15,14 @@ public class EnemyScript extends Script {
     ClosestTargetScript cts;
     Pistol pistol;
 
+    String spawnSoundPath = "src/assets/spawn.wav";
+
     @Override
     public void start() {
+
+        Sound spawnSound = new Sound(spawnSoundPath);
+        spawnSound.setVolume(2f);
+        spawnSound.play();
 
         cts = new ClosestTargetScript("player");
         object.addScript(cts);

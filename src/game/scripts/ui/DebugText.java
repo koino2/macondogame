@@ -1,8 +1,11 @@
 package game.scripts.ui;
 
+import game.levels.Level;
+import lib.Input;
 import lib.Script;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 
 public class DebugText extends Script {
 
@@ -15,6 +18,8 @@ public class DebugText extends Script {
     int upsFrames = 0;
 
     Runtime runtime;
+
+    boolean on = false;
 
     @Override
     public void start() {
@@ -41,8 +46,18 @@ public class DebugText extends Script {
     String rdt3 = "Post Processing Time: ??? millis ( +??? millis )";
     String rdt4 = "Final Render Time: ??? millis ( +??? millis )";
 
+    boolean pressed = false;
+
     @Override
     public void renderUI(Graphics g){
+
+        if(Input.isKeyDown(KeyEvent.VK_F3) && !pressed){
+            on = !on;
+            pressed = true;
+        }
+        if(pressed && !Input.isKeyDown(KeyEvent.VK_F3)){
+            pressed = false;
+        }
 
         fpsTimer += frameTime;
         fpsFrames++;
@@ -61,7 +76,7 @@ public class DebugText extends Script {
         frameTime = (System.nanoTime() - lastRender)/1_000_000_000.0;
         lastRender = System.nanoTime();
 
-        g.setColor(Color.WHITE);
+        g.setColor(Color.BLACK);
 
         TextSection[] ts = new TextSection[]{
 
@@ -78,8 +93,8 @@ public class DebugText extends Script {
                 }, "Segoe UI Semilight", new int[]{Font.PLAIN}, 15, 0),
 
                 new TextSection(new String[]{
-                        String.format("xPos: %.1f",object.xPos),
-                        String.format("yPos: %.1f",object.yPos)
+                        String.format("xPos: %.1f",((Level)(object.scene)).player.xPos),
+                        String.format("yPos: %.1f",((Level)(object.scene)).player.yPos)
                 }, "Segoe UI Semilight", new int[]{Font.PLAIN}, 20, 5),
 
                 new TextSection(new String[]{
@@ -90,16 +105,24 @@ public class DebugText extends Script {
 
                 new TextSection(new String[]{
                         "JVM Used Memory: "+((runtime.totalMemory()- runtime.freeMemory())/(1024*1024)) + " MB"
-                }, "Segoe UI Semilight", new int[]{Font.PLAIN}, 15, 5)
+                }, "Segoe UI Semilight", new int[]{Font.PLAIN}, 15, 5),
+
+                new TextSection(new String[]{
+                        "Objects: "+object.scene.objects.size()
+                }, "Segoe UI Semilight", new int[]{Font.PLAIN}, 20, 5),
         };
 
         int y = 40;
         int sectionPadding = 30;
 
-        for (int i = 0; i < ts.length; i++) {
-            ts[i].render(g, 20, y);
-            y+=ts[i].endPixel;
-            y+=sectionPadding;
+        if(on) {
+
+            for (int i = 0; i < ts.length; i++) {
+                ts[i].render(g, 20, y);
+                y += ts[i].endPixel;
+                y += sectionPadding;
+            }
+
         }
     }
 

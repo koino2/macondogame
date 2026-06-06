@@ -18,6 +18,10 @@ public class RecordingReader extends Script {
         this.weapon = weapon;
     }
 
+    public void onRecordingFinished(){
+        object.destroy();
+    };
+
     double time;
 
     @Override
@@ -31,7 +35,7 @@ public class RecordingReader extends Script {
 
         RecordingFrame frame = recording.getFrame(time);
 
-        if(Math.abs(frame.time - time) < 0.1f){
+        if(frame != null && Math.abs(frame.time - time) < 0.1f){
             object.xPos = frame.x;
             object.yPos = frame.y;
             object.rotation = frame.rotation;
@@ -41,10 +45,8 @@ public class RecordingReader extends Script {
             }
         }
 
-        recording.frames.remove(frame);
-
-        if(recording.frames.size() <= 0){
-            object.destroy();
+        if(time > recording.frames.get(recording.frames.size()-1).time){
+            onRecordingFinished();
         }
     }
 }
