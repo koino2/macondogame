@@ -17,7 +17,7 @@ public class Bullet extends Object2D {
 
     public Bullet(Point target, Object2D player, int offsetX, int offsetY, String exclude, float speed) {
 
-        super(player.xPos + ((float) (offsetX * Math.cos(((float) Math.toRadians(player.rotation))) - offsetY * Math.sin(((float) Math.toRadians(player.rotation))))), player.yPos + ((float) (offsetX * Math.sin(((float) Math.toRadians(player.rotation))) + offsetY * Math.cos(((float) Math.toRadians(player.rotation))))), 10, 10, (float) Math.toDegrees(Math.atan2(((target.x - player.xPos) / (float)Math.hypot(target.x - player.xPos, target.y - player.yPos)), ((target.y - player.yPos) / (float)Math.hypot(target.x - player.xPos, target.y - player.yPos))))); // every time i look at this line of code, it feels like it's longer than before
+        super(player.xPos + ((float) (offsetX * Math.cos(((float) Math.toRadians(player.globalRotation))) - offsetY * Math.sin(((float) Math.toRadians(player.globalRotation))))), player.yPos + ((float) (offsetX * Math.sin(((float) Math.toRadians(player.globalRotation))) + offsetY * Math.cos(((float) Math.toRadians(player.globalRotation))))), 10, 10, (float) Math.toDegrees(Math.atan2(((target.x - player.xPos) / (float)Math.hypot(target.x - player.xPos, target.y - player.yPos)), ((target.y - player.yPos) / (float)Math.hypot(target.x - player.xPos, target.y - player.yPos))))); // every time i look at this line of code, it feels like it's longer than before
         // we have obtained peak java
 
         float distanceX = (target.x - player.xPos) / (float)Math.hypot(target.x - player.xPos, target.y - player.yPos);

@@ -26,7 +26,7 @@ public class PlayerRecorder extends Script {
         RecordingFrame frame = new RecordingFrame();
         frame.x = player.globalX;
         frame.y = player.globalY;
-        frame.rotation = player.rotation;
+        frame.rotation = player.globalRotation;
         frame.shot = player.playerControllerScript.shot;
         frame.shotX = player.playerControllerScript.shotX;
         frame.shotY = player.playerControllerScript.shotY;

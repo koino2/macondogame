@@ -15,6 +15,7 @@ public class Object2D {
     public float yPos;
     public float xSize;
     public float ySize;
+    public float globalRotation;
     public float rotation;
 
     public List<String> tags = new ArrayList<>();
@@ -80,9 +81,11 @@ public class Object2D {
         if(parent != null){
             globalX = parent.globalX + xPos;
             globalY = parent.globalY + yPos;
+            globalRotation = parent.globalRotation + rotation;
         } else{
             globalX = xPos;
             globalY = yPos;
+            globalRotation = rotation;
         }
         for (int i = 0; i < children.size(); i++) {
             children.get(i).update(deltaTime);
@@ -151,7 +154,7 @@ public class Object2D {
         }
         AffineTransform old = g.getTransform();
         g.translate(globalX,globalY);
-        g.rotate(Math.toRadians(rotation));
+        g.rotate(Math.toRadians(globalRotation));
 
         BufferedImage tinted = op.filter(texture, null);
         g.drawImage(tinted, (int) (-xSize/2), (int) (-ySize/2), (int) xSize, (int) ySize, null);
@@ -256,7 +259,7 @@ public class Object2D {
                 {-halfWidth,  halfHeight}
         };
 
-        float rad = (float) Math.toRadians(rotation);
+        float rad = (float) Math.toRadians(globalRotation);
         float cos = (float) Math.cos(rad);
         float sin = (float) Math.sin(rad);
 

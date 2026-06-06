@@ -3,7 +3,6 @@ package game.scripts.player;
 import game.scripts.weapons.Pistol;
 import lib.*;
 
-import javax.sound.sampled.Clip;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;

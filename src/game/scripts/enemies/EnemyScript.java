@@ -5,10 +5,6 @@ import game.scripts.weapons.Pistol;
 import lib.Object2D;
 import lib.Script;
 import lib.Sound;
-import game.prefabs.Bullet;
-
-import java.awt.*;
-import java.util.Random;
 
 public class EnemyScript extends Script {
 
