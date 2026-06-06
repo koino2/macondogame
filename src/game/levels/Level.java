@@ -37,11 +37,6 @@ public abstract class Level extends Scene {
     public CameraController cameraController;
     public Object2D cameraFallbackObject;
 
-    public void addEnemy(Enemy enemy){
-        enemies.add(enemy);
-        addObject(enemy);
-    }
-
     public void clearEnemies(){
         for (int i = 0; i < enemies.size(); i++) {
             enemies.get(i).destroy();
