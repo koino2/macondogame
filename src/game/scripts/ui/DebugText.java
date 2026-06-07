@@ -76,7 +76,7 @@ public class DebugText extends Script {
         frameTime = (System.nanoTime() - lastRender)/1_000_000_000.0;
         lastRender = System.nanoTime();
 
-        g.setColor(Color.BLACK);
+        g.setColor(Color.WHITE);
 
         TextSection[] ts = new TextSection[]{
 

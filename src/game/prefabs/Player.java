@@ -28,7 +28,7 @@ public class Player extends Object2D {
 
         super(xPos, yPos, width, height, rotation);
         try {
-            texture = ImageIO.read(new File("src/assets/player.png"));
+            texture = ImageIO.read(new File("src/assets/robot1-blue.png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
