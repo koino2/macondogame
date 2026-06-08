@@ -34,9 +34,9 @@ public class development extends Scene {
         float ySize = 100;
 
         float xSizeAfter = 10;
-        float ySizeAfter = 100;
+        float ySizeAfter = 10;
 
-        float directionX = -1f;
+        float directionX = 1f;
         float directionY = 0f;
 
         float time = 1f;
@@ -49,10 +49,10 @@ public class development extends Scene {
         animation.addKeyframe(0f, xPos, yPos, xSize, ySize, 0);
         animation.addKeyframe(
                 time,
-                xPos + ((xSizeAfter-xSize)/2)*directionX,
-                yPos + ((ySizeAfter-ySize)/2)*directionY,
-                xSizeAfter,
-                ySizeAfter,
+                xPos + ((xSize-xSizeAfter)/2f)*directionX,
+                yPos + ((ySize-ySizeAfter)/2f)*directionY,
+                Animation.lerp(xSize, xSizeAfter, directionX),
+                Animation.lerp(ySize, ySizeAfter, directionY),
                 0
         );
 

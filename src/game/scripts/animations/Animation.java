@@ -14,7 +14,7 @@ public class Animation extends Script {
 
     public void onAnimationEnd(){}
 
-    public float lerp(float a, float b, double t) {
+    public static float lerp(float a, float b, double t) {
         return (float) (a + (b - a) * t); // b-a is the stuff between the two values,
         // multiply that by how much of the keyframe is done,
         // and add that to a.
