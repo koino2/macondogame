@@ -20,10 +20,12 @@ public class Animation extends Script {
         // and add that to a.
     }
 
-    public void addKeyframe(double timeAdded, float x, float y, float rot){
+    public void addKeyframe(double timeAdded, float x, float y, float xSize, float ySize, float rot){
         AnimationKeyframe frame = new AnimationKeyframe();
         frame.x = x;
         frame.y = y;
+        frame.xSize = xSize;
+        frame.ySize = ySize;
         frame.rotation = rot;
 
         if(!frames.isEmpty()){
@@ -75,6 +77,8 @@ public class Animation extends Script {
 
                 object.xPos = lerp(previousKeyFrame.x, nextKeyFrame.x, t);
                 object.yPos = lerp(previousKeyFrame.y, nextKeyFrame.y, t);
+                object.xSize = lerp(previousKeyFrame.xSize, nextKeyFrame.xSize, t);
+                object.ySize = lerp(previousKeyFrame.ySize, nextKeyFrame.ySize, t);
                 object.rotation = lerp(previousKeyFrame.rotation, nextKeyFrame.rotation, t);
 
             }
