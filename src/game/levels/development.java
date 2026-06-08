@@ -7,7 +7,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -27,33 +26,46 @@ public class development extends Scene {
     @Override
     public void start() {
         animation = new Animation();
-        animation.addKeyframe(1f, 200, 200, 0);
-        animation.addKeyframe(1f, 300, 200, 90);
-        animation.addKeyframe(1f, 200, 300, 180);
-        animation.addKeyframe(1f, 300, 300, 0);
 
-        Object2D object = new Object2D(200, 200, 100, 100, 0);
-        try {
-            object.texture = ImageIO.read(new File("src/assets/robot1-blue.png"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        object.color = new Color(255, 255, 255);
+        float xPos = 200;
+        float yPos = 200;
+
+        float xSize = 100;
+        float ySize = 100;
+
+        float xSizeAfter = 10;
+        float ySizeAfter = 100;
+
+        float directionX = -1f;
+        float directionY = 0f;
+
+        float time = 1f;
+
+        Object2D object = new Object2D(xPos, yPos, xSize, ySize, 0);
+        object.color = new Color(255, 82, 82);
         object.addScript(animation);
         addObject(object);
+
+        animation.addKeyframe(0f, xPos, yPos, xSize, ySize, 0);
+        animation.addKeyframe(
+                time,
+                xPos + ((xSizeAfter-xSize)/2)*directionX,
+                yPos + ((ySizeAfter-ySize)/2)*directionY,
+                xSizeAfter,
+                ySizeAfter,
+                0
+        );
 
         Camera camera1 = new Camera(200, 200, 0);
         addObject(camera1);
         camera = camera1;
-
-        animation.play();
     }
 
     @Override
     public void update(double deltaTime) {
         if(Input.isKeyDown(KeyEvent.VK_E)){
             animation.play();
-            animation.time = 1f;
+            //animation.time = 1f;
         }
     }
 
