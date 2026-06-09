@@ -14,7 +14,12 @@ public class Animation extends Script {
 
     public void onAnimationEnd(){}
 
-    public static float lerp(float a, float b, double t) {
+    public double lerpTimeFunction(double t){
+        return t * t * (3 - 2 * t); // default: ease in and out
+    }
+
+    public float lerp(float a, float b, double t) {
+        t = lerpTimeFunction(t);
         return (float) (a + (b - a) * t); // b-a is the stuff between the two values,
         // multiply that by how much of the keyframe is done,
         // and add that to a.

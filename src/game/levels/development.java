@@ -1,14 +1,12 @@
 package game.levels;
 
-import game.scripts.animations.Animation;
+import game.prefabs.doors.Door;
+import game.prefabs.doors.LevelDoor;
 import lib.*;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.IOException;
 
 public class development extends Scene {
     public static void main(String[] args) {
@@ -22,11 +20,9 @@ public class development extends Scene {
         window.setContentPane(engine);
         window.setVisible(true);
     }
-    Animation animation;
+    Door door;
     @Override
     public void start() {
-        animation = new Animation();
-
         float xPos = 200;
         float yPos = 200;
 
@@ -41,20 +37,11 @@ public class development extends Scene {
 
         float time = 1f;
 
-        Object2D object = new Object2D(xPos, yPos, xSize, ySize, 0);
-        object.color = new Color(255, 82, 82);
-        object.addScript(animation);
-        addObject(object);
+        /*door = new Door(new Color(188, 188, 200), xPos, yPos, xSize, ySize, xSizeAfter, ySizeAfter, directionX, directionY, time);
+        objects.add(door);*/
 
-        animation.addKeyframe(0f, xPos, yPos, xSize, ySize, 0);
-        animation.addKeyframe(
-                time,
-                xPos + ((xSize-xSizeAfter)/2f)*directionX,
-                yPos + ((ySize-ySizeAfter)/2f)*directionY,
-                Animation.lerp(xSize, xSizeAfter, directionX),
-                Animation.lerp(ySize, ySizeAfter, directionY),
-                0
-        );
+        LevelDoor ld = new LevelDoor();
+        addObject(ld);
 
         Camera camera1 = new Camera(200, 200, 0);
         addObject(camera1);
@@ -63,10 +50,12 @@ public class development extends Scene {
 
     @Override
     public void update(double deltaTime) {
-        if(Input.isKeyDown(KeyEvent.VK_E)){
-            animation.play();
-            //animation.time = 1f;
+        /*if(Input.isKeyDown(KeyEvent.VK_E)){
+            door.open();
         }
+        if(Input.isKeyDown(KeyEvent.VK_Q)){
+            door.close();
+        }*/
     }
 
     @Override
