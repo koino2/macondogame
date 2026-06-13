@@ -49,7 +49,9 @@ public class Object2D {
 
     public void start(){
         for (int i = 0; i < scripts.size(); i++) {
-            scripts.get(i).start();
+            if(!scripts.get(i).started) {
+                scripts.get(i).start();
+            }
             scripts.get(i).started = true;
         }
     }
@@ -100,6 +102,12 @@ public class Object2D {
         for (int i = 0; i < scripts.size(); i++) {
             scripts.get(i).update(deltaTime);
         }
+
+        /*System.out.println("UPDATE");
+
+        for(int i = 0; i < children.size(); i++){
+            System.out.println("( "+i+" ) Children of " + getClass() + ": " + children.get(i).getClass());
+        }*/
     }
 
     public void renderUI(Graphics g){

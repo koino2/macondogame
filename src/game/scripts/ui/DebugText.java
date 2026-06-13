@@ -21,9 +21,13 @@ public class DebugText extends Script {
 
     boolean on = false;
 
+    public DebugText(){
+        runtime = Runtime.getRuntime();
+    }
+
     @Override
     public void start() {
-        runtime = Runtime.getRuntime();
+
     }
 
     long lastRender = System.nanoTime();
@@ -39,6 +43,8 @@ public class DebugText extends Script {
             upsFrames = 0;
             upsTimer = 0;
         }
+
+        time += deltaTime;
     }
 
     String rdt1 = "Object Render Time: ??? millis";
@@ -47,6 +53,10 @@ public class DebugText extends Script {
     String rdt4 = "Final Render Time: ??? millis ( +??? millis )";
 
     boolean pressed = false;
+
+    double time = 0;
+
+    public Color textColor = Color.white;
 
     @Override
     public void renderUI(Graphics g){
@@ -76,7 +86,15 @@ public class DebugText extends Script {
         frameTime = (System.nanoTime() - lastRender)/1_000_000_000.0;
         lastRender = System.nanoTime();
 
-        g.setColor(Color.WHITE);
+        g.setColor(textColor);
+
+        String posXtext = "xPos: ???";
+        String posYtext = "yPos: ???";
+
+        if(object.scene instanceof Level && ((Level)(object.scene)).player != null){
+            posXtext = String.format("xPos: %.1f",((Level)(object.scene)).player.xPos);
+            posYtext = String.format("yPos: %.1f",((Level)(object.scene)).player.yPos);
+        }
 
         TextSection[] ts = new TextSection[]{
 
@@ -93,8 +111,8 @@ public class DebugText extends Script {
                 }, "Segoe UI Semilight", new int[]{Font.PLAIN}, 15, 0),
 
                 new TextSection(new String[]{
-                        String.format("xPos: %.1f",((Level)(object.scene)).player.xPos),
-                        String.format("yPos: %.1f",((Level)(object.scene)).player.yPos)
+                        posXtext,
+                        posYtext
                 }, "Segoe UI Semilight", new int[]{Font.PLAIN}, 20, 5),
 
                 new TextSection(new String[]{
@@ -109,6 +127,10 @@ public class DebugText extends Script {
 
                 new TextSection(new String[]{
                         "Objects: "+object.scene.objects.size()
+                }, "Segoe UI Semilight", new int[]{Font.PLAIN}, 20, 5),
+
+                new TextSection(new String[]{
+                        String.format("Time: %.2f", time)
                 }, "Segoe UI Semilight", new int[]{Font.PLAIN}, 20, 5),
         };
 

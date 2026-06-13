@@ -27,6 +27,8 @@ public abstract class Level extends Scene {
     public abstract void buildObjects();
     public abstract void initEnemies();
 
+    public abstract void onWin();
+
     public double spawnInterval = 1d;
 
     public int runNumber = 0;
@@ -92,12 +94,32 @@ public abstract class Level extends Scene {
         return false;
     }
 
-    public void checkRunState(){
+    public boolean areEnemiesAlive(){
+        for(Enemy enemy : enemies){
+            if(!enemy.destroyed){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    double initialWinTimer = 2;
+    double winTimer = initialWinTimer;
+    public void checkRunState(double deltaTime){
         if(!isPlayerAlive() && !areGhostsAlive()){
             clearEnemies();
             clearGhosts();
             spawnQueue.clear();
+            winTimer = initialWinTimer;
             startNewRun();
+        }
+        if(isPlayerAlive() || areGhostsAlive()){
+            if(!areEnemiesAlive()){
+                winTimer -= deltaTime;
+                if(winTimer <= 0) {
+                    onWin();
+                }
+            }
         }
     }
 
@@ -172,7 +194,7 @@ public abstract class Level extends Scene {
 
         updateCamera();
 
-        checkRunState();
+        checkRunState(deltaTime);
 
         for(int i = 0; i < spawnQueue.size(); i++){
             if(time >= spawnQueue.get(i).spawnTime){

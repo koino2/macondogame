@@ -1,5 +1,6 @@
 package game.levels;
 
+import game.prefabs.doors.Spawnpoint;
 import lib.*;
 import lib.postProcessEffects.Bloom;
 import game.prefabs.Enemy;
@@ -9,6 +10,10 @@ import game.scripts.ui.DebugText;
 import java.awt.*;
 
 public class Level1 extends Level {
+    @Override
+    public void onWin(){
+        System.out.println("you won");
+    }
     @Override
     public void buildObjects() {
         // WALLS
@@ -39,7 +44,7 @@ public class Level1 extends Level {
         wall4.tags.add("wall");
         addObject(wall4);
 
-        Object2D wall5 = new Object2D(200, wallHeight / 2f, wallThickness, (wallHeight + wallThickness) / 2f, 0);
+        Object2D wall5 = new Object2D(400, wallHeight / 2f, wallThickness, (wallHeight + wallThickness) / 2f, 0);
         wall5.color = new Color(101, 255, 145, 255);
         wall5.tags.add("wall");
         addObject(wall5);
@@ -63,6 +68,9 @@ public class Level1 extends Level {
         postProcessEffects.add(bloom);
 
         wall1.addScript(new DebugText());
+
+        Spawnpoint spawnpoint = new Spawnpoint(120, wallHeight/2f);
+        addObject(spawnpoint);
     }
 
     @Override

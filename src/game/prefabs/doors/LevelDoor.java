@@ -12,31 +12,33 @@ public class LevelDoor extends Object2D {
     public Door door1;
     public Door door2;
 
+    public Color doorColor = new Color(0, 0, 0);
+
     Script doorScript = new Script() {
         @Override
         public void start() {
             door1 = new Door(
-                    new Color(64, 109, 255),
+                    doorColor,
+                    0,
                     -50,
-                    yPos,
-                    100f,
+                    20f,
                     100f,
                     10,
                     10,
-                    -1f,
                     0f,
+                    -1f,
                     1f
             );
             door2 = new Door(
-                    new Color(255, 92, 92),
+                    doorColor,
+                    0,
                     50,
-                    yPos,
-                    100f,
+                    20f,
                     100f,
                     10,
                     10,
-                    1f,
                     0f,
+                    1f,
                     1f
             );
 
@@ -44,20 +46,24 @@ public class LevelDoor extends Object2D {
             addChild(door2);
         }
 
+        boolean firstUpdate = false;
         @Override
         public void update(double deltaTime) {
-            if(Input.isKeyDown(KeyEvent.VK_E)){
+            /*if(Input.isKeyDown(KeyEvent.VK_E)){
                 open();
             }
             if(Input.isKeyDown(KeyEvent.VK_Q)){
                 close();
+            }*/
+            if(!firstUpdate) {
+                //open();
+                firstUpdate = true;
             }
         }
     };
 
-    public LevelDoor() {
-        super(0, 0, 0, 0, 0);
-
+    public LevelDoor(float x, float y) {
+        super(x, y, 0, 0, 0);
         addScript(doorScript);
     }
 

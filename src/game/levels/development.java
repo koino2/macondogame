@@ -2,6 +2,9 @@ package game.levels;
 
 import game.prefabs.doors.Door;
 import game.prefabs.doors.LevelDoor;
+import game.prefabs.doors.Spawnpoint;
+import game.scripts.player.CameraController;
+import game.scripts.ui.DebugText;
 import lib.*;
 
 import javax.swing.*;
@@ -23,39 +26,27 @@ public class development extends Scene {
     Door door;
     @Override
     public void start() {
-        float xPos = 200;
-        float yPos = 200;
+        //LevelDoor ld = new LevelDoor(0, 0);
+        //addObject(ld);
 
-        float xSize = 100;
-        float ySize = 100;
+        Spawnpoint spawnpoint = new Spawnpoint(0, 0);
+        addObject(spawnpoint);
 
-        float xSizeAfter = 10;
-        float ySizeAfter = 10;
-
-        float directionX = 1f;
-        float directionY = 0f;
-
-        float time = 1f;
-
-        /*door = new Door(new Color(188, 188, 200), xPos, yPos, xSize, ySize, xSizeAfter, ySizeAfter, directionX, directionY, time);
-        objects.add(door);*/
-
-        LevelDoor ld = new LevelDoor();
-        addObject(ld);
-
-        Camera camera1 = new Camera(200, 200, 0);
+        Camera camera1 = new Camera(0, 0, 0);
         addObject(camera1);
+        camera1.addScript(new CameraController(spawnpoint));
         camera = camera1;
+
+        Object2D scripts = new Object2D(0, 0, 0, 0, 0);
+        addObject(scripts);
+        DebugText debugText = new DebugText();
+        debugText.textColor = Color.black;
+        scripts.addScript(debugText);
     }
 
     @Override
     public void update(double deltaTime) {
-        /*if(Input.isKeyDown(KeyEvent.VK_E)){
-            door.open();
-        }
-        if(Input.isKeyDown(KeyEvent.VK_Q)){
-            door.close();
-        }*/
+
     }
 
     @Override
