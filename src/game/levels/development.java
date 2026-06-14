@@ -3,6 +3,7 @@ package game.levels;
 import game.prefabs.doors.Door;
 import game.prefabs.doors.LevelDoor;
 import game.prefabs.doors.Spawnpoint;
+import game.scripts.animations.AnimatedTexture;
 import game.scripts.player.CameraController;
 import game.scripts.ui.DebugText;
 import lib.*;
@@ -29,12 +30,14 @@ public class development extends Scene {
         //LevelDoor ld = new LevelDoor(0, 0);
         //addObject(ld);
 
-        Spawnpoint spawnpoint = new Spawnpoint(0, 0);
-        addObject(spawnpoint);
+        Object2D object = new Object2D(0, 0, 100, 100, 0);
+        object.color = new Color(87, 119, 255);
+        object.addScript(new AnimatedTexture("src/assets/water_flow_grey.png", 2));
+        addObject(object);
 
         Camera camera1 = new Camera(0, 0, 0);
         addObject(camera1);
-        camera1.addScript(new CameraController(spawnpoint));
+        camera1.addScript(new CameraController(object));
         camera = camera1;
 
         Object2D scripts = new Object2D(0, 0, 0, 0, 0);
