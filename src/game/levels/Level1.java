@@ -1,6 +1,7 @@
 package game.levels;
 
 import game.prefabs.doors.Spawnpoint;
+import game.scripts.animations.AnimatedTexture;
 import lib.*;
 import lib.postProcessEffects.Bloom;
 import game.prefabs.Enemy;
@@ -10,9 +11,28 @@ import game.scripts.ui.DebugText;
 import java.awt.*;
 
 public class Level1 extends Level {
+    boolean won = false;
+    double winTimestamp = 0;
+
+    public Scene nextScene = new SampleScene();
     @Override
     public void onWin(){
-        System.out.println("you won");
+        if(!won) {
+            winTimestamp = time;
+            for (int i = 0; i < objects.size(); i++) {
+                for (int j = 0; j < objects.get(i).getDescendants().size(); j++) {
+                    objects.get(i).getDescendants().get(j).addScript(new AnimatedTexture("src/assets/boom.png", 2));
+                }
+                objects.get(i).addScript(new AnimatedTexture("src/assets/boom.png", 2));
+            }
+            won = true;
+            Sound sound = new Sound("src/assets/spawn.wav");
+            player.sounds.add(sound);
+            sound.play();
+        }
+        if(time > winTimestamp+2){
+            engine.changeScene(nextScene);
+        }
     }
     @Override
     public void buildObjects() {

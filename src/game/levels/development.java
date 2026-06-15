@@ -31,8 +31,8 @@ public class development extends Scene {
         //addObject(ld);
 
         Object2D object = new Object2D(0, 0, 100, 100, 0);
-        object.color = new Color(87, 119, 255);
-        object.addScript(new AnimatedTexture("src/assets/water_flow_grey.png", 2));
+        object.color = new Color(255, 255, 255);
+        object.addScript(new AnimatedTexture("src/assets/boom.png", 2));
         addObject(object);
 
         Camera camera1 = new Camera(0, 0, 0);

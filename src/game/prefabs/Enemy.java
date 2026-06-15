@@ -8,14 +8,12 @@ import game.scripts.misc.HealthScript;
 import java.awt.*;
 
 public class Enemy extends Object2D {
-    static int width = 100;
-    static int height = 100;
 
     public CollisionScript collisionScript;
     public EnemyScript enemyScript;
     public HealthScript healthScript;
 
-    public Enemy(int x, int y, int rotation){
+    public Enemy(int x, int y, int rotation, int width, int height){
         super(x, y, width, height, rotation);
         this.texture = StaticTextures.square();
         this.color = new Color(255, 39, 39);

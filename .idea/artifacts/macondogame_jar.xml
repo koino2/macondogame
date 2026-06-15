@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="macondogame:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/macondogame_jar</output-path>
+    <root id="archive" name="macondogame.jar">
+      <element id="module-output" name="macondogame" />
+    </root>
+  </artifact>
+</component>
