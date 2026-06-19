@@ -21,7 +21,7 @@ public class Ghost extends Object2D {
         super(0, 0, 100, 100, 0);
 
         Pistol pistol = new Pistol();
-        pistol = new Pistol(0, 0, "player");
+        pistol = new Pistol(0, 0, 10, "player");
         pistol.cooldown = 0.2f;
         pistol.offsetX = 60;
         pistol.offsetY = 5;

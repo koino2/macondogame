@@ -53,7 +53,7 @@ public class SampleScene extends Scene {
     public void start() {
         player = new Object2D(200,200,100,100,0);
         try {
-            player.texture = ImageIO.read(new File("src/assets/player.png"));
+            player.texture = ImageIO.read(new File("src/assets/textures/entities/player.png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

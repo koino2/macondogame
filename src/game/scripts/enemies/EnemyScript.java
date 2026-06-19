@@ -2,16 +2,22 @@ package game.scripts.enemies;
 
 import game.scripts.npc.ClosestTargetScript;
 import game.scripts.weapons.Pistol;
+import game.scripts.weapons.WeaponScript;
 import lib.Object2D;
 import lib.Script;
 import lib.Sound;
 
 public class EnemyScript extends Script {
 
-    ClosestTargetScript cts;
-    Pistol pistol;
+    Script behaviour;
+    WeaponScript weapon;
 
     String spawnSoundPath = "src/assets/spawn.wav";
+
+    public EnemyScript(WeaponScript weapon, Script behaviour){
+        this.weapon = weapon;
+        this.behaviour = behaviour;
+    }
 
     @Override
     public void start() {
@@ -20,26 +26,24 @@ public class EnemyScript extends Script {
         spawnSound.setVolume(2f);
         spawnSound.play();
 
-        cts = new ClosestTargetScript("player");
-        object.addScript(cts);
+        object.addScript(behaviour);
 
-        pistol = new Pistol(200, 1, "enemy");
-        object.addScript(pistol);
+        object.addScript(weapon);
 
     }
 
     @Override
     public void update(double deltaTime) {
 
-        Object2D closest = cts.closest;
+        /*Object2D closest = cts.closest;
         if (closest != null) {
             int xDist = (int) (closest.globalX - object.globalX);
             int yDist = (int) (closest.globalY - object.globalY);
             object.rotation = (float) Math.toDegrees(Math.atan2(yDist, xDist));
         }
         if (closest != null) {
-            pistol.fireAtObject(closest);
-        }
+            weapon.fireAtObject(closest);
+        }*/
 
     }
 }

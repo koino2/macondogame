@@ -1,4 +1,4 @@
-package game.prefabs;
+package game.prefabs.enemies;
 
 import lib.*;
 import lib.CollisionScript;
@@ -10,13 +10,11 @@ import java.awt.*;
 public class Enemy extends Object2D {
 
     public CollisionScript collisionScript;
-    public EnemyScript enemyScript;
+    public Script enemyScript;
     public HealthScript healthScript;
 
-    public Enemy(int x, int y, int rotation, int width, int height){
+    public Enemy(int x, int y, int rotation, int width, int height, Script enemyScript){
         super(x, y, width, height, rotation);
-        this.texture = StaticTextures.square();
-        this.color = new Color(255, 39, 39);
 
         healthScript = new HealthScript() {
             @Override
@@ -42,7 +40,7 @@ public class Enemy extends Object2D {
         tags.add("enemy");
         addScript(collisionScript);
 
-        enemyScript = new EnemyScript();
-        addScript(enemyScript);
+        this.enemyScript = enemyScript;
+        addScript(this.enemyScript);
     }
 }

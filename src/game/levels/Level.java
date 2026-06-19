@@ -1,8 +1,10 @@
 package game.levels;
 
-import game.prefabs.Enemy;
+import game.prefabs.enemies.Enemy;
 import game.prefabs.Ghost;
 import game.prefabs.Player;
+import game.scripts.level.spawnqueue.SpawnQueue;
+import game.scripts.level.spawnqueue.SpawnQueueItem;
 import game.scripts.player.CameraController;
 import game.scripts.player.recording.Recording;
 import lib.Camera;
@@ -22,7 +24,7 @@ public abstract class Level extends Scene {
     public List<Recording> recordings = new ArrayList<>();
     public List<Ghost> ghosts = new ArrayList<>();
 
-    public List<SpawnQueueItem> spawnQueue = new ArrayList<>();
+    public SpawnQueue spawnQueue = new SpawnQueue();
 
     public abstract void buildObjects();
     public abstract void initEnemies();
@@ -34,6 +36,8 @@ public abstract class Level extends Scene {
     public int runNumber = 0;
 
     public Player player;
+
+    public Object2D scriptObject;
 
     public Camera sceneCamera;
     public CameraController cameraController;
@@ -109,7 +113,7 @@ public abstract class Level extends Scene {
         if(!isPlayerAlive() && !areGhostsAlive()){
             clearEnemies();
             clearGhosts();
-            spawnQueue.clear();
+            spawnQueue.clearQueue();
             winTimer = initialWinTimer;
             startNewRun();
         }
@@ -140,7 +144,7 @@ public abstract class Level extends Scene {
 
         for (int i = 0; i < levelEnemies.size(); i++) {
             final int finalI = i;
-            spawnQueue.add(new SpawnQueueItem(0) {
+            spawnQueue.addItem(new SpawnQueueItem(0) {
                 @Override
                 public Object2D initObject() {
                     enemies.add(levelEnemies.get(finalI));
@@ -151,7 +155,7 @@ public abstract class Level extends Scene {
 
         for (int i = 0; i < recordings.size(); i++){
             final int finalI = i;
-            spawnQueue.add(new SpawnQueueItem(spawnQueue.get(spawnQueue.size()-1).spawnTime + spawnInterval) {
+            spawnQueue.addItem(new SpawnQueueItem(spawnQueue.getLastQueueTimeAdd(spawnInterval)) {
                 @Override
                 public Object2D initObject() {
                     Ghost ghost = new Ghost(recordings.get(finalI));
@@ -162,7 +166,7 @@ public abstract class Level extends Scene {
                 }
             });
         }
-        spawnQueue.add(new SpawnQueueItem(spawnQueue.get(spawnQueue.size()-1).spawnTime + spawnInterval) {
+        spawnQueue.addItem(new SpawnQueueItem(spawnQueue.getLastQueueTimeAdd(spawnInterval)) {
             @Override
             public Object2D initObject() {
                 return player;
@@ -179,6 +183,10 @@ public abstract class Level extends Scene {
         buildObjects();
         startNewRun();
 
+        scriptObject = new Object2D(0, 0, 0, 0, 0);
+        addObject(scriptObject);
+        scriptObject.addScript(spawnQueue);
+
         sceneCamera = new Camera(0, 0, 0);
         cameraController = new CameraController(cameraFallbackObject);
         sceneCamera.addScript(cameraController);
@@ -190,18 +198,8 @@ public abstract class Level extends Scene {
 
     @Override
     public void update(double deltaTime) {
-        time += deltaTime;
-
         updateCamera();
-
         checkRunState(deltaTime);
-
-        for(int i = 0; i < spawnQueue.size(); i++){
-            if(time >= spawnQueue.get(i).spawnTime){
-                addObject(spawnQueue.get(i).object);
-                spawnQueue.remove(spawnQueue.get(i));
-            }
-        }
     }
 
     @Override
@@ -210,15 +208,4 @@ public abstract class Level extends Scene {
     }
 
 
-}
-abstract class SpawnQueueItem{
-    Object2D object;
-    double spawnTime;
-
-    public abstract Object2D initObject();
-
-    public SpawnQueueItem(double time){
-        this.spawnTime = time;
-        this.object = initObject();
-    }
 }

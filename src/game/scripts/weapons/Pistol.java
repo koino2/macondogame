@@ -20,13 +20,15 @@ public class Pistol extends WeaponScript{
     public Color bulletColor = new Color(255, 99, 99);
     public int offsetX = 0;
     public int offsetY = 0;
+    public float damage = 10;
 
     public Pistol(){}
 
-    public Pistol(int randomness, float prediction, String excludeTag){
+    public Pistol(int randomness, float prediction, float damage, String excludeTag){
         this.randomness = randomness;
         this.prediction = prediction;
         this.excludeTag = excludeTag;
+        this.damage = damage;
     }
 
     @Override
@@ -42,7 +44,7 @@ public class Pistol extends WeaponScript{
                 targetY += rng.nextInt(-randomness, randomness);
             }
 
-            Bullet bullet = new Bullet(new Point(targetX, targetY), object, offsetX, offsetY, excludeTag, bulletSpeed);
+            Bullet bullet = new Bullet(new Point(targetX, targetY), object, offsetX, offsetY, excludeTag, bulletSpeed, damage);
             bullet.color = bulletColor;
             bullet.zIndex = 100;
             bullet.collisionScript.collidableObjects = object.scene.objects;
@@ -75,7 +77,7 @@ public class Pistol extends WeaponScript{
                 targetY = predictedY + rng.nextInt(-randomness, randomness);
             }
 
-            Bullet bullet = new Bullet(new Point(targetX, targetY), object, offsetX, offsetY, excludeTag, bulletSpeed);
+            Bullet bullet = new Bullet(new Point(targetX, targetY), object, offsetX, offsetY, excludeTag, bulletSpeed, damage);
             bullet.color = new Color(255, 99, 99);
             bullet.zIndex = 100;
             bullet.collisionScript.collidableObjects = object.scene.objects;

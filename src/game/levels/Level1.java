@@ -1,10 +1,12 @@
 package game.levels;
 
 import game.prefabs.doors.Spawnpoint;
+import game.prefabs.enemies.ShooterEnemy;
+import game.prefabs.enemies.Turret;
 import game.scripts.animations.AnimatedTexture;
 import lib.*;
 import lib.postProcessEffects.Bloom;
-import game.prefabs.Enemy;
+import game.prefabs.enemies.Enemy;
 import game.prefabs.Player;
 import game.scripts.ui.DebugText;
 
@@ -21,9 +23,9 @@ public class Level1 extends Level {
             winTimestamp = time;
             for (int i = 0; i < objects.size(); i++) {
                 for (int j = 0; j < objects.get(i).getDescendants().size(); j++) {
-                    objects.get(i).getDescendants().get(j).addScript(new AnimatedTexture("src/assets/boom.png", 2));
+                    objects.get(i).getDescendants().get(j).addScript(new AnimatedTexture("src/assets/textures/objects/boom.png", 2));
                 }
-                objects.get(i).addScript(new AnimatedTexture("src/assets/boom.png", 2));
+                objects.get(i).addScript(new AnimatedTexture("src/assets/textures/objects/boom.png", 2));
             }
             won = true;
             Sound sound = new Sound("src/assets/spawn.wav");
@@ -95,11 +97,11 @@ public class Level1 extends Level {
 
     @Override
     public void initEnemies() {
-        Enemy enemy = new Enemy(800, 200, 0);
+        ShooterEnemy enemy = new ShooterEnemy(800, 200, 0);
         enemy.collisionScript.collidableObjects = objects;
         levelEnemies.add(enemy);
 
-        Enemy enemy2 = new Enemy(800, 500, 0);
+        Turret enemy2 = new Turret(800, 500, 0);
         enemy2.collisionScript.collidableObjects = objects;
         levelEnemies.add(enemy2);
     }

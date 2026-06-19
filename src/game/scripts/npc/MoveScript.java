@@ -6,6 +6,8 @@ import lib.Script;
 public class MoveScript extends Script {
     public Object2D target = null;
 
+    public float speed = 100;
+
     @Override
     public void start() {
 
@@ -19,8 +21,8 @@ public class MoveScript extends Script {
             float distY = target.yPos - object.yPos;
             float hypot = (float) Math.hypot(distX, distY);
 
-            object.xVelocity = (distX / hypot) * 100;
-            object.yVelocity = (distY / hypot) * 100;
+            object.xVelocity = (distX / hypot) * speed;
+            object.yVelocity = (distY / hypot) * speed;
         }
         else{
             object.xVelocity *= (float) (0.2f * deltaTime);

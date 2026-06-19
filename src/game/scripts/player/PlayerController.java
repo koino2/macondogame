@@ -22,7 +22,7 @@ public class PlayerController extends Script {
     public void start() {
         player = object;
 
-        pistol = new Pistol(0, 0, "player");
+        pistol = new Pistol(0, 0, 10, "player");
         pistol.cooldown = 0.2f;
         pistol.offsetX = 60;
         pistol.offsetY = 5;
