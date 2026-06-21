@@ -9,6 +9,7 @@ import lib.postProcessEffects.Bloom;
 import game.prefabs.enemies.Enemy;
 import game.prefabs.Player;
 import game.scripts.ui.DebugText;
+import lib.postProcessEffects.Vignette;
 
 import java.awt.*;
 
@@ -47,32 +48,32 @@ public class Level1 extends Level {
         int wallThickness = 50;
 
         Object2D wall1 = new Object2D(0, wallHeight / 2f, wallThickness, wallHeight + wallThickness, 0);
-        wall1.color = wallColor;
+        wall1.setColor(wallColor);
         wall1.tags.add("wall");
         addObject(wall1);
 
         Object2D wall2 = new Object2D(wallWidth, wallHeight / 2f, wallThickness, wallHeight + wallThickness, 0);
-        wall2.color = wallColor;
+        wall2.setColor(wallColor);
         wall2.tags.add("wall");
         addObject(wall2);
 
         Object2D wall3 = new Object2D(wallWidth / 2f, 0, wallWidth + wallThickness, wallThickness, 0);
-        wall3.color = wallColor;
+        wall3.setColor(wallColor);
         wall3.tags.add("wall");
         addObject(wall3);
 
         Object2D wall4 = new Object2D(wallWidth / 2f, wallHeight, wallWidth + wallThickness, wallThickness, 0);
-        wall4.color = wallColor;
+        wall4.setColor(wallColor);
         wall4.tags.add("wall");
         addObject(wall4);
 
         Object2D wall5 = new Object2D(400, wallHeight / 2f, wallThickness, (wallHeight + wallThickness) / 2f, 0);
-        wall5.color = new Color(101, 255, 145, 255);
+        wall5.setColor(new Color(101, 255, 145, 255));
         wall5.tags.add("wall");
         addObject(wall5);
 
         Object2D floor = new Object2D(wallWidth / 2f, wallHeight / 2f, wallWidth, wallHeight, 0);
-        floor.color = floorColor;
+        floor.setColor(floorColor);
         floor.tags.add("noCollision");
         floor.zIndex = -100;
         addObject(floor);
@@ -88,6 +89,9 @@ public class Level1 extends Level {
 
         Bloom bloom = new Bloom();
         postProcessEffects.add(bloom);
+
+        Vignette vignette = new Vignette();
+        postProcessEffects.add(vignette);
 
         wall1.addScript(new DebugText());
 
@@ -123,7 +127,7 @@ public class Level1 extends Level {
             @Override
             public void start() {
                 Light light = new Light(0, 0, 200);
-                light.color = new Color(255, 255, 255, 107);
+                light.color = (new Color(255, 255, 255, 107));
                 player.addChild(light);
             }
 

@@ -31,7 +31,7 @@ public class development extends Scene {
         //addObject(ld);
 
         Object2D object = new Object2D(0, 0, 100, 100, 0);
-        object.color = new Color(255, 255, 255);
+        object.setColor(new Color(255, 255, 255));
         object.addScript(new AnimatedTexture("src/assets/boom.png", 2));
         addObject(object);
 

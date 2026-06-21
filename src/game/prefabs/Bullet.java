@@ -50,7 +50,7 @@ public class Bullet extends Object2D {
             @Override
             public void start() {
                 light = new Light(0, 0, 10);
-                light.color = new Color(255, 232, 126, 255);
+                light.color = (new Color(255, 232, 126, 255));
                 object.addChild(light);
                 //scene.addObject(light);
             }

@@ -1,12 +1,13 @@
-package game.scripts.weapons;
+package game.scripts.weapons.pistol;
 
 import game.prefabs.Bullet;
+import game.scripts.weapons.WeaponScript;
 import lib.Object2D;
 
 import java.awt.*;
 import java.util.Random;
 
-public class Pistol extends WeaponScript{
+public class Pistol extends WeaponScript {
 
     Random rng = new Random();
     int randomness = 200;
@@ -45,7 +46,7 @@ public class Pistol extends WeaponScript{
             }
 
             Bullet bullet = new Bullet(new Point(targetX, targetY), object, offsetX, offsetY, excludeTag, bulletSpeed, damage);
-            bullet.color = bulletColor;
+            bullet.setColor(bulletColor);
             bullet.zIndex = 100;
             bullet.collisionScript.collidableObjects = object.scene.objects;
             object.scene.addObject(bullet);
@@ -78,7 +79,7 @@ public class Pistol extends WeaponScript{
             }
 
             Bullet bullet = new Bullet(new Point(targetX, targetY), object, offsetX, offsetY, excludeTag, bulletSpeed, damage);
-            bullet.color = new Color(255, 99, 99);
+            bullet.setColor(new Color(255, 99, 99));
             bullet.zIndex = 100;
             bullet.collisionScript.collidableObjects = object.scene.objects;
             object.scene.addObject(bullet);

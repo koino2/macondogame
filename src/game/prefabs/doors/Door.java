@@ -32,7 +32,7 @@ public class Door extends Object2D {
         this.directionY = directionY;
         this.time = time;
 
-        this.color = color;
+        setColor(color);
     }
 
     Animation openAnimation;

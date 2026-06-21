@@ -2,7 +2,7 @@ package game.prefabs;
 
 import game.scripts.player.recording.Recording;
 import game.scripts.player.recording.RecordingReader;
-import game.scripts.weapons.Pistol;
+import game.scripts.weapons.pistol.Pistol;
 import lib.Object2D;
 import lib.Script;
 import lib.Sound;
@@ -30,6 +30,7 @@ public class Ghost extends Object2D {
         //System.out.println(recording.frames.size());
 
         tags.add("player");
+        tags.add("ghost");
 
         addScript(pistol);
 

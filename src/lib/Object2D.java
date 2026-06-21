@@ -151,13 +151,16 @@ public class Object2D {
                 null
         );
     }
+
+    BufferedImage tinted;
     public void setColor(Color newColor){
         this.color = newColor;
         refreshOP();
+        tinted = op.filter(texture, null);
     }
 
     public void render(Graphics2D g){
-        if(op == null){
+        if(op == null || tinted == null){
             refreshOP();
         }
         AffineTransform old = g.getTransform();

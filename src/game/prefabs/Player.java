@@ -15,7 +15,6 @@ import java.io.IOException;
 public class Player extends Object2D {
     static int width = 100;
     static int height = 100;
-    Vignette healthVignette;
 
     public PlayerController playerControllerScript;
     public CollisionScript collisionScript;
@@ -44,9 +43,11 @@ public class Player extends Object2D {
             @Override
             public void start() {
                 healthVignette = new Vignette();
-                healthVignette.strength = 0;
+                healthVignette.strength = 1f;
+                healthVignette.radiusMultiplier = 100;
                 healthVignette.color = Color.RED;
                 object.scene.postProcessEffects.add(healthVignette);
+                //System.out.println(object.scene.postProcessEffects.size());
             }
 
             @Override
@@ -62,12 +63,13 @@ public class Player extends Object2D {
 
             @Override
             public void onDamage(float damageAmount) {
-                healthVignette.strength += 1f;
-                healthVignette.radiusMultiplier = (maxHealth-health);
+                //healthVignette.strength += 10f;
+                //healthVignette.radiusMultiplier = ((health / maxHealth)/10);
 
                 if(health <= 0){
                     onDeath();
                 }
+                //System.out.println("HAMAGE"+healthVignette.strength);
             }
 
             @Override
@@ -78,16 +80,20 @@ public class Player extends Object2D {
                 int barWidth = 400;
                 int barHeight = 25;
 
-                int xPos = 100;
+                int xPos = (int) (width*0.05f);
                 int yPos = (int) (height*0.95f);
 
                 g.setColor(new Color(101, 26, 57));
-                g.fillRect(95, yPos-(barHeight+5), barWidth+10, barHeight+10);
+                g.fillRect(xPos-5, yPos-(barHeight+5), barWidth+10, barHeight+10);
 
                 g.setColor(new Color(33, 63, 76));
-                g.fillRect(100, yPos-barHeight, barWidth, barHeight);
+                g.fillRect(xPos, yPos-barHeight, barWidth, barHeight);
                 g.setColor(new Color(255, 94, 94));
-                g.fillRect(100, yPos-barHeight, (int) (barWidth*(health/maxHealth)), barHeight);
+                g.fillRect(xPos, yPos-barHeight, (int) (barWidth*(health/maxHealth)), barHeight);
+            }
+            @Override
+            public void onDestroy(){
+                object.scene.postProcessEffects.remove(healthVignette);
             }
         };
         addScript(healthScript);
@@ -96,7 +102,9 @@ public class Player extends Object2D {
             @Override
             public void onCollide(Object2D other) {
                 if(!other.tags.contains("noCollision") && !other.tags.contains("bullet")) {
-                    resolveCollision(other);
+                    if(!other.tags.contains("ghost")) {
+                        resolveCollision(other);
+                    }
                 }
             }
         };

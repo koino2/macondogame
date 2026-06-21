@@ -1,9 +1,6 @@
 package game.scripts.enemies;
 
-import game.scripts.npc.ClosestTargetScript;
-import game.scripts.weapons.Pistol;
 import game.scripts.weapons.WeaponScript;
-import lib.Object2D;
 import lib.Script;
 import lib.Sound;
 

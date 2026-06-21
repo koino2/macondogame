@@ -60,7 +60,7 @@ public class SampleScene extends Scene {
         addObject(player);
 
         block = new Object2D(500,500,200,200,45);
-        block.color = new Color(117, 255, 117);
+        block.setColor(new Color(117, 255, 117));
         block.zIndex = -1;
         addObject(block);
 
@@ -95,7 +95,7 @@ public class SampleScene extends Scene {
                 engine.getHeight(),
                 0
         );
-        bg.color = new Color(255, 255, 255);
+        bg.setColor(new Color(255, 255, 255));
         bg.tags.add("noCollision");
         bg.zIndex = -20;
         addObject(bg);

@@ -3,15 +3,19 @@ package game.levels;
 import game.prefabs.enemies.Enemy;
 import game.prefabs.Ghost;
 import game.prefabs.Player;
+import game.scripts.level.Reset;
 import game.scripts.level.spawnqueue.SpawnQueue;
 import game.scripts.level.spawnqueue.SpawnQueueItem;
+import game.scripts.misc.DebugFunctions;
 import game.scripts.player.CameraController;
 import game.scripts.player.recording.Recording;
 import lib.Camera;
+import lib.Input;
 import lib.Object2D;
 import lib.Scene;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -123,6 +127,8 @@ public abstract class Level extends Scene {
                 if(winTimer <= 0) {
                     onWin();
                 }
+            } else {
+                winTimer = initialWinTimer;
             }
         }
     }
@@ -131,6 +137,7 @@ public abstract class Level extends Scene {
     public List<Color> ghostColors = new ArrayList<>();
 
     public void startNewRun(){
+        winTimer = initialWinTimer;
         time = 0;
 
         if(player != null) {
@@ -160,7 +167,7 @@ public abstract class Level extends Scene {
                 public Object2D initObject() {
                     Ghost ghost = new Ghost(recordings.get(finalI));
                     ghost.texture = ghostTextures.get(finalI);
-                    ghost.color = ghostColors.get(finalI);
+                    ghost.setColor(ghostColors.get(finalI));
                     ghosts.add(ghost);
                     return ghost;
                 }
@@ -192,14 +199,30 @@ public abstract class Level extends Scene {
         sceneCamera.addScript(cameraController);
         addObject(sceneCamera);
         this.camera = sceneCamera;
+
+        scriptObject.addScript(new Reset());
+        scriptObject.addScript(new DebugFunctions());
     }
 
     double time = 0;
 
+    double selfDestructTime = 0;
+
     @Override
     public void update(double deltaTime) {
+        time += deltaTime;
         updateCamera();
         checkRunState(deltaTime);
+
+        selfDestructTime += deltaTime;
+        if(Input.isKeyDown(KeyEvent.VK_X) && selfDestructTime > 1f){
+            clearEnemies();
+            clearGhosts();
+            spawnQueue.clearQueue();
+            winTimer = initialWinTimer;
+            startNewRun();
+            selfDestructTime = 0;
+        }
     }
 
     @Override

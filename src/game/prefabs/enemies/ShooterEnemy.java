@@ -3,11 +3,7 @@ package game.prefabs.enemies;
 import game.scripts.enemies.EnemyScript;
 import game.scripts.enemies.ShooterScript;
 import game.scripts.npc.ClosestTargetScript;
-import game.scripts.weapons.Pistol;
-import game.scripts.weapons.WeaponScript;
-import lib.Object2D;
-import lib.Script;
-import lib.StaticTextures;
+import game.scripts.weapons.pistol.Pistol;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -22,7 +18,7 @@ public class ShooterEnemy extends Enemy{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        this.color = new Color(255, 255, 255);
+        setColor(new Color(255, 255, 255));
 
         ShooterScript shooterScript = new ShooterScript();
         shooterScript.cts = new ClosestTargetScript("player");

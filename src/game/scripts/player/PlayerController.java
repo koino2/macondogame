@@ -1,6 +1,6 @@
 package game.scripts.player;
 
-import game.scripts.weapons.Pistol;
+import game.scripts.weapons.pistol.Pistol;
 import lib.*;
 
 import java.awt.*;
