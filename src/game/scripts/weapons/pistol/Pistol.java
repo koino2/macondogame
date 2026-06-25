@@ -32,6 +32,18 @@ public class Pistol extends WeaponScript {
         this.damage = damage;
     }
 
+    public Point getRotatedPosition(){
+        double rad = Math.toRadians(object.globalRotation);
+
+        float rotatedX = (float) (offsetX * Math.cos(rad) - offsetY * Math.sin(rad));
+        float rotatedY = (float) (offsetX * Math.sin(rad) + offsetY * Math.cos(rad));
+
+        return new Point(
+                Math.round(object.xPos + rotatedX),
+                Math.round(object.yPos + rotatedY)
+        );
+    }
+
     @Override
     public void fire(Point target) {
         if(canFire()){
@@ -45,7 +57,7 @@ public class Pistol extends WeaponScript {
                 targetY += rng.nextInt(-randomness, randomness);
             }
 
-            Bullet bullet = new Bullet(new Point(targetX, targetY), object, offsetX, offsetY, excludeTag, bulletSpeed, damage);
+            PistolBullet bullet = new PistolBullet(new Point(targetX, targetY), getRotatedPosition(), excludeTag);
             bullet.setColor(bulletColor);
             bullet.zIndex = 100;
             bullet.collisionScript.collidableObjects = object.scene.objects;
@@ -78,7 +90,7 @@ public class Pistol extends WeaponScript {
                 targetY = predictedY + rng.nextInt(-randomness, randomness);
             }
 
-            Bullet bullet = new Bullet(new Point(targetX, targetY), object, offsetX, offsetY, excludeTag, bulletSpeed, damage);
+            PistolBullet bullet = new PistolBullet(new Point(targetX, targetY), getRotatedPosition(), excludeTag);
             bullet.setColor(new Color(255, 99, 99));
             bullet.zIndex = 100;
             bullet.collisionScript.collidableObjects = object.scene.objects;

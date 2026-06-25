@@ -23,6 +23,7 @@ public class ShooterEnemy extends Enemy{
         ShooterScript shooterScript = new ShooterScript();
         shooterScript.cts = new ClosestTargetScript("player");
         shooterScript.weaponScript = new Pistol(0, 1, 10, "enemy");
+        shooterScript.weaponScript.cooldown = 0.1f;
         addScript(shooterScript);
     }
 }
