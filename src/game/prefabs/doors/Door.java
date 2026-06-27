@@ -38,14 +38,15 @@ public class Door extends Object2D {
     Animation openAnimation;
     public void open(){
         openAnimation = new Animation();
-        openAnimation.addKeyframe(0f, xPos, yPos, xSize, ySize, 0);
+        openAnimation.addKeyframe(0f, xPos, yPos, xSize, ySize, 0, color);
         openAnimation.addKeyframe(
                 time,
                 defaultX + ((defaultXSize -xSizeAfter)/2f)*directionX,
                 defaultY + ((defaultYSize -ySizeAfter)/2f)*directionY,
                 openAnimation.lerp(defaultXSize, xSizeAfter, Math.abs(directionX)),
                 openAnimation.lerp(defaultYSize, ySizeAfter, Math.abs(directionY)),
-                0
+                0,
+                color
         );
         addScript(openAnimation);
         openAnimation.play();
@@ -53,8 +54,8 @@ public class Door extends Object2D {
     Animation closeAnimation;
     public void close(){
         closeAnimation = new Animation();
-        closeAnimation.addKeyframe(0f, xPos, yPos, xSize, ySize, 0);
-        closeAnimation.addKeyframe(time, defaultX, defaultY, defaultXSize, defaultYSize, 0);
+        closeAnimation.addKeyframe(0f, xPos, yPos, xSize, ySize, 0, color);
+        closeAnimation.addKeyframe(time, defaultX, defaultY, defaultXSize, defaultYSize, 0, color);
         addScript(closeAnimation);
         closeAnimation.play();
     }

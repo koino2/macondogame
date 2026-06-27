@@ -47,6 +47,8 @@ public abstract class Level extends Scene {
     public CameraController cameraController;
     public Object2D cameraFallbackObject;
 
+    public Object2D trash;
+
     public void clearEnemies(){
         for (int i = 0; i < enemies.size(); i++) {
             enemies.get(i).destroy();
@@ -137,6 +139,10 @@ public abstract class Level extends Scene {
     public List<Color> ghostColors = new ArrayList<>();
 
     public void startNewRun(){
+        trash.destroy();
+        trash = new Object2D(0, 0, 0, 0, 0);
+        addObject(trash);
+
         winTimer = initialWinTimer;
         time = 0;
 
@@ -185,6 +191,8 @@ public abstract class Level extends Scene {
 
     @Override
     public void start() {
+        trash = new Object2D(0, 0, 0, 0, 0);
+        addObject(trash);
         //this.player = initPlayer();
         //addObject(player);
         buildObjects();

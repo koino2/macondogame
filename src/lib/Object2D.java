@@ -39,6 +39,8 @@ public class Object2D {
     public Scene scene;
     public List<Script> scripts = new ArrayList<>();
 
+    public boolean started = false;
+
     public Object2D(float x, float y, float xSize, float ySize, float rotation){
         this.xPos = x;
         this.yPos = y;
@@ -47,16 +49,27 @@ public class Object2D {
         this.rotation = rotation;
     }
 
+    public void onObjectStart(){}
+
     public void start(){
+        onObjectStart();
         for (int i = 0; i < scripts.size(); i++) {
             if(!scripts.get(i).started) {
                 scripts.get(i).start();
             }
             scripts.get(i).started = true;
         }
+        for (int i = 0; i < children.size(); i++) {
+            children.get(i).start();
+        }
+        started = true;
     }
 
     public void update(double deltaTime){
+
+        for (int i = 0; i < children.size(); i++) {
+            children.get(i).start();
+        }
 
         if(destroyed){
             for (int i = 0; i < sounds.size(); i++) {

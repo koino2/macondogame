@@ -1,5 +1,6 @@
 package game.scripts.player;
 
+import game.scripts.weapons.cannon.Cannon;
 import game.scripts.weapons.pistol.Pistol;
 import lib.*;
 
@@ -12,7 +13,7 @@ public class PlayerController extends Script {
 
     Sound footstepsSound = new Sound("src/assets/footsteps.wav");
 
-    Pistol pistol;
+    Cannon pistol;
 
     public boolean shot = false;
     public float shotX = 0;
@@ -22,8 +23,7 @@ public class PlayerController extends Script {
     public void start() {
         player = object;
 
-        pistol = new Pistol(0, 0, 10, "player");
-        pistol.cooldown = 0.2f;
+        pistol = new Cannon(0, 0, 10, "player");
         pistol.offsetX = 60;
         pistol.offsetY = 5;
         pistol.bulletColor = new Color(255, 179, 50);

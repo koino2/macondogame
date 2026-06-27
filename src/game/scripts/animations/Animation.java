@@ -2,6 +2,7 @@ package game.scripts.animations;
 
 import lib.Script;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,13 +26,14 @@ public class Animation extends Script {
         // and add that to a.
     }
 
-    public void addKeyframe(double timeAdded, float x, float y, float xSize, float ySize, float rot){
+    public void addKeyframe(double timeAdded, float x, float y, float xSize, float ySize, float rot, Color color){
         AnimationKeyframe frame = new AnimationKeyframe();
         frame.x = x;
         frame.y = y;
         frame.xSize = xSize;
         frame.ySize = ySize;
         frame.rotation = rot;
+        frame.color = color;
 
         if(!frames.isEmpty()){
             frame.time = frames.get(frames.size()-1).time + timeAdded;
@@ -85,6 +87,13 @@ public class Animation extends Script {
                 object.xSize = lerp(previousKeyFrame.xSize, nextKeyFrame.xSize, t);
                 object.ySize = lerp(previousKeyFrame.ySize, nextKeyFrame.ySize, t);
                 object.rotation = lerp(previousKeyFrame.rotation, nextKeyFrame.rotation, t);
+
+                object.setColor(new Color(
+                        (int) lerp(previousKeyFrame.color.getRed(), nextKeyFrame.color.getRed(), t),
+                        (int) lerp(previousKeyFrame.color.getGreen(), nextKeyFrame.color.getGreen(), t),
+                        (int) lerp(previousKeyFrame.color.getBlue(), nextKeyFrame.color.getBlue(), t),
+                        (int) lerp(previousKeyFrame.color.getAlpha(), nextKeyFrame.color.getAlpha(), t)
+                ));
 
             }
         }
