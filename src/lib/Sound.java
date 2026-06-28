@@ -8,6 +8,8 @@ public class Sound {
     public FloatControl pan;
     public FloatControl volume;
 
+    public float volumeMultiplier = 0.5f;
+
     public Sound(String path){
         try {
             AudioInputStream audio = AudioSystem.getAudioInputStream(new File(path));
@@ -38,10 +40,14 @@ public class Sound {
     public void setPan(float pan){
         this.pan.setValue(pan);
     }
-    public void setVolume(float volume){
-        this.volume.setValue(
-                (float) (20f * Math.log10(Math.max(0.0001f, volume)))
-        );
+
+    public void setVolume(float volume) {
+        float db = (float) (20f * Math.log10(Math.max(0.0001f, volume * volumeMultiplier)));
+
+        db = Math.max(this.volume.getMinimum(),
+                Math.min(this.volume.getMaximum(), db));
+
+        this.volume.setValue(db);
     }
 
 }

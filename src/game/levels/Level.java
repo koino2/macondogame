@@ -7,6 +7,7 @@ import game.scripts.level.Reset;
 import game.scripts.level.spawnqueue.SpawnQueue;
 import game.scripts.level.spawnqueue.SpawnQueueItem;
 import game.scripts.misc.DebugFunctions;
+import game.scripts.misc.pause.Pause;
 import game.scripts.player.CameraController;
 import game.scripts.player.recording.Recording;
 import lib.Camera;
@@ -193,14 +194,14 @@ public abstract class Level extends Scene {
     public void start() {
         trash = new Object2D(0, 0, 0, 0, 0);
         addObject(trash);
-        //this.player = initPlayer();
-        //addObject(player);
+
         buildObjects();
         startNewRun();
 
         scriptObject = new Object2D(0, 0, 0, 0, 0);
         addObject(scriptObject);
         scriptObject.addScript(spawnQueue);
+        scriptObject.addScript(new Pause());
 
         sceneCamera = new Camera(0, 0, 0);
         cameraController = new CameraController(cameraFallbackObject);

@@ -14,18 +14,25 @@ public class Input {
     private static final Set<Integer> mousePressed = new HashSet<>();
     private static final Set<Integer> mouseReleased = new HashSet<>();
 
+    private static final Set<Integer> keysPressed = new HashSet<>();
+    private static final Set<Integer> keysReleased = new HashSet<>();
+
     public static float scrollDelta = 0;
 
     public static void attach(JPanel panel){
         panel.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
+                if (!keys.contains(e.getKeyCode())){
+                    keysPressed.add(e.getKeyCode());
+                }
                 keys.add(e.getKeyCode());
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
                 keys.remove(e.getKeyCode());
+                keysReleased.add(e.getKeyCode());
             }
         });
         panel.addMouseMotionListener(new MouseAdapter() {
@@ -64,6 +71,8 @@ public class Input {
         panel.requestFocus();
     }
     public static void endFrame(){
+        keysPressed.clear();
+        keysReleased.clear();
         mousePressed.clear();
         mouseReleased.clear();
         scrollDelta = 0;
@@ -71,6 +80,12 @@ public class Input {
 
     public static boolean isKeyDown(int key){
         return keys.contains(key);
+    }
+    public static boolean isKeyPressed(int key){
+        return keysPressed.contains(key);
+    }
+    public static boolean isKeyReleased(int key){
+        return keysReleased.contains(key);
     }
     public static Point getMousePosition(){
         return mousePos;

@@ -5,18 +5,23 @@ import java.awt.*;
 
 public class Engine extends JPanel {
 
-    public Scene currentScene;
+    public volatile Scene currentScene;
+    private volatile Scene pendingScene = null;
+
     long lastTime;
 
-    public Engine(Scene scene){
+    private final Object renderLock = new Object();
+
+    public Engine(Scene scene) {
         this.currentScene = scene;
         lastTime = System.nanoTime();
 
         Input.attach(this);
         new Thread(this::gameLoop).start();
+        //new Timer(0, e -> gameLoop()).start();
     }
 
-    public void gameLoop(){
+    public void gameLoop() {
         while (true) {
             long now = System.nanoTime();
             double dt = (now - lastTime) / 1_000_000_000.0;
@@ -24,8 +29,8 @@ public class Engine extends JPanel {
 
             currentScene.engine = this;
 
-            if(currentScene.started == false){
-                while (getWidth() == 0){
+            if (currentScene.started == false) {
+                while (getWidth() == 0) {
                     try {
                         Thread.sleep(1);
                     } catch (InterruptedException e) {
@@ -40,6 +45,13 @@ public class Engine extends JPanel {
 
             currentScene.update(dt);
             currentScene.updateObjects(dt);
+
+            if (pendingScene != null){
+                pendingScene.engine = this;
+                currentScene = pendingScene;
+                pendingScene = null;
+            }
+
             Input.endFrame();
             repaint();
 
@@ -51,17 +63,17 @@ public class Engine extends JPanel {
         }
     }
 
-    public void changeScene (Scene newScene){
-        currentScene.destroy();
-        currentScene = newScene;
+    public void changeScene(Scene newScene) {
+        pendingScene = newScene;
     }
 
     @Override
     protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        currentScene.render(g);
-        currentScene.renderUI(g);
-        currentScene.renderUIObjects(g);
+        if (currentScene != null) {
+            currentScene.render(g);
+            currentScene.renderUI(g);
+            currentScene.renderUIObjects(g);
+        }
     }
 
     @Override

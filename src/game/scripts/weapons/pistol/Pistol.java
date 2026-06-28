@@ -30,6 +30,8 @@ public class Pistol extends WeaponScript {
         this.prediction = prediction;
         this.excludeTag = excludeTag;
         this.damage = damage;
+
+        this.soundVolume = 0.2f;
     }
 
     public Point getRotatedPosition(){
