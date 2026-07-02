@@ -8,8 +8,6 @@ import lib.Scene;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 public class PauseScene extends Scene {
 
@@ -19,36 +17,27 @@ public class PauseScene extends Scene {
         this.unpauseScene = scene;
     }
 
-    MenuState state = new MenuState();
+    MenuItem pointer;
 
     @Override
     public void start() {
-        MenuItem root = new MenuItem();
-        root.name = "Main Menu";
 
-        MenuItem play = new MenuItem();
-        play.name = "Play";
-        play.parent = root;
+        MenuItem root = new MenuItem("bruhpoo");
 
-        MenuItem settings = new MenuItem();
-        settings.name = "Settings";
-        settings.parent = root;
+        root.addSubMenu(new MenuItem("one"));
+        root.addSubMenu(new MenuItem("two"));
+        root.addSubMenu(new MenuItem("three"));
+        root.addSubMenu(new MenuItem("four"));
 
-        MenuItem exit = new MenuItem();
-        exit.name = "Exit";
-        exit.parent = root;
+        addObject(root);
 
-        root.children.add(play);
-        root.children.add(settings);
-        root.children.add(exit);
-
-        state.root = root;
-        state.current = play;
+        this.pointer = root;
 
         Camera camera = new Camera(0, 0, 0);
         this.camera = camera;
         CameraController cc = new CameraController(new Object2D(0, 0, 0, 0, 0));
         camera.addScript(cc);
+        addObject(camera);
     }
 
     @Override
@@ -58,40 +47,39 @@ public class PauseScene extends Scene {
             engine.changeScene(unpauseScene);
         }
 
-        List<VisibleNode> visible = new ArrayList<>();
-        int index = -1;
-        for (int i = 0; i < visible.size(); i++) {
-            if (visible.get(i).item == state.current){
-                index = i;
-                break;
+        if (Input.isKeyPressed(KeyEvent.VK_A)){
+            if (pointer.parentMenu != null){
+                pointer = pointer.parentMenu;
             }
+            pointer.removeSubMenus();
         }
-
-        if (Input.isKeyPressed(KeyEvent.VK_S)){
-            if (index > visible.size()-1){
-                state.current = visible.get(index+1).item;
+        if (Input.isKeyPressed(KeyEvent.VK_D)){
+            pointer.addChildren();
+            if (!pointer.subMenus.isEmpty()){
+                pointer = pointer.subMenus.get(0);
             }
         }
         if (Input.isKeyPressed(KeyEvent.VK_W)){
-            if (index > 0){
-                state.current = visible.get(index+1).item;
+            if (pointer.parentMenu != null) {
+                int index = pointer.parentMenu.subMenus.indexOf(pointer);
+
+                if (index != 0 && index < pointer.parentMenu.subMenus.size()) {
+                    pointer = pointer.parentMenu.subMenus.get(index - 1);
+                }
             }
         }
-        if (Input.isKeyPressed(KeyEvent.VK_D)){
-            if (!state.current.children.isEmpty()){
-                state.current.expanded = true;
+        if (Input.isKeyPressed(KeyEvent.VK_S)){
+            if (pointer.parentMenu != null) {
+                int index = pointer.parentMenu.subMenus.indexOf(pointer);
+
+                if (pointer.parentMenu.subMenus.size() > index+1) {
+                    pointer = pointer.parentMenu.subMenus.get(index + 1);
+                }
             }
         }
-        if (Input.isKeyPressed(KeyEvent.VK_A)){
-            if (state.current.parent != null){
-                state.current = state.current.parent;
-            }
-        }
+
         if (Input.isKeyPressed(KeyEvent.VK_SPACE)){
-            System.out.println(state.current.name);
-            if (state.current.action != null){
-                state.current.action.run();
-            }
+            System.out.println(pointer.name);
         }
     }
 
@@ -100,14 +88,6 @@ public class PauseScene extends Scene {
     @Override
     public void renderUI(Graphics g) {
         g.setColor(bgColor);
-        g.fillRect(0, 0, engine.getWidth(), engine.getHeight());
-
-        MenuRenderer renderer = new MenuRenderer();
-
-        List<VisibleNode> visible = renderer.buildVisible(state.root);
-
-        g.setColor(Color.BLUE);
-
-        renderer.render(g, visible, state.current);
+        //g.fillRect(0, 0, engine.getWidth(), engine.getHeight());
     }
 }
