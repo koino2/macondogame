@@ -12,7 +12,7 @@ public class MenuItem extends Object2D {
     BufferedImage kakoos = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
     Graphics fontG = kakoos.createGraphics();
 
-    public Font font = new Font("Roboto Mono", Font.PLAIN, 50);
+    public Font font = new Font("Comic Sans MS", Font.PLAIN, 50);
     FontMetrics fm;
 
     public String name;
@@ -63,7 +63,11 @@ public class MenuItem extends Object2D {
 
     public void refreshTexture(){
         BufferedImage img = new BufferedImage(fm.stringWidth(name), fm.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics g = img.createGraphics();
+        Graphics2D g = img.createGraphics();
+
+        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
         g.setColor(color);
         g.setFont(font);
         g.drawString(name, 0, fm.getAscent());

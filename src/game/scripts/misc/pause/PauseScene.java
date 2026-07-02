@@ -1,10 +1,7 @@
 package game.scripts.misc.pause;
 
 import game.scripts.player.CameraController;
-import lib.Camera;
-import lib.Input;
-import lib.Object2D;
-import lib.Scene;
+import lib.*;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -18,6 +15,8 @@ public class PauseScene extends Scene {
     }
 
     MenuItem pointer;
+
+    CameraController cameraController;
 
     @Override
     public void start() {
@@ -35,9 +34,13 @@ public class PauseScene extends Scene {
 
         Camera camera = new Camera(0, 0, 0);
         this.camera = camera;
-        CameraController cc = new CameraController(new Object2D(0, 0, 0, 0, 0));
-        camera.addScript(cc);
+        cameraController = new CameraController(new Object2D(0, 0, 0, 0, 0));
+        camera.addScript(cameraController);
         addObject(camera);
+    }
+
+    public void onMove(){
+        cameraController.target = pointer;
     }
 
     @Override
@@ -48,16 +51,32 @@ public class PauseScene extends Scene {
         }
 
         if (Input.isKeyPressed(KeyEvent.VK_A)){
+
             if (pointer.parentMenu != null){
                 pointer = pointer.parentMenu;
+
+                Sound sound = new Sound("src/assets/audio/ui/ui-navigate-1.wav");
+                camera.sounds.add(sound);
+                sound.play();
             }
             pointer.removeSubMenus();
+
+            onMove();
+
         }
         if (Input.isKeyPressed(KeyEvent.VK_D)){
+
             pointer.addChildren();
             if (!pointer.subMenus.isEmpty()){
                 pointer = pointer.subMenus.get(0);
+
+                Sound sound = new Sound("src/assets/audio/ui/ui-navigate-1.wav");
+                camera.sounds.add(sound);
+                sound.play();
             }
+
+            onMove();
+
         }
         if (Input.isKeyPressed(KeyEvent.VK_W)){
             if (pointer.parentMenu != null) {
@@ -65,8 +84,14 @@ public class PauseScene extends Scene {
 
                 if (index != 0 && index < pointer.parentMenu.subMenus.size()) {
                     pointer = pointer.parentMenu.subMenus.get(index - 1);
+
+                    Sound sound = new Sound("src/assets/audio/ui/ui-navigate-2.wav");
+                    camera.sounds.add(sound);
+                    sound.play();
                 }
             }
+
+            onMove();
         }
         if (Input.isKeyPressed(KeyEvent.VK_S)){
             if (pointer.parentMenu != null) {
@@ -74,8 +99,14 @@ public class PauseScene extends Scene {
 
                 if (pointer.parentMenu.subMenus.size() > index+1) {
                     pointer = pointer.parentMenu.subMenus.get(index + 1);
+
+                    Sound sound = new Sound("src/assets/audio/ui/ui-navigate-2.wav");
+                    camera.sounds.add(sound);
+                    sound.play();
                 }
             }
+
+            onMove();
         }
 
         if (Input.isKeyPressed(KeyEvent.VK_SPACE)){
