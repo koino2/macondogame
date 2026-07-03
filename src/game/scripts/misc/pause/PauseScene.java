@@ -5,6 +5,8 @@ import lib.*;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class PauseScene extends Scene {
 
@@ -18,29 +20,50 @@ public class PauseScene extends Scene {
 
     CameraController cameraController;
 
+    MenuItem root;
+
+    Font base;
+    Font defaultFont = new Font("Segoe UI", Font.PLAIN, 50);
+    Font selectedFont = new Font("Segoe UI", Font.BOLD, 50);
+
     @Override
     public void start() {
 
-        MenuItem root = new MenuItem("bruhpoo");
+        try (InputStream is = getClass().getResourceAsStream("/assets/fonts/Bitcount.ttf")) {
+            base = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(50f);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        defaultFont = base.deriveFont(Font.PLAIN);
+        selectedFont = base.deriveFont(Font.BOLD);
+
+        root = new MenuItem("bruhpoo");
 
         root.addSubMenu(new MenuItem("one"));
         root.addSubMenu(new MenuItem("two"));
         root.addSubMenu(new MenuItem("three"));
         root.addSubMenu(new MenuItem("four"));
 
+        root.rendered = false;
+        root.refreshTexture();
+
         addObject(root);
 
-        this.pointer = root;
+        this.pointer = root.subMenus.get(0);
+        root.addChildren();
 
         Camera camera = new Camera(0, 0, 0);
         this.camera = camera;
-        cameraController = new CameraController(new Object2D(0, 0, 0, 0, 0));
+        cameraController = new CameraController(root.subMenus.get(0));
         camera.addScript(cameraController);
         addObject(camera);
     }
 
-    public void onMove(){
+    public void onMove(MenuItem previous){
         cameraController.target = pointer;
+        previous.setFont(defaultFont);
+        pointer.setFont(selectedFont);
     }
 
     @Override
@@ -52,7 +75,9 @@ public class PauseScene extends Scene {
 
         if (Input.isKeyPressed(KeyEvent.VK_A)){
 
-            if (pointer.parentMenu != null){
+            MenuItem previous = pointer;
+
+            if (pointer.parentMenu != null && pointer.parentMenu != root){
                 pointer = pointer.parentMenu;
 
                 Sound sound = new Sound("src/assets/audio/ui/ui-navigate-1.wav");
@@ -61,10 +86,12 @@ public class PauseScene extends Scene {
             }
             pointer.removeSubMenus();
 
-            onMove();
+            onMove(previous);
 
         }
         if (Input.isKeyPressed(KeyEvent.VK_D)){
+
+            MenuItem previous = pointer;
 
             pointer.addChildren();
             if (!pointer.subMenus.isEmpty()){
@@ -75,10 +102,13 @@ public class PauseScene extends Scene {
                 sound.play();
             }
 
-            onMove();
+            onMove(previous);
 
         }
         if (Input.isKeyPressed(KeyEvent.VK_W)){
+
+            MenuItem previous = pointer;
+
             if (pointer.parentMenu != null) {
                 int index = pointer.parentMenu.subMenus.indexOf(pointer);
 
@@ -91,9 +121,12 @@ public class PauseScene extends Scene {
                 }
             }
 
-            onMove();
+            onMove(previous);
         }
         if (Input.isKeyPressed(KeyEvent.VK_S)){
+
+            MenuItem previous = pointer;
+
             if (pointer.parentMenu != null) {
                 int index = pointer.parentMenu.subMenus.indexOf(pointer);
 
@@ -106,7 +139,7 @@ public class PauseScene extends Scene {
                 }
             }
 
-            onMove();
+            onMove(previous);
         }
 
         if (Input.isKeyPressed(KeyEvent.VK_SPACE)){

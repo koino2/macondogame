@@ -12,7 +12,7 @@ public class MenuItem extends Object2D {
     BufferedImage kakoos = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
     Graphics fontG = kakoos.createGraphics();
 
-    public Font font = new Font("Comic Sans MS", Font.PLAIN, 50);
+    public Font font = new Font("Segoe UI", Font.PLAIN, 50);
     FontMetrics fm;
 
     public String name;
@@ -23,10 +23,14 @@ public class MenuItem extends Object2D {
 
     List<MenuItem> subMenus = new ArrayList<>();
 
+    public boolean rendered = true;
+
     public void addSubMenu(MenuItem item){
         subMenus.add(item);
         item.parentMenu = this;
     }
+
+    Object2D item;
 
     public void addChildren(){
         for (int i = 0; i < subMenus.size(); i++) {
@@ -36,7 +40,7 @@ public class MenuItem extends Object2D {
             }
             addChild(subMenus.get(i));
 
-            Object2D item = new Object2D(
+            item = new Object2D(
                     subMenus.get(i).xPos,
                     subMenus.get(i).yPos,
                     subMenus.get(i).xSize,
@@ -62,19 +66,23 @@ public class MenuItem extends Object2D {
     }
 
     public void refreshTexture(){
-        BufferedImage img = new BufferedImage(fm.stringWidth(name), fm.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = img.createGraphics();
+        if (rendered) {
+            BufferedImage img = new BufferedImage(fm.stringWidth(name), fm.getHeight(), BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g = img.createGraphics();
 
-        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        g.setColor(color);
-        g.setFont(font);
-        g.drawString(name, 0, fm.getAscent());
-        this.texture = img;
+            g.setColor(color);
+            g.setFont(font);
+            g.drawString(name, 0, fm.getAscent());
+            this.texture = img;
 
-        xSize = fm.stringWidth(name);
-        ySize = fm.getAscent();
+            xSize = fm.stringWidth(name);
+            ySize = fm.getAscent();
+        } else{
+            this.texture = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+        }
     }
 
     public void setFont(Font font){
