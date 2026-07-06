@@ -2,6 +2,8 @@ package game.scripts.misc.pause;
 
 import game.scripts.player.CameraController;
 import lib.*;
+import lib.postProcessEffects.Bloom;
+import lib.postProcessEffects.Vignette;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -95,6 +97,35 @@ public class PauseScene extends Scene {
         cameraController = new CameraController(pointer.visual);
         camera.addScript(cameraController);
         addObject(camera);
+
+        Object2D background = new Object2D(0, 0, 1, 1, 0);
+        background.zIndex = -100;
+        background.color = new Color(78, 34, 47);
+        background.addScript(new Script() {
+            @Override
+            public void start() {
+
+            }
+
+            @Override
+            public void update(double deltaTime) {
+                object.xSize = object.scene.engine.getWidth();
+                object.ySize = object.scene.engine.getHeight();
+            }
+        });
+        cameraController.maxZoom = 1;
+        cameraController.minZoom = 1;
+        camera.addChild(background);
+
+        BackgroundScript bg = new BackgroundScript();
+        background.addScript(bg);
+
+        Bloom bloom = new Bloom();
+        bloom.threshold = 0.9f;
+        postProcessEffects.add(bloom);
+
+        Vignette vignette = new Vignette();
+        postProcessEffects.add(vignette);
     }
 
     public void sound1(){

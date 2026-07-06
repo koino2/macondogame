@@ -28,7 +28,7 @@ public class MenuItemVisual extends Object2D {
         refreshTexture();
     }
 
-    public Color textColor = new Color(0, 0, 0);
+    public Color textColor = new Color(255, 255, 255);
 
     public void refreshTexture() {
 
