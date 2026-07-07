@@ -1,6 +1,7 @@
 package game.scripts.misc.pause;
 
 import game.scripts.player.CameraController;
+import game.scripts.ui.DebugText;
 import lib.*;
 import lib.postProcessEffects.Bloom;
 import lib.postProcessEffects.Vignette;
@@ -126,6 +127,8 @@ public class PauseScene extends Scene {
 
         Vignette vignette = new Vignette();
         postProcessEffects.add(vignette);
+
+        camera.addScript(new DebugText());
     }
 
     public void sound1(){
@@ -136,6 +139,12 @@ public class PauseScene extends Scene {
 
     public void sound2(){
         Sound sound = new Sound("src/assets/audio/ui/ui-navigate-2.wav");
+        camera.sounds.add(sound);
+        sound.play();
+    }
+
+    public void sound3(){
+        Sound sound = new Sound("src/assets/audio/ui/ui-navigate-3.wav");
         camera.sounds.add(sound);
         sound.play();
     }
@@ -204,6 +213,7 @@ public class PauseScene extends Scene {
     }
 
     public void action(){
+        sound3();
         if (pointer.action != null) {
             pointer.action.run();
         }
