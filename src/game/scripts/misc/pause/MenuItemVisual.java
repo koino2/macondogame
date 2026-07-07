@@ -14,6 +14,8 @@ public class MenuItemVisual extends Object2D {
 
     FontMetrics fm;
 
+    public int textureResMultiplier = 1;
+
     public MenuItemVisual(MenuItem item) {
         super(0, 0, 1, 1, 0);
 
@@ -32,7 +34,9 @@ public class MenuItemVisual extends Object2D {
 
     public void refreshTexture() {
 
-        fg.setFont(font);
+        Font scaledFont = font.deriveFont(font.getSize2D()*textureResMultiplier);
+
+        fg.setFont(scaledFont);
         fm = fg.getFontMetrics();
 
         BufferedImage img = new BufferedImage(fm.stringWidth(item.name), fm.getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -42,12 +46,14 @@ public class MenuItemVisual extends Object2D {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         g.setColor(textColor);
-        g.setFont(font);
+
+        g.setFont(scaledFont);
         g.drawString(item.name, 0, fm.getAscent());
         this.texture = img;
 
-        xSize = fm.stringWidth(item.name);
-        ySize = fm.getAscent();
+        xSize = (float) fm.stringWidth(item.name) / textureResMultiplier;
+        ySize = (float) fm.getAscent() / textureResMultiplier;
 
+        g.dispose();
     }
 }
