@@ -89,6 +89,8 @@ public abstract class Scene {
         BufferedImage sceneBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D bufferGraphics = sceneBuffer.createGraphics();
 
+        bufferGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
         bufferGraphics.setColor(ambientColor);
         bufferGraphics.fillRect(0,0,engine.getWidth(), engine.getHeight());
 
