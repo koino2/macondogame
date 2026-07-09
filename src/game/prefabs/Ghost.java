@@ -37,7 +37,8 @@ public class Ghost extends Object2D {
         addScript(new Script() {
             @Override
             public void start() {
-                Sound spawnSound = new Sound(spawnSoundPath);
+                Sound spawnSound = new Sound(spawnSoundPath, 1);
+                sounds.add(spawnSound);
                 spawnSound.setVolume(2);
                 spawnSound.play();
             }

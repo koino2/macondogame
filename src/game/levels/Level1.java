@@ -4,6 +4,7 @@ import game.prefabs.doors.Spawnpoint;
 import game.prefabs.enemies.ShooterEnemy;
 import game.prefabs.enemies.Turret;
 import game.scripts.animations.AnimatedTexture;
+import game.scripts.misc.Settings;
 import lib.*;
 import lib.postProcessEffects.Bloom;
 import game.prefabs.enemies.Enemy;
@@ -29,7 +30,7 @@ public class Level1 extends Level {
                 objects.get(i).addScript(new AnimatedTexture("src/assets/textures/objects/boom.png", 2));
             }
             won = true;
-            Sound sound = new Sound("src/assets/spawn.wav");
+            Sound sound = new Sound("src/assets/spawn.wav", 1, Settings.volume);
             player.sounds.add(sound);
             sound.play();
         }

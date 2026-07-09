@@ -33,7 +33,8 @@ public abstract class WeaponScript extends Script {
         timer = 0;
     }
     public void playSound(){
-        Sound sound = new Sound(soundPath);
+        Sound sound = new Sound(soundPath, 1);
+        object.sounds.add(sound);
         sound.setVolume(soundVolume);
         sound.play();
     }

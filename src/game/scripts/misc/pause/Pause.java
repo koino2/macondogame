@@ -1,19 +1,25 @@
 package game.scripts.misc.pause;
 
-import game.levels.SampleScene;
+import game.scripts.misc.Settings;
 import lib.Input;
-import lib.Scene;
 import lib.Script;
 
 import java.awt.event.KeyEvent;
 
 public class Pause extends Script {
 
-    Scene pauseScene;
+    PauseScene pauseScene;
+
+    public Settings settings;
+
+    public Pause(){
+
+    }
 
     @Override
     public void start() {
-
+        this.settings = new Settings();
+        object.addScript(settings);
     }
 
     int frame = 0;
@@ -23,6 +29,7 @@ public class Pause extends Script {
         frame++;
         if(Input.isKeyPressed(KeyEvent.VK_ESCAPE) && frame > 1){
             pauseScene = new PauseScene(object.scene);
+            pauseScene.sceneSettings = settings;
             frame = 0;
             object.scene.engine.changeScene(pauseScene);
         }

@@ -11,7 +11,7 @@ import java.awt.event.MouseEvent;
 public class PlayerController extends Script {
     Object2D player;
 
-    Sound footstepsSound = new Sound("src/assets/footsteps.wav");
+    Sound footstepsSound;
 
     Cannon pistol;
 
@@ -28,6 +28,7 @@ public class PlayerController extends Script {
         pistol.offsetY = 5;
         pistol.bulletColor = new Color(255, 179, 50);
 
+        footstepsSound = new Sound("src/assets/footsteps.wav", 1);
         object.sounds.add(footstepsSound);
         object.addScript(pistol);
     }
@@ -53,28 +54,6 @@ public class PlayerController extends Script {
             shotX = mouseWorldX;
             shotY = mouseWorldY;
         }
-
-        /*boolean shot = false;
-        int shotX = 0;
-        int shotY = 0;
-
-        if (Input.isMouseDown(MouseEvent.BUTTON1) && point != null) {
-            long timeNow = System.nanoTime();
-            if(timeNow - lastShot > 0.2f * 1_000_000_000) {
-                Sound sound = new Sound("src/assets/shoot.wav");
-                sound.setVolume(0.5f);
-                sound.play();
-                float mouseWorldX = (float)((point.x-object.scene.engine.getWidth()/2.0)/object.scene.camera.scale+object.scene.camera.globalX);
-                float mouseWorldY = (float)((point.y-object.scene.engine.getHeight()/2.0)/object.scene.camera.scale+object.scene.camera.globalY);
-                Bullet bullet = new Bullet(new Point((int) mouseWorldX, (int) mouseWorldY), player, 60, 5, "player", 500);
-                bullet.collisionScript.collidableObjects = object.scene.objects;
-                object.scene.addObject(bullet);
-                lastShot = timeNow;
-                shot = true;
-                shotX = (int) mouseWorldX;
-                shotY = (int) mouseWorldY;
-            }
-        }*/
 
         player.xAcceleration = 0;
         player.yAcceleration = 0;

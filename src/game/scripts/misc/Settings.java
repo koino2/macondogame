@@ -4,31 +4,41 @@ import lib.Object2D;
 import lib.Script;
 import lib.Sound;
 
+import java.util.List;
+
 public class Settings extends Script {
 
-    public float volume = 0.5f;
+    public static float volume = 0.1f;
 
     public void setVolume(float newVolume){
         volume = newVolume;
-        for (int i = 0; i < object.scene.objects.size(); i++) {
-            for (int j = 0; j < object.scene.objects.get(i).getDescendants().size(); j++) {
-                for (Sound sound : object.scene.objects.get(i).getDescendants().get(j).sounds){
+
+        for (Object2D obj : object.scene.objects){
+            for (Object2D descendant : obj.getDescendants()){
+                for (Sound sound : descendant.sounds){
                     sound.volumeMultiplier = volume;
+                    sound.setVolume(sound.defaultVolume);
                 }
             }
-            for (Sound sound : object.scene.objects.get(i).sounds){
+            for (Sound sound : obj.sounds){
                 sound.volumeMultiplier = volume;
+                sound.setVolume(sound.defaultVolume);
             }
         }
     }
 
+    public void updateSettings(){
+        setVolume(volume);
+        System.out.println("update");
+    }
+
     @Override
     public void start() {
-
+        updateSettings();
     }
 
     @Override
     public void update(double deltaTime) {
-
+        //setVolume(volume);
     }
 }

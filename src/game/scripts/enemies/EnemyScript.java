@@ -19,7 +19,8 @@ public class EnemyScript extends Script {
     @Override
     public void start() {
 
-        Sound spawnSound = new Sound(spawnSoundPath);
+        Sound spawnSound = new Sound(spawnSoundPath, 1);
+        object.sounds.add(spawnSound);
         spawnSound.setVolume(2f);
         spawnSound.play();
 

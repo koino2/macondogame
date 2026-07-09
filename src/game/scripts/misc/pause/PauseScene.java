@@ -1,5 +1,6 @@
 package game.scripts.misc.pause;
 
+import game.scripts.misc.Settings;
 import game.scripts.player.CameraController;
 import game.scripts.ui.DebugText;
 import lib.*;
@@ -13,6 +14,9 @@ import java.io.InputStream;
 public class PauseScene extends Scene {
 
     public Scene unpauseScene;
+
+    public Settings sceneSettings;
+    public Settings settings;
 
     public PauseScene(Scene scene){
         this.unpauseScene = scene;
@@ -67,25 +71,45 @@ public class PauseScene extends Scene {
         defaultFont = base.deriveFont(Font.ITALIC);
         selectedFont = base.deriveFont(Font.BOLD);
 
+        Object2D scripts = new Object2D(0, 0, 0, 0, 0);
+        settings = new Settings();
+        scripts.addScript(settings);
+        addObject(scripts);
+
         root = new MenuItem("bruhpoo");
 
-        MenuItem numbers = new MenuItem("Numbers");
-        numbers.addSubMenu(new MenuItem("one"));
-        numbers.addSubMenu(new MenuItem("two"));
-        numbers.addSubMenu(new MenuItem("three"));
-        numbers.addSubMenu(new MenuItem("four"));
-        root.addSubMenu(numbers);
+        MenuItem resume = new MenuItem("Resume");
+        resume.action = () -> engine.changeScene(unpauseScene);;
+        root.addSubMenu(resume);
 
-        MenuItem alphabets = new MenuItem("Alphabets");
-        alphabets.addSubMenu(new MenuItem("a"));
-        alphabets.addSubMenu(new MenuItem("b"));
-        alphabets.addSubMenu(new MenuItem("c"));
-        alphabets.addSubMenu(new MenuItem("d"));
-        alphabets.addSubMenu(new MenuItem("e"));
-        alphabets.addSubMenu(new MenuItem("f"));
-        alphabets.addSubMenu(new MenuItem("g"));
-        alphabets.addSubMenu(new MenuItem("h"));
-        root.addSubMenu(alphabets);
+        MenuItem settingsMenu = new MenuItem("Settings");
+
+        MenuItem audio = new MenuItem("Audio");
+
+        MenuItem volumeLabel = new MenuItem("Volume: "+(int)(Settings.volume*100));
+        MenuItem increase = new MenuItem("+");
+        increase.action = () -> {
+            settings.setVolume(((Settings.volume *100)+10)/100);
+            volumeLabel.name = "Volume: "+((int)(Settings.volume*100));
+            volumeLabel.visual.refreshTexture();
+        };
+        MenuItem decrease = new MenuItem("-");
+        decrease.action = () -> {
+            settings.setVolume(((Settings.volume *100)-10)/100);
+            volumeLabel.name = "Volume: "+((Settings.volume*100));
+            volumeLabel.visual.refreshTexture();
+        };
+        audio.addSubMenu(increase);
+        audio.addSubMenu(volumeLabel);
+        audio.addSubMenu(decrease);
+
+        settingsMenu.addSubMenu(audio);
+
+        root.addSubMenu(settingsMenu);
+
+        MenuItem quit = new MenuItem("Quit");
+        quit.action = () -> System.exit(0);
+        root.addSubMenu(quit);
 
         this.pointer = root.subMenus.get(0);
 
@@ -132,20 +156,23 @@ public class PauseScene extends Scene {
     }
 
     public void sound1(){
-        Sound sound = new Sound("src/assets/audio/ui/ui-navigate-1.wav");
+        Sound sound = new Sound("src/assets/audio/ui/ui-navigate-1.wav", 1);
         camera.sounds.add(sound);
+        sound.setVolume(1);
         sound.play();
     }
 
     public void sound2(){
-        Sound sound = new Sound("src/assets/audio/ui/ui-navigate-2.wav");
+        Sound sound = new Sound("src/assets/audio/ui/ui-navigate-2.wav", 1);
         camera.sounds.add(sound);
+        sound.setVolume(1);
         sound.play();
     }
 
     public void sound3(){
-        Sound sound = new Sound("src/assets/audio/ui/ui-navigate-3.wav");
+        Sound sound = new Sound("src/assets/audio/ui/ui-navigate-3.wav", 1);
         camera.sounds.add(sound);
+        sound.setVolume(1);
         sound.play();
     }
 
@@ -217,6 +244,9 @@ public class PauseScene extends Scene {
         if (pointer.action != null) {
             pointer.action.run();
         }
+
+        sceneSettings.updateSettings();
+        settings.updateSettings();
     }
 
     public void updateFonts(MenuItem item){
@@ -238,6 +268,7 @@ public class PauseScene extends Scene {
         updateFonts(root);
 
         if (Input.isKeyPressed(KeyEvent.VK_ESCAPE)){
+            sceneSettings.updateSettings();
             engine.changeScene(unpauseScene);
         }
 

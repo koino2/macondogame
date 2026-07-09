@@ -13,7 +13,7 @@ public class CannonExplosion extends Object2D {
 
         tags.add("noCollision");
 
-        Sound sound = new Sound("src/assets/cannon-explode.wav");
+        Sound sound = new Sound("src/assets/cannon-explode.wav", 1);
         sound.setVolume(3);
         sounds.add(sound);
         sound.play();
