@@ -29,7 +29,6 @@ public class Settings extends Script {
 
     public void updateSettings(){
         setVolume(volume);
-        System.out.println("update");
     }
 
     @Override

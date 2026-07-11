@@ -86,17 +86,19 @@ public class PauseScene extends Scene {
 
         MenuItem audio = new MenuItem("Audio");
 
-        MenuItem volumeLabel = new MenuItem("Volume: "+(int)(Settings.volume*100));
+        MenuItem volumeLabel = new MenuItem("Volume: "+Math.round(Settings.volume*100));
         MenuItem increase = new MenuItem("+");
         increase.action = () -> {
-            settings.setVolume(((Settings.volume *100)+10)/100);
-            volumeLabel.name = "Volume: "+((int)(Settings.volume*100));
+            if (Math.round(Settings.volume*100) >= 200) return;
+            settings.setVolume(Settings.volume + 0.1f);
+            volumeLabel.name = "Volume: "+Math.round(Settings.volume*100);
             volumeLabel.visual.refreshTexture();
         };
         MenuItem decrease = new MenuItem("-");
         decrease.action = () -> {
-            settings.setVolume(((Settings.volume *100)-10)/100);
-            volumeLabel.name = "Volume: "+((Settings.volume*100));
+            if (Math.round(Settings.volume*100) <= 0) return;
+            settings.setVolume(Settings.volume - 0.1f);
+            volumeLabel.name = "Volume: "+Math.round(Settings.volume*100);
             volumeLabel.visual.refreshTexture();
         };
         audio.addSubMenu(increase);
