@@ -4,11 +4,9 @@ import lib.Object2D;
 import lib.Script;
 import lib.Sound;
 
-import java.util.List;
-
 public class Settings extends Script {
 
-    public static float volume = 0.1f;
+    public static float volume = 0.5f;
 
     public void setVolume(float newVolume){
         volume = newVolume;

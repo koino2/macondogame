@@ -32,22 +32,55 @@ public class PauseScene extends Scene {
     Font defaultFont = new Font("Segoe UI", Font.PLAIN, 300);
     Font selectedFont = new Font("Segoe UI", Font.BOLD, 300);
 
+    public MenuItemVisual getLongestMenu(MenuItem menu){
+        MenuItemVisual longest = null;
+        for (MenuItem item : menu.parentMenu.subMenus) {
+            if (item.visual == null) continue;
+            if (longest == null || item.visual.xSize > longest.xSize) {
+                longest = item.visual;
+            }
+        }
+        return longest;
+    }
+
     public void showChildren(MenuItem item){
         int y = 0;
+
+        float columnLeft;
+
+        if (item.visual == null){
+            columnLeft = 200;
+        } else {
+            MenuItemVisual longest = getLongestMenu(item);
+
+            columnLeft = item.visual.xPos + item.visual.xSize / 2f + 50;
+        }
         for (MenuItem child : item.subMenus) {
             MenuItemVisual visual = new MenuItemVisual(child);
 
-            if (item.visual != null) {
-                visual.xPos = item.visual.xPos + item.visual.texture.getWidth() + 100;
-            } else {
-                visual.xPos = 200;
-            }
+            visual.xPos = columnLeft + visual.xSize;
             visual.yPos = y;
 
             addObject(visual);
 
+            System.out.println(
+                    visual.item.name + "\n    globalX: "+visual.globalX+
+                            "\n    xPos: "+visual.xPos+
+                            "\n    parent: "+visual.parent+
+                            "\n    xSize: "+visual.xSize+
+                            "\n    Left: "+(visual.xPos-visual.xSize/2)
+            );
+
             y += 100;
         }
+    }
+
+    public Object2D camTarget = new Object2D(0, 0, 0, 0, 0);
+    public void updateCamTarget(){
+        MenuItemVisual longest = getLongestMenu(pointer);
+        camTarget.xPos = longest.globalX;
+        camTarget.yPos = pointer.visual.globalY;
+        cameraController.target = camTarget;
     }
 
     public void hideChildren(MenuItem parent){
@@ -121,7 +154,7 @@ public class PauseScene extends Scene {
 
         Camera camera = new Camera(0, 0, 0);
         this.camera = camera;
-        cameraController = new CameraController(pointer.visual);
+        cameraController = new CameraController(camTarget);
         camera.addScript(cameraController);
         addObject(camera);
 
@@ -143,6 +176,8 @@ public class PauseScene extends Scene {
         cameraController.maxZoom = 1;
         cameraController.minZoom = 1;
         camera.addChild(background);
+
+        addObject(camTarget);
 
         BackgroundScript bg = new BackgroundScript();
         background.addScript(bg);
@@ -179,7 +214,6 @@ public class PauseScene extends Scene {
     }
 
     public void onMove(MenuItem previous){
-        cameraController.target = pointer.visual;
         if (previous.visual == null) return;
         previous.visual.setFont(defaultFont);
         pointer.visual.setFont(selectedFont);
@@ -293,6 +327,8 @@ public class PauseScene extends Scene {
         if (Input.isKeyPressed(KeyEvent.VK_SPACE)){
             action();
         }
+
+        updateCamTarget();
 
     }
 
