@@ -7,7 +7,7 @@ import lib.Object2D;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExplodeOnCollision extends BulletScript {
+public class CannonExploder extends BulletScript {
     public List<String> excludeTags = new ArrayList<>();
 
     boolean exploded = false;

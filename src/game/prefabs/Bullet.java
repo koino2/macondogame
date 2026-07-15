@@ -18,6 +18,8 @@ public class Bullet extends Object2D {
     public float lifetime_ = 5f;
     public float speed;
 
+    public Point target;
+
     public Bullet(Point target, Point spawn, float sizeX, float sizeY, float rotation, float damage, float lifetime, float speed) {
 
         /*
@@ -31,6 +33,7 @@ public class Bullet extends Object2D {
         this.damage = damage;
         this.lifetime_ = lifetime;
         this.speed = speed;
+        this.target = target;
 
         float distanceX = (target.x - spawn.x) / (float) Math.hypot(target.x - spawn.x, target.y - spawn.y);
         float distanceY = (target.y - spawn.y) / (float) Math.hypot(target.x - spawn.x, target.y - spawn.y);

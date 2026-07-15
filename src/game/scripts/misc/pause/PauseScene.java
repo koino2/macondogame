@@ -63,14 +63,6 @@ public class PauseScene extends Scene {
 
             addObject(visual);
 
-            System.out.println(
-                    visual.item.name + "\n    globalX: "+visual.globalX+
-                            "\n    xPos: "+visual.xPos+
-                            "\n    parent: "+visual.parent+
-                            "\n    xSize: "+visual.xSize+
-                            "\n    Left: "+(visual.xPos-visual.xSize/2)
-            );
-
             y += 100;
         }
     }
