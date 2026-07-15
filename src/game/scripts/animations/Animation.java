@@ -13,6 +13,8 @@ public class Animation extends Script {
     public double time;
     public boolean playing = false;
 
+    public boolean keyframeLerp = false;
+
     public void onAnimationEnd(){}
 
     public double lerpTimeFunction(double t){
@@ -20,7 +22,7 @@ public class Animation extends Script {
     }
 
     public float lerp(float a, float b, double t) {
-        t = lerpTimeFunction(t);
+        if (keyframeLerp) t = lerpTimeFunction(t);
         return (float) (a + (b - a) * t); // b-a is the stuff between the two values,
         // multiply that by how much of the keyframe is done,
         // and add that to a.
@@ -60,13 +62,21 @@ public class Animation extends Script {
 
             time += deltaTime;
 
+            double animationTime = time;
+            if (!keyframeLerp){
+                double normalized = Math.min(time / frames.get(frames.size()-1).time, 1.0);
+
+                animationTime = lerpTimeFunction(normalized)
+                        * frames.get(frames.size()-1).time;
+            }
+
             AnimationKeyframe nextKeyFrame = null;
             AnimationKeyframe previousKeyFrame = null;
             for (int i = 0; i < frames.size(); i++) {
-                if (frames.get(i).time <= time) {
+                if (frames.get(i).time <= animationTime) {
                     previousKeyFrame = frames.get(i);
                 }
-                if (frames.get(i).time > time) {
+                if (frames.get(i).time > animationTime) {
                     nextKeyFrame = frames.get(i);
                     break;
                 }
@@ -80,7 +90,7 @@ public class Animation extends Script {
 
             if (previousKeyFrame != null) {
 
-                double t = (time - previousKeyFrame.time) / (nextKeyFrame.time - previousKeyFrame.time);
+                double t = (animationTime - previousKeyFrame.time) / (nextKeyFrame.time - previousKeyFrame.time);
 
                 object.xPos = lerp(previousKeyFrame.x, nextKeyFrame.x, t);
                 object.yPos = lerp(previousKeyFrame.y, nextKeyFrame.y, t);
