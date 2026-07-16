@@ -30,7 +30,7 @@ public class Cannon extends WeaponScript {
         this.excludeTag = excludeTag;
         this.damage = damage;
 
-        cooldown = 0.5f;
+        cooldown = 1f;
     }
 
     public Point getRotatedPosition(){

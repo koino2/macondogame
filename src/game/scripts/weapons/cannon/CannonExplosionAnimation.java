@@ -27,7 +27,7 @@ public class CannonExplosionAnimation extends Script {
             }
         };
         begin.addKeyframe(0, object.xPos, object.yPos, 20, 20, 0, new Color(122, 56, 47, 56));
-        begin.addKeyframe(.5f, object.xPos, object.yPos, 200, 200, 360, new Color(216, 109, 44, 134));
+        begin.addKeyframe(.5f, object.xPos, object.yPos, 100, 100, 360, new Color(216, 109, 44, 134));
         object.addScript(begin);
         begin.play();
     }
