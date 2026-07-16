@@ -44,8 +44,8 @@ public class CannonFlyAnimation extends Animation {
                 1,
                 object.xPos + xDist / 2,
                 object.yPos + yDist / 2,
-                object.xSize+10,
-                object.ySize+10,
+                object.xSize+20,
+                object.ySize+20,
                 object.rotation,
                 object.color
         );

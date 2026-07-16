@@ -13,6 +13,16 @@ public class CannonBullet extends Bullet {
 
     public CannonBullet(Point target, Point spawn, String exclude){
         super(target, spawn, 20, 20,  0, 10, 5, 0);
+
+        float dx = target.x - xPos;
+        float dy = target.y - yPos;
+        dx = Math.max(-200, Math.min(200, dx));
+        dy = Math.max(-200, Math.min(200, dy));
+        this.target = new Point(
+                (int) (xPos + dx),
+                (int) (yPos + dy)
+        );
+
         setColor(Color.ORANGE);
 
         List<String> excludeTags = new ArrayList<>();
