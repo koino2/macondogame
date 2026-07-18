@@ -10,6 +10,7 @@ import game.scripts.misc.DebugFunctions;
 import game.scripts.misc.pause.Pause;
 import game.scripts.player.CameraController;
 import game.scripts.player.recording.Recording;
+import game.scripts.weapons.WeaponScript;
 import lib.Camera;
 import lib.Input;
 import lib.Object2D;
@@ -35,6 +36,7 @@ public abstract class Level extends Scene {
     public abstract void initEnemies();
 
     public abstract void onWin();
+    public abstract void onLose();
 
     public double spawnInterval = 1d;
 
@@ -49,6 +51,8 @@ public abstract class Level extends Scene {
     public Object2D cameraFallbackObject;
 
     public Object2D trash;
+
+    public List<WeaponScript> weaponOrder = new ArrayList<>();
 
     public void clearEnemies(){
         for (int i = 0; i < enemies.size(); i++) {
@@ -153,6 +157,12 @@ public abstract class Level extends Scene {
         }
 
         player = initPlayer();
+
+        if (runNumber >= weaponOrder.size()){
+            onLose();
+        } else {
+            player.playerControllerScript.weapon = weaponOrder.get(runNumber);
+        }
 
         initEnemies();
 

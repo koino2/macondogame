@@ -5,6 +5,8 @@ import game.prefabs.enemies.ShooterEnemy;
 import game.prefabs.enemies.Turret;
 import game.scripts.animations.AnimatedTexture;
 import game.scripts.misc.Settings;
+import game.scripts.weapons.cannon.Cannon;
+import game.scripts.weapons.pistol.Pistol;
 import lib.*;
 import lib.postProcessEffects.Bloom;
 import game.prefabs.enemies.Enemy;
@@ -39,6 +41,10 @@ public class Level1 extends Level {
         }
     }
     @Override
+    public void onLose(){
+        System.exit(1);
+    }
+    @Override
     public void buildObjects() {
         // WALLS
         ambientColor = new Color(74, 74, 76);
@@ -47,6 +53,18 @@ public class Level1 extends Level {
         int wallWidth = engine.getWidth();
         int wallHeight = engine.getHeight();
         int wallThickness = 50;
+
+        Cannon cannon = new Cannon(0, 0, 10, "player");
+        cannon.offsetX = 60;
+        cannon.offsetY = 5;
+        cannon.bulletColor = new Color(255, 179, 50);
+        weaponOrder.add(cannon);
+
+        Pistol pistol = new Pistol(0, 0, 10, "player");
+        pistol.offsetX = 60;
+        pistol.offsetY = 5;
+        pistol.bulletColor = new Color(255, 179, 50);
+        weaponOrder.add(pistol);
 
         Object2D wall1 = new Object2D(0, wallHeight / 2f, wallThickness, wallHeight + wallThickness, 0);
         wall1.setColor(wallColor);
