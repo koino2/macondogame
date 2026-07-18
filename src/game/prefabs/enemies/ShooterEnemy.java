@@ -14,7 +14,7 @@ public class ShooterEnemy extends Enemy{
     public ShooterEnemy(int x, int y, int rot){
         super(x, y, rot, 100, 100, new EnemyScript(new Pistol(), new ClosestTargetScript("player")));
         try {
-            this.texture = ImageIO.read(new File("src/assets/textures/entities/robot1-red.png"));
+            this.texture = ImageIO.read(new File("src/assets/textures/entities/robot1-red-pcb.png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
