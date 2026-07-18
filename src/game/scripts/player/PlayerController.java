@@ -1,7 +1,6 @@
 package game.scripts.player;
 
 import game.scripts.weapons.cannon.Cannon;
-import game.scripts.weapons.pistol.Pistol;
 import lib.*;
 
 import java.awt.*;
@@ -13,7 +12,7 @@ public class PlayerController extends Script {
 
     Sound footstepsSound;
 
-    Cannon pistol;
+    public Cannon weapon;
 
     public boolean shot = false;
     public float shotX = 0;
@@ -23,14 +22,14 @@ public class PlayerController extends Script {
     public void start() {
         player = object;
 
-        pistol = new Cannon(0, 0, 10, "player");
-        pistol.offsetX = 60;
-        pistol.offsetY = 5;
-        pistol.bulletColor = new Color(255, 179, 50);
+        weapon = new Cannon(0, 0, 10, "player");
+        weapon.offsetX = 60;
+        weapon.offsetY = 5;
+        weapon.bulletColor = new Color(255, 179, 50);
 
         footstepsSound = new Sound("src/assets/footsteps.wav", 1);
         object.sounds.add(footstepsSound);
-        object.addScript(pistol);
+        object.addScript(weapon);
     }
 
     @Override
@@ -49,7 +48,7 @@ public class PlayerController extends Script {
         }
 
         if(Input.isMouseDown(MouseEvent.BUTTON1) && point != null){
-            pistol.fire(new Point((int) mouseWorldX, (int) mouseWorldY));
+            weapon.fire(new Point((int) mouseWorldX, (int) mouseWorldY));
             shot = true;
             shotX = mouseWorldX;
             shotY = mouseWorldY;

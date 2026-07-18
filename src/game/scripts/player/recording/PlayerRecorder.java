@@ -33,6 +33,7 @@ public class PlayerRecorder extends Script {
         frame.time = time;
 
         recording.addFrame(frame);
+        recording.weapon = player.playerControllerScript.weapon;
     }
 
     public void stopRecording(){
