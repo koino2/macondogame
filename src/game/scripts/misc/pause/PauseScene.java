@@ -4,6 +4,8 @@ import game.scripts.misc.Settings;
 import game.scripts.player.CameraController;
 import game.scripts.ui.DebugText;
 import lib.*;
+import lib.particles.ParticleEmitter;
+import lib.particles.ParticleScript;
 import lib.postProcessEffects.Bloom;
 import lib.postProcessEffects.Vignette;
 
@@ -268,6 +270,38 @@ public class PauseScene extends Scene {
     }
 
     public void action(){
+
+        ParticleEmitter emitter = new ParticleEmitter(0, 0){
+            @Override
+            public Object2D particle(float x, float y){
+                Object2D obj = new Object2D(x, y, 30, 30 ,0);
+                obj.color = new Color(117, 66, 80, 174);
+                obj.zIndex = -10;
+
+                ParticleScript script = new ParticleScript();
+                obj.addScript(script);
+
+                return obj;
+            }
+        };
+        emitter.spawnTime = 0f;
+        pointer.visual.addChild(emitter);
+        emitter.addScript(new Script() {
+            @Override
+            public void start() {
+
+            }
+
+            @Override
+            public void update(double deltaTime) {
+                if (emitter.particlesSpawned > 10) {
+                    emitter.spawnTime = 999;
+                    emitter.destroy();
+                }
+            }
+        });
+        emitter.particleHolder = pointer.visual;
+
         sound3();
         if (pointer.action != null) {
             pointer.action.run();
