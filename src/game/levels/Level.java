@@ -10,7 +10,6 @@ import game.scripts.misc.DebugFunctions;
 import game.scripts.misc.pause.Pause;
 import game.scripts.player.CameraController;
 import game.scripts.player.recording.Recording;
-import game.scripts.weapons.WeaponScript;
 import lib.Camera;
 import lib.Input;
 import lib.Object2D;

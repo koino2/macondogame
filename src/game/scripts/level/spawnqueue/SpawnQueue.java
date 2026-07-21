@@ -28,6 +28,7 @@ public class SpawnQueue extends Script {
 
     public void clearQueue(){
         queue.clear();
+        time = 0;
     }
 
     public double getLastQueueTimeAdd(double time){
