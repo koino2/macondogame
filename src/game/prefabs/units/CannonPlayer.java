@@ -36,8 +36,8 @@ public class CannonPlayer extends Player {
         ((Level)(scene)).onPlayerDeath();
     }
 
-    public CannonPlayer(){
-        super(100,300, 0);
+    public CannonPlayer(float x, float y, float rot){
+        super(x, y, rot);
         Cannon cannon = new Cannon(0, 0, 10, "player");
         cannon.offsetX = 60;
         cannon.offsetY = 5;

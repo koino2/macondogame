@@ -36,8 +36,8 @@ public class PistolPlayer extends Player {
         ((Level)(scene)).onPlayerDeath();
     }
 
-    public PistolPlayer() {
-        super(100, 300, 0);
+    public PistolPlayer(float x, float y, float rot) {
+        super(x, y, rot);
 
         Pistol pistol = new Pistol(0, 0, 10, "player");
         pistol.offsetX = 60;

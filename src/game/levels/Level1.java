@@ -49,6 +49,14 @@ public class Level1 extends Level {
     }
     @Override
     public void buildObjects() {
+
+
+        Player player1 = new CannonPlayer(100, 300, 0);
+        Player player2 = new PistolPlayer(100, 300, 0);
+
+        playerOrder.add(player1);
+        playerOrder.add(player2);
+
         // WALLS
         ambientColor = new Color(74, 74, 76);
         Color wallColor = new Color(86, 156, 216);
@@ -56,20 +64,6 @@ public class Level1 extends Level {
         int wallWidth = engine.getWidth();
         int wallHeight = engine.getHeight();
         int wallThickness = 50;
-
-        /*Cannon cannon = new Cannon(0, 0, 10, "player");
-        cannon.offsetX = 60;
-        cannon.offsetY = 5;
-        cannon.bulletColor = new Color(255, 179, 50);
-        Player player1 = initPlayer();
-        player1.playerControllerScript.weapon = cannon;
-        player1.texture = StaticTextures.read("src/assets/textures/entities/cannon-robot-blue.png");*/
-        Player player1 = new CannonPlayer();
-
-        Player player2 = new PistolPlayer();
-
-        playerOrder.add(player1);
-        playerOrder.add(player2);
 
         Object2D wall1 = new Object2D(0, wallHeight / 2f, wallThickness, wallHeight + wallThickness, 0);
         wall1.setColor(wallColor);
@@ -101,11 +95,6 @@ public class Level1 extends Level {
         floor.tags.add("noCollision");
         floor.zIndex = -100;
         addObject(floor);
-
-        //Object2D block = new Object2D(300, 300, 100, 100, 0);
-        //block.color = new Color(107, 255, 84);
-        //block.tags.add("wall");
-        //addObject(block);
 
         Object2D fallback = new Object2D((float) wallWidth / 2, (float) wallHeight / 2, 0, 0, 0);
         addObject(fallback);
