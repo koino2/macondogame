@@ -3,6 +3,8 @@ package game.levels;
 import game.prefabs.doors.Spawnpoint;
 import game.prefabs.enemies.ShooterEnemy;
 import game.prefabs.enemies.Turret;
+import game.prefabs.units.CannonPlayer;
+import game.prefabs.units.PistolPlayer;
 import game.scripts.animations.AnimatedTexture;
 import game.scripts.misc.Settings;
 import game.scripts.weapons.cannon.Cannon;
@@ -14,6 +16,7 @@ import game.prefabs.Player;
 import game.scripts.ui.DebugText;
 import lib.postProcessEffects.Vignette;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 
 public class Level1 extends Level {
@@ -54,17 +57,19 @@ public class Level1 extends Level {
         int wallHeight = engine.getHeight();
         int wallThickness = 50;
 
-        Cannon cannon = new Cannon(0, 0, 10, "player");
+        /*Cannon cannon = new Cannon(0, 0, 10, "player");
         cannon.offsetX = 60;
         cannon.offsetY = 5;
         cannon.bulletColor = new Color(255, 179, 50);
-        weaponOrder.add(cannon);
+        Player player1 = initPlayer();
+        player1.playerControllerScript.weapon = cannon;
+        player1.texture = StaticTextures.read("src/assets/textures/entities/cannon-robot-blue.png");*/
+        Player player1 = new CannonPlayer();
 
-        Pistol pistol = new Pistol(0, 0, 10, "player");
-        pistol.offsetX = 60;
-        pistol.offsetY = 5;
-        pistol.bulletColor = new Color(255, 179, 50);
-        weaponOrder.add(pistol);
+        Player player2 = new PistolPlayer();
+
+        playerOrder.add(player1);
+        playerOrder.add(player2);
 
         Object2D wall1 = new Object2D(0, wallHeight / 2f, wallThickness, wallHeight + wallThickness, 0);
         wall1.setColor(wallColor);
@@ -131,23 +136,23 @@ public class Level1 extends Level {
 
     @Override
     public Player initPlayer() {
-        player = new Player(100, 300, 0) {
+        Player p = new Player(100, 300, 0) {
             @Override
             public void onDeath() {
                 onPlayerDeath();
             }
         };
-        player.tags.add("player");
-        player.collisionScript.collidableObjects = objects;
-        player.collisionScript.collidableTags.add("block2");
-        player.collisionScript.collidableTags.add("wall");
+        p.tags.add("player");
+        p.collisionScript.collidableObjects = objects;
+        p.collisionScript.collidableTags.add("block2");
+        p.collisionScript.collidableTags.add("wall");
 
-        player.addScript(new Script() {
+        p.addScript(new Script() {
             @Override
             public void start() {
                 Light light = new Light(0, 0, 200);
                 light.color = (new Color(255, 255, 255, 107));
-                player.addChild(light);
+                p.addChild(light);
             }
 
             @Override
@@ -155,6 +160,6 @@ public class Level1 extends Level {
             }
         });
 
-        return player;
+        return p;
     }
 }

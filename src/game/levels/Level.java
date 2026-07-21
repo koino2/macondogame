@@ -52,7 +52,7 @@ public abstract class Level extends Scene {
 
     public Object2D trash;
 
-    public List<WeaponScript> weaponOrder = new ArrayList<>();
+    public List<Player> playerOrder = new ArrayList<>();
 
     public void clearEnemies(){
         for (int i = 0; i < enemies.size(); i++) {
@@ -156,12 +156,12 @@ public abstract class Level extends Scene {
             player = null;
         }
 
-        player = initPlayer();
+        //player = initPlayer();
 
-        if (runNumber >= weaponOrder.size()){
+        if (runNumber >= playerOrder.size()){
             onLose();
         } else {
-            player.playerControllerScript.weapon = weaponOrder.get(runNumber);
+            player = playerOrder.get(runNumber);
         }
 
         initEnemies();
@@ -190,10 +190,11 @@ public abstract class Level extends Scene {
                 }
             });
         }
+        Player queuedPlayer = player;
         spawnQueue.addItem(new SpawnQueueItem(spawnQueue.getLastQueueTimeAdd(spawnInterval)) {
             @Override
             public Object2D initObject() {
-                return player;
+                return queuedPlayer;
             }
         });
 

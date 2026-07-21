@@ -1,7 +1,10 @@
 package lib;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class StaticTextures {
     public static BufferedImage square(){
@@ -21,5 +24,12 @@ public class StaticTextures {
             g.dispose();
         }
         return img;
+    }
+    public static BufferedImage read(String path){
+        try {
+            return ImageIO.read(new File(path));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
