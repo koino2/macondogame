@@ -4,6 +4,7 @@ import game.prefabs.doors.Spawnpoint;
 import game.prefabs.enemies.ShooterEnemy;
 import game.prefabs.enemies.Turret;
 import game.prefabs.units.CannonPlayer;
+import game.prefabs.units.FlamethrowerPlayer;
 import game.prefabs.units.PistolPlayer;
 import game.scripts.animations.AnimatedTexture;
 import game.scripts.misc.Settings;
@@ -50,10 +51,12 @@ public class Level1 extends Level {
     @Override
     public void buildObjects() {
 
-
+        // players
         Player player1 = new CannonPlayer(100, 300, 0);
         Player player2 = new PistolPlayer(100, 300, 0);
+        Player player3 = new FlamethrowerPlayer(100, 300, 0);
 
+        playerOrder.add(player3);
         playerOrder.add(player1);
         playerOrder.add(player2);
 

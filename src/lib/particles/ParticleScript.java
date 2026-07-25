@@ -10,7 +10,8 @@ public class ParticleScript extends Script {
 
     @Override
     public void start() {
-
+        object.tags.add("particle");
+        object.tags.add("noCollision");
     }
 
     double time = 0;

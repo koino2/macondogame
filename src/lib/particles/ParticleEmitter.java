@@ -17,6 +17,11 @@ public class ParticleEmitter extends Object2D {
 
     public int particlesSpawned = 0;
 
+    public boolean enabled = true;
+
+    public float direction = 0;
+    public float spread = 360;
+
     public static Point getPointInDirection(float rotation, float distance){
         double rad = Math.toRadians(rotation);
 
@@ -51,9 +56,12 @@ public class ParticleEmitter extends Object2D {
                 time += deltaTime;
                 timeSinceLastSpawn += deltaTime;
 
-                if (timeSinceLastSpawn > spawnTime){
+                if (timeSinceLastSpawn > spawnTime && enabled){
                     Object2D particle = particle(x, y);
-                    Point dir = getPointInDirection(rng.nextInt(0, 360), speed);
+
+                    float angle = direction + rng.nextFloat(-spread / 2f, spread / 2f);
+                    Point dir = getPointInDirection(angle, speed);
+
                     particle.xVelocity = dir.x;
                     particle.yVelocity = dir.y;
                     particle.xAcceleration = acceleration * dir.x / speed;

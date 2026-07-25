@@ -21,9 +21,12 @@ public abstract class WeaponScript extends Script {
 
     }
 
+    public void behaviour(double deltaTime){}
+
     @Override
     public void update(double deltaTime) {
         timer += deltaTime;
+        behaviour(deltaTime);
     }
 
     public boolean canFire(){
