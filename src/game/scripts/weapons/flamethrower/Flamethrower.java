@@ -34,14 +34,13 @@ public class Flamethrower extends WeaponScript {
     public void start(){
         if (damageable == null) damageable = object.scene.objects;
 
-        emitter = new ParticleEmitter(0, 0);
-        emitter.spawnTime = 0.1f;
+        emitter = new FlamethrowerParticleEmitter();
         object.addChild(emitter);
 
         object.tags.add("player");
 
-        ((Player)(object)).healthScript.maxHealth = 99999;
-        ((Player)(object)).healthScript.health = 99999;
+        ((Player)(object)).healthScript.maxHealth = 200;
+        ((Player)(object)).healthScript.health = 200;
     }
 
     private float angleDifference(float a, float b) {
@@ -63,14 +62,31 @@ public class Flamethrower extends WeaponScript {
             float diff = angleDifference(object.rotation, angle);
             if (Math.abs(diff) > 25) continue;
 
+            FlameDamageScript flameDamageScript = null;
+            HealthScript healthScript = null;
+
             for (Script script : obj.scripts){
                 if (script instanceof HealthScript){
-                    ((HealthScript) script).damage(10);
-                    System.out.println("DAMAGE!");
+                    ((HealthScript) script).damage(2);
+                    healthScript = (HealthScript) (script);
                 }
+                if (script instanceof FlameDamageScript){
+                    flameDamageScript = (FlameDamageScript) (script);
+                }
+            }
+
+            if (flameDamageScript == null){
+                if (healthScript != null) {
+                    FlameDamageScript script = new FlameDamageScript(healthScript);
+                    obj.addScript(script);
+                }
+            } else {
+                flameDamageScript.flameTime = 5;
             }
         }
     }
+
+    double timeSinceFiringStarted = 0;
 
     @Override
     public void behaviour(double deltaTime){
@@ -85,9 +101,18 @@ public class Flamethrower extends WeaponScript {
             firing = false;
         }
 
-        emitter.enabled = firing;
+        if (firing){
+            timeSinceFiringStarted += deltaTime;
+        } else {
+            timeSinceFiringStarted = 0;
+        }
 
-        if (firing && timeSinceLastDamage > 0.1f) {
+        emitter.direction = object.rotation;
+        emitter.enabled = timeSinceFiringStarted > 1;
+        emitter.xPos = ParticleEmitter.getPointInDirection(object.rotation, 40).x;
+        emitter.yPos = ParticleEmitter.getPointInDirection(object.rotation, 40).y;
+
+        if (firing && timeSinceLastDamage > 0.1f && timeSinceFiringStarted > 1) {
             damage();
             timeSinceLastDamage = 0;
         }

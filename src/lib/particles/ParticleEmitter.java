@@ -22,6 +22,8 @@ public class ParticleEmitter extends Object2D {
     public float direction = 0;
     public float spread = 360;
 
+    public float speedRandomness = 20;
+
     public static Point getPointInDirection(float rotation, float distance){
         double rad = Math.toRadians(rotation);
 
@@ -64,8 +66,8 @@ public class ParticleEmitter extends Object2D {
 
                     particle.xVelocity = dir.x;
                     particle.yVelocity = dir.y;
-                    particle.xAcceleration = acceleration * dir.x / speed;
-                    particle.yAcceleration = acceleration * dir.y / speed;
+                    particle.xAcceleration = (acceleration * dir.x / speed) + rng.nextFloat(-speedRandomness, speedRandomness);
+                    particle.yAcceleration = (acceleration * dir.y / speed) + rng.nextFloat(-speedRandomness, speedRandomness);
                     particleHolder.addChild(particle);
 
                     particlesSpawned += 1;
