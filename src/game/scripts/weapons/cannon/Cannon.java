@@ -67,9 +67,4 @@ public class Cannon extends WeaponScript {
             resetTimer();
         }
     }
-
-    @Override
-    public void fireAtObject(Object2D target) {
-        fire(new Point((int) target.xPos, (int) target.yPos));
-    }
 }

@@ -5,6 +5,8 @@ import game.scripts.weapons.WeaponScript;
 import lib.Object2D;
 import lib.Script;
 
+import java.awt.*;
+
 public class ShooterScript extends Script {
     public ClosestTargetScript cts;
     public WeaponScript weaponScript;
@@ -23,7 +25,7 @@ public class ShooterScript extends Script {
             object.rotation = (float) Math.toDegrees(Math.atan2(yDist, xDist));
         }
         if (closest != null) {
-            weaponScript.fireAtObject(closest);
+            weaponScript.fire(new Point((int) closest.xPos, (int) closest.yPos));
         }
     }
 }

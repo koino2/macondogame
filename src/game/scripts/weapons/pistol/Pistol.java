@@ -12,8 +12,6 @@ public class Pistol extends WeaponScript {
     Random rng = new Random();
     int randomness = 200;
 
-    float bulletSpeed = 500;
-
     float prediction = 1;
 
     public String excludeTag = "";
@@ -61,39 +59,6 @@ public class Pistol extends WeaponScript {
 
             PistolBullet bullet = new PistolBullet(new Point(targetX, targetY), getRotatedPosition(), excludeTag);
             bullet.setColor(bulletColor);
-            bullet.zIndex = 100;
-            bullet.collisionScript.collidableObjects = object.scene.objects;
-            object.scene.addObject(bullet);
-
-            resetTimer();
-        }
-    }
-
-    @Override
-    public void fireAtObject(Object2D target) {
-        if(canFire()){
-            playSound();
-
-            float distX = (target.xPos - object.xPos);
-            float distY = (target.yPos - object.yPos);
-
-            float distance = (float) Math.hypot(distX, distY);
-
-            float travelTime = distance / bulletSpeed;
-
-            int predictedX = (int) (target.xPos + (target.xVelocity * travelTime * prediction));
-            int predictedY = (int) (target.yPos + (target.yVelocity * travelTime * prediction));
-
-            int targetX = predictedX;
-            int targetY = predictedY;
-
-            if(randomness != 0) {
-                targetX = predictedX + rng.nextInt(-randomness, randomness);
-                targetY = predictedY + rng.nextInt(-randomness, randomness);
-            }
-
-            PistolBullet bullet = new PistolBullet(new Point(targetX, targetY), getRotatedPosition(), excludeTag);
-            bullet.setColor(new Color(255, 99, 99));
             bullet.zIndex = 100;
             bullet.collisionScript.collidableObjects = object.scene.objects;
             object.scene.addObject(bullet);

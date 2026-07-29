@@ -119,11 +119,6 @@ public class Flamethrower extends WeaponScript {
     }
 
     @Override
-    public void fireAtObject(Object2D target) {
-        fire(new Point((int) target.xPos, (int) target.yPos));
-    }
-
-    @Override
     public void fire(Point target) {
         timeSinceFire = 0;
     }

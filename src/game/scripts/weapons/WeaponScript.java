@@ -42,6 +42,5 @@ public abstract class WeaponScript extends Script {
         sound.play();
     }
 
-    public abstract void fireAtObject(Object2D target);
     public abstract void fire(Point target);
 }

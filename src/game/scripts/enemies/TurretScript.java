@@ -7,8 +7,10 @@ import lib.Object2D;
 import lib.Script;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 public class TurretScript extends Script {
     public ClosestTargetScript cts;
@@ -33,6 +35,11 @@ public class TurretScript extends Script {
 
     double time = 0;
 
+    float bulletSpeed = 500;
+    float prediction = 1;
+    Random rng = new Random();
+    int randomness = 200;
+
     @Override
     public void update(double deltaTime) {
         time += deltaTime;
@@ -43,10 +50,25 @@ public class TurretScript extends Script {
             object.rotation = (float) Math.toDegrees(Math.atan2(yDist, xDist));
         }
         if (closest != null) {
-            /*if(weaponScript.canFire()){
-                System.out.println("FIRE!"+time);
-            }*/
-            weaponScript.fireAtObject(closest);
+            Object2D target = closest;
+            float distX = (target.xPos - object.xPos);
+            float distY = (target.yPos - object.yPos);
+
+            float distance = (float) Math.hypot(distX, distY);
+
+            float travelTime = distance / bulletSpeed;
+
+            int predictedX = (int) (target.xPos + (target.xVelocity * travelTime * prediction));
+            int predictedY = (int) (target.yPos + (target.yVelocity * travelTime * prediction));
+
+            int targetX = predictedX;
+            int targetY = predictedY;
+
+            if(randomness != 0) {
+                targetX = predictedX + rng.nextInt(-randomness, randomness);
+                targetY = predictedY + rng.nextInt(-randomness, randomness);
+            }
+            weaponScript.fire(new Point(targetX, targetY));
         }
     }
 }
