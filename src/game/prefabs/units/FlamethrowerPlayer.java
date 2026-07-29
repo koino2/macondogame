@@ -2,7 +2,6 @@ package game.prefabs.units;
 
 import game.levels.Level;
 import game.prefabs.Player;
-import game.scripts.weapons.cannon.Cannon;
 import game.scripts.weapons.flamethrower.Flamethrower;
 import lib.Light;
 import lib.Script;
@@ -46,6 +45,10 @@ public class FlamethrowerPlayer extends Player {
         initPlayer();
         playerControllerScript.weapon = flamethrower;
         flamethrower.exclude = "player";
+
+        healthScript.maxHealth = 200;
+        healthScript.health = 200;
+
         texture = StaticTextures.read("src/assets/textures/entities/flamethrower-blue.png");
     }
 }
