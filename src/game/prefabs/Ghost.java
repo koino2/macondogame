@@ -47,7 +47,7 @@ public class Ghost extends Object2D {
         });
 
         for (int i = 0; i < weapons.size(); i++) {
-            addScript(new WeaponRecordingReader(weapons.get(i)));
+            addScript(new WeaponRecordingReader(weapons.get(i), weapons.get(i).weapon));
         }
     }
 
