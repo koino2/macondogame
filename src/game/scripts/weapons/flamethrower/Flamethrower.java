@@ -5,6 +5,7 @@ import game.scripts.misc.HealthScript;
 import game.scripts.weapons.WeaponScript;
 import lib.Object2D;
 import lib.Script;
+import lib.Sound;
 import lib.particles.ParticleEmitter;
 
 import java.awt.*;
@@ -26,6 +27,9 @@ public class Flamethrower extends WeaponScript {
 
     public List<Object2D> damageable;
 
+    public Sound flamethrowerSound;
+    public Sound end;
+
     public Flamethrower(){
 
     }
@@ -38,6 +42,12 @@ public class Flamethrower extends WeaponScript {
         object.addChild(emitter);
 
         object.tags.add("player");
+
+        flamethrowerSound = new Sound("src/assets/audio/weapons/flamethrower/flamethrower.wav", 1);
+        object.sounds.add(flamethrowerSound);
+        end = new Sound("src/assets/audio/weapons/flamethrower/flamethrower-end.wav", 1);
+        object.sounds.add(end);
+        end.stop();
     }
 
     private float angleDifference(float a, float b) {
@@ -89,12 +99,16 @@ public class Flamethrower extends WeaponScript {
 
     double timeSinceFiringStarted = 0;
 
+    boolean firedBefore = false;
+
     @Override
     public void behaviour(double deltaTime){
         time += deltaTime;
         timeSinceFire += deltaTime;
         timeSinceLastSpawn += deltaTime;
         timeSinceLastDamage += deltaTime;
+
+        boolean firingLastFrame = firing;
 
         if (timeSinceFire < 0.1f){
             firing = true;
@@ -104,8 +118,16 @@ public class Flamethrower extends WeaponScript {
 
         if (firing){
             timeSinceFiringStarted += deltaTime;
+
+            flamethrowerSound.resume();
+            end.stop();
         } else {
             timeSinceFiringStarted = 0;
+
+            flamethrowerSound.stop();
+            if (firingLastFrame && firedBefore) {
+                end.play();
+            }
         }
 
         emitter.direction = object.rotation;
@@ -126,5 +148,6 @@ public class Flamethrower extends WeaponScript {
     @Override
     public void fire(Point target) {
         timeSinceFire = 0;
+        firedBefore = true;
     }
 }
