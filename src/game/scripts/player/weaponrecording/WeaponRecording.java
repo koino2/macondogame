@@ -1,23 +1,26 @@
-package game.scripts.player.recording;
+package game.scripts.player.weaponrecording;
 
+import game.scripts.player.weaponrecording.WeaponRecordingFrame;
 import game.scripts.weapons.WeaponScript;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Recording{
-    public List<RecordingFrame> frames = new ArrayList<>();
+public class WeaponRecording{
+    public List<WeaponRecordingFrame> frames = new ArrayList<>();
 
-    public void addFrame(RecordingFrame frame){
+    public WeaponScript weapon;
+
+    public void addFrame(WeaponRecordingFrame frame){
         frames.add(frame);
     }
 
-    public RecordingFrame getFrame(double time){
+    public WeaponRecordingFrame getFrame(double time){
         double bestDifference = Float.POSITIVE_INFINITY;
-        RecordingFrame closestFrame = null;
+        WeaponRecordingFrame closestFrame = null;
         for (int i = 0; i < frames.size(); i++) {
-            RecordingFrame frame = frames.get(i);
+            WeaponRecordingFrame frame = frames.get(i);
             double difference = Math.abs(frame.time - time);
             if(difference < bestDifference){
                 closestFrame = frame;

@@ -1,14 +1,17 @@
 package game.scripts.weapons.chainsaw;
 
+import game.prefabs.Player;
 import game.scripts.animations.Animation;
 import game.scripts.misc.DelayedAction;
 import game.scripts.misc.HealthScript;
 import game.scripts.weapons.WeaponScript;
 import game.scripts.weapons.flamethrower.FlameDamageScript;
+import lib.Input;
 import lib.Object2D;
 import lib.Script;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class ChainsawPullWeapon extends WeaponScript {

@@ -10,6 +10,8 @@ import game.scripts.misc.DebugFunctions;
 import game.scripts.misc.pause.Pause;
 import game.scripts.player.CameraController;
 import game.scripts.player.recording.Recording;
+import game.scripts.player.weaponrecording.PlayerWeaponRecorder;
+import game.scripts.player.weaponrecording.WeaponRecording;
 import lib.Camera;
 import lib.Input;
 import lib.Object2D;
@@ -27,6 +29,7 @@ public abstract class Level extends Scene {
     public List<Enemy> enemies = new ArrayList<>();
 
     public List<Recording> recordings = new ArrayList<>();
+    public List<List<WeaponRecording>> weaponRecordings = new ArrayList();
     public List<Ghost> ghosts = new ArrayList<>();
 
     public SpawnQueue spawnQueue = new SpawnQueue();
@@ -68,6 +71,9 @@ public abstract class Level extends Scene {
 
         recordings.add(player.playerRecorder.recording);
         player.playerRecorder.stopRecording();
+
+        weaponRecordings.add(player.playerWeaponRecorder.getRecording());
+        player.playerWeaponRecorder.stopRecording();
     }
 
     public void clearGhosts(){
@@ -181,7 +187,7 @@ public abstract class Level extends Scene {
             spawnQueue.addItem(new SpawnQueueItem(spawnQueue.getLastQueueTimeAdd(spawnInterval)) {
                 @Override
                 public Object2D initObject() {
-                    Ghost ghost = new Ghost(recordings.get(finalI));
+                    Ghost ghost = new Ghost(recordings.get(finalI), weaponRecordings.get(finalI));
                     ghost.texture = ghostTextures.get(finalI);
                     ghost.setColor(ghostColors.get(finalI));
                     ghosts.add(ghost);

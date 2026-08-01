@@ -15,10 +15,6 @@ public class PlayerController extends Script {
 
     public WeaponScript weapon;
 
-    public boolean shot = false;
-    public float shotX = 0;
-    public float shotY = 0;
-
     @Override
     public void start() {
         player = object;
@@ -30,7 +26,6 @@ public class PlayerController extends Script {
 
     @Override
     public void update(double deltaTime) {
-        shot = false;
 
         Point point = Input.getMousePosition();
         float mouseWorldX = 0;
@@ -41,13 +36,6 @@ public class PlayerController extends Script {
             int xDist = (int) (mouseWorldX - player.globalX);
             int yDist = (int) (mouseWorldY - player.globalY);
             player.rotation = (float) Math.toDegrees(Math.atan2(yDist, xDist));
-        }
-
-        if(Input.isMouseDown(MouseEvent.BUTTON1) && point != null){
-            weapon.fire(new Point((int) mouseWorldX, (int) mouseWorldY));
-            shot = true;
-            shotX = mouseWorldX;
-            shotY = mouseWorldY;
         }
 
         player.xAcceleration = 0;
@@ -85,13 +73,6 @@ public class PlayerController extends Script {
         } else{
             footstepsSound.pause();
         }
-
-        /*if (Input.isKeyDown(KeyEvent.VK_E)) {
-            player.xSize += 1;
-        }
-        if (Input.isKeyDown(KeyEvent.VK_Q)) {
-            player.xSize -= 1;
-        }*/
     }
 
     @Override

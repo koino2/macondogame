@@ -27,13 +27,9 @@ public class PlayerRecorder extends Script {
         frame.x = player.globalX;
         frame.y = player.globalY;
         frame.rotation = player.globalRotation;
-        frame.shot = player.playerControllerScript.shot;
-        frame.shotX = player.playerControllerScript.shotX;
-        frame.shotY = player.playerControllerScript.shotY;
         frame.time = time;
 
         recording.addFrame(frame);
-        recording.weapon = player.playerControllerScript.weapon;
     }
 
     public void stopRecording(){

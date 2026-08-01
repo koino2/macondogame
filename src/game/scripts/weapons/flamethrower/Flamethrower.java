@@ -38,9 +38,6 @@ public class Flamethrower extends WeaponScript {
         object.addChild(emitter);
 
         object.tags.add("player");
-
-        ((Player)(object)).healthScript.maxHealth = 200;
-        ((Player)(object)).healthScript.health = 200;
     }
 
     private float angleDifference(float a, float b) {
@@ -50,6 +47,10 @@ public class Flamethrower extends WeaponScript {
 
     public void damage(){
         for (Object2D obj : damageable){
+            if (obj.tags.contains(exclude)) return;
+            for (int i = 0; i < obj.tags.size(); i++) {
+                System.out.println(obj.tags.get(i));
+            }
             if (obj == object) continue;
 
             float dx = obj.xPos - object.xPos;
