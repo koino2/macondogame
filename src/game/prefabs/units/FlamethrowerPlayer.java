@@ -37,10 +37,6 @@ public class FlamethrowerPlayer extends Player {
 
     public FlamethrowerPlayer(float x, float y, float rot){
         super(x, y, rot);
-        /*Cannon cannon = new Cannon(0, 0, 10, "player");
-        cannon.offsetX = 60;
-        cannon.offsetY = 5;
-        cannon.bulletColor = new Color(255, 179, 50);*/
         Flamethrower flamethrower = new Flamethrower();
         initPlayer();
         playerControllerScript.weapon = flamethrower;

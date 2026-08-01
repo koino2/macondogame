@@ -1,9 +1,7 @@
 package game.scripts.player.weaponrecording;
 
-import game.scripts.player.weaponrecording.WeaponRecordingFrame;
 import game.scripts.weapons.WeaponScript;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
