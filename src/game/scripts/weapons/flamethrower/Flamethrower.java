@@ -117,6 +117,10 @@ public class Flamethrower extends WeaponScript {
             damage();
             timeSinceLastDamage = 0;
         }
+
+        if (emitter.parent == null || emitter.parent.destroyed || !object.children.contains(emitter)){
+            object.addChild(emitter);
+        }
     }
 
     @Override
