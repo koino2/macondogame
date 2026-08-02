@@ -4,6 +4,7 @@ import game.prefabs.doors.Spawnpoint;
 import game.prefabs.enemies.ShooterEnemy;
 import game.prefabs.enemies.Turret;
 import game.prefabs.units.CannonPlayer;
+import game.prefabs.units.ChainsawPlayer;
 import game.prefabs.units.FlamethrowerPlayer;
 import game.prefabs.units.PistolPlayer;
 import game.scripts.animations.AnimatedTexture;
@@ -52,13 +53,10 @@ public class Level1 extends Level {
     public void buildObjects() {
 
         // players
-        Player player1 = new CannonPlayer(100, 300, 0);
-        Player player2 = new PistolPlayer(100, 300, 0);
-        Player player3 = new FlamethrowerPlayer(100, 300, 0);
-
-        playerOrder.add(player3);
-        playerOrder.add(player1);
-        playerOrder.add(player2);
+        playerOrder.add(new CannonPlayer(100, 300, 0));
+        playerOrder.add(new PistolPlayer(100, 300, 0));
+        playerOrder.add(new FlamethrowerPlayer(100, 300, 0));
+        playerOrder.add(new ChainsawPlayer(100, 300, 0));
 
         // WALLS
         ambientColor = new Color(74, 74, 76);

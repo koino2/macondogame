@@ -21,7 +21,7 @@ public class PlayerController extends Script {
 
         footstepsSound = new Sound("src/assets/footsteps.wav", 1);
         object.sounds.add(footstepsSound);
-        object.addScript(weapon);
+        //object.addScript(weapon);
     }
 
     @Override

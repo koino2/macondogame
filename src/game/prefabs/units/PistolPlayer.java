@@ -44,7 +44,7 @@ public class PistolPlayer extends Player {
         pistol.offsetY = 5;
         pistol.bulletColor = new Color(255, 179, 50);
         initPlayer();
-        playerControllerScript.weapon = pistol;
+        addScript(pistol);
         this.texture = StaticTextures.read("src/assets/textures/entities/robot1-blue.png");
     }
 }

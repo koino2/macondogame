@@ -43,7 +43,7 @@ public class CannonPlayer extends Player {
         cannon.offsetY = 5;
         cannon.bulletColor = new Color(255, 179, 50);
         initPlayer();
-        playerControllerScript.weapon = cannon;
+        addScript(cannon);
         texture = StaticTextures.read("src/assets/textures/entities/cannon-robot-blue.png");
     }
 }

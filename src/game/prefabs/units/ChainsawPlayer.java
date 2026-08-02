@@ -2,14 +2,17 @@ package game.prefabs.units;
 
 import game.levels.Level;
 import game.prefabs.Player;
-import game.scripts.weapons.flamethrower.Flamethrower;
+import game.scripts.weapons.cannon.Cannon;
+import game.scripts.weapons.chainsaw.Chainsaw;
+import game.scripts.weapons.chainsaw.ChainsawPullWeapon;
 import lib.Light;
 import lib.Script;
 import lib.StaticTextures;
 
 import java.awt.*;
 
-public class FlamethrowerPlayer extends Player {
+public class ChainsawPlayer extends Player {
+
     public void initPlayer() {
         this.tags.add("player");
 
@@ -35,16 +38,11 @@ public class FlamethrowerPlayer extends Player {
         ((Level)(scene)).onPlayerDeath();
     }
 
-    public FlamethrowerPlayer(float x, float y, float rot){
+    public ChainsawPlayer(float x, float y, float rot){
         super(x, y, rot);
-        Flamethrower flamethrower = new Flamethrower();
-        flamethrower.exclude = "player";
+        ChainsawPullWeapon chainsawPullWeapon = new ChainsawPullWeapon();
         initPlayer();
-        addScript(flamethrower);
-
-        healthScript.maxHealth = 200;
-        healthScript.health = 200;
-
-        texture = StaticTextures.read("src/assets/textures/entities/flamethrower-blue.png");
+        addScript(chainsawPullWeapon);
+        texture = StaticTextures.read("src/assets/textures/entities/cannon-robot-blue.png");
     }
 }
