@@ -67,6 +67,13 @@ public class Object2D {
 
     public void update(double deltaTime){
 
+        for (int i = 0; i < scripts.size(); i++) {
+            if(!scripts.get(i).started) {
+                scripts.get(i).start();
+            }
+            scripts.get(i).started = true;
+        }
+
         for (int i = 0; i < children.size(); i++) {
             children.get(i).start();
         }
