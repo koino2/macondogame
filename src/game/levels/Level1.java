@@ -53,10 +53,10 @@ public class Level1 extends Level {
     public void buildObjects() {
 
         // players
+        playerOrder.add(new ChainsawPlayer(100, 300, 0));
         playerOrder.add(new CannonPlayer(100, 300, 0));
         playerOrder.add(new PistolPlayer(100, 300, 0));
         playerOrder.add(new FlamethrowerPlayer(100, 300, 0));
-        playerOrder.add(new ChainsawPlayer(100, 300, 0));
 
         // WALLS
         ambientColor = new Color(74, 74, 76);

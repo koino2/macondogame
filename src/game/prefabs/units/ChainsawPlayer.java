@@ -43,6 +43,10 @@ public class ChainsawPlayer extends Player {
         ChainsawPullWeapon chainsawPullWeapon = new ChainsawPullWeapon();
         initPlayer();
         addScript(chainsawPullWeapon);
+
+        healthScript.maxHealth = 500;
+        healthScript.health = 500;
+
         texture = StaticTextures.read("src/assets/textures/entities/cannon-robot-blue.png");
     }
 }

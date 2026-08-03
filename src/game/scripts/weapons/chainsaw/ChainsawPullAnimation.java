@@ -18,18 +18,24 @@ public class ChainsawPullAnimation extends Animation {
                 Math.round(object.yPos + rotatedY)
         );
     }
+    public Object2D pullTowards;
     public ChainsawPullAnimation(Object2D pullTowards){
+        this.pullTowards = pullTowards;
+    }
+
+    @Override
+    public void start() {
         addKeyframe(0, object.xPos, object.yPos, object.xSize, object.ySize, object.rotation, object.color);
 
         float distX = pullTowards.globalX - object.globalX;
         float distY = pullTowards.globalY - object.globalY;
-        float dist = (float) Math.sqrt(distX * distX + distY * distY);
+        //float dist = (float) Math.sqrt(distX * distX + distY * distY);
 
-        if (dist < 50) return;
+        //if (dist < 50) return;
 
         Point2D.Float pulledPoint = new Point2D.Float(
-                pullTowards.globalX - distX/2,
-                pullTowards.globalY - distY/2
+                object.xPos + distX / 2,
+                object.yPos + distY / 2
         );
 
         addKeyframe(
@@ -41,5 +47,7 @@ public class ChainsawPullAnimation extends Animation {
                 object.rotation,
                 object.color
         );
+
+        play();
     }
 }

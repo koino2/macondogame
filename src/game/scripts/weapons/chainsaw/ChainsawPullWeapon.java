@@ -12,6 +12,7 @@ import lib.Script;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ChainsawPullWeapon extends WeaponScript {
@@ -20,7 +21,7 @@ public class ChainsawPullWeapon extends WeaponScript {
     public String pullExclude;
 
     public ChainsawPullWeapon(){
-
+        cooldown = 2;
     }
 
     @Override
@@ -37,10 +38,13 @@ public class ChainsawPullWeapon extends WeaponScript {
 
     @Override
     public void fire(Point target) {
+        if (!canFire()) return;
+        resetTimer();
         object.addScript(new DelayedAction(1){
             @Override
             public void action() {
-                for (Object2D obj : damageable){
+                if (fired) return;
+                for (Object2D obj : new ArrayList<>(damageable)){
                     if (obj == object) continue;
 
                     float dx = obj.xPos - object.xPos;
@@ -53,13 +57,14 @@ public class ChainsawPullWeapon extends WeaponScript {
                     float diff = angleDifference(object.rotation, angle);
                     if (Math.abs(diff) > 25) continue;
 
-                    for (Script script : obj.scripts){
+                    for (Script script : new ArrayList<>(obj.scripts)){
                         if (script instanceof HealthScript){
-                            ((HealthScript) script).damage(2);
+                            ((HealthScript) script).damage(20);
 
-                            if (obj.tags.contains(pullExclude)) return;
+                            if (obj.tags.contains(pullExclude)) continue;
 
-                            //TODO the animation goes here
+                            ChainsawPullAnimation anim = new ChainsawPullAnimation(object);
+                            obj.addScript(anim);
                         }
                     }
                 }

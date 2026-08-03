@@ -23,7 +23,7 @@ public class DelayedAction extends Script {
 
     @Override
     public void update(double deltaTime) {
-        time += delay;
+        time += deltaTime;
         if (time >= delay){
             action();
             fired = true;
