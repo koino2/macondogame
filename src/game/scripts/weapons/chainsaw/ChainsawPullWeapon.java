@@ -72,4 +72,17 @@ public class ChainsawPullWeapon extends WeaponScript {
         });
 
     }
+
+    @Override
+    public void behaviour(double deltaTime) {
+        if (!live) return;
+
+        if(Input.isMouseDown(MouseEvent.BUTTON3)){
+            Point mouseWorldPosition = getMouseWorldPosition();
+            if (mouseWorldPosition == null) return;
+            fire(mouseWorldPosition);
+            shot = true;
+            target = mouseWorldPosition;
+        }
+    }
 }

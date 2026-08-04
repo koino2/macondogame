@@ -24,7 +24,29 @@ public abstract class WeaponScript extends Script {
 
     }
 
-    public void behaviour(double deltaTime){}
+    public Point getMouseWorldPosition(){
+        Point point = Input.getMousePosition();
+        float mouseWorldX = 0;
+        float mouseWorldY = 0;
+        if (point != null) {
+            mouseWorldX = (float)((point.x-object.scene.engine.getWidth()/2.0)/object.scene.camera.scale+object.scene.camera.globalX);
+            mouseWorldY = (float)((point.y-object.scene.engine.getHeight()/2.0)/object.scene.camera.scale+object.scene.camera.globalY);
+            return new Point((int) mouseWorldX, (int) mouseWorldY);
+        }
+        return null;
+    }
+
+    public void behaviour(double deltaTime){
+        if (!live) return;
+
+        if(Input.isMouseDown(MouseEvent.BUTTON1)){
+            Point mouseWorldPosition = getMouseWorldPosition();
+            if (mouseWorldPosition == null) return;
+            fire(mouseWorldPosition);
+            shot = true;
+            target = mouseWorldPosition;
+        }
+    }
 
     public boolean live;
 
@@ -34,26 +56,12 @@ public abstract class WeaponScript extends Script {
     @Override
     public void update(double deltaTime) {
         timer += deltaTime;
-        behaviour(deltaTime);
 
         shot = false;
 
         live = object instanceof Player;
-        if (!live) return;
 
-        Point point = Input.getMousePosition();
-        float mouseWorldX = 0;
-        float mouseWorldY = 0;
-        if (point != null) {
-            mouseWorldX = (float)((point.x-object.scene.engine.getWidth()/2.0)/object.scene.camera.scale+object.scene.camera.globalX);
-            mouseWorldY = (float)((point.y-object.scene.engine.getHeight()/2.0)/object.scene.camera.scale+object.scene.camera.globalY);
-        }
-
-        if(Input.isMouseDown(MouseEvent.BUTTON1) && point != null){
-            fire(new Point((int) mouseWorldX, (int) mouseWorldY));
-            shot = true;
-            target = new Point((int) mouseWorldX, (int) mouseWorldY);
-        }
+        behaviour(deltaTime);
     }
 
     public boolean canFire(){

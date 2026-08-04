@@ -3,12 +3,14 @@ package game.scripts.weapons.flamethrower;
 import game.prefabs.Player;
 import game.scripts.misc.HealthScript;
 import game.scripts.weapons.WeaponScript;
+import lib.Input;
 import lib.Object2D;
 import lib.Script;
 import lib.Sound;
 import lib.particles.ParticleEmitter;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class Flamethrower extends WeaponScript {
@@ -142,6 +144,16 @@ public class Flamethrower extends WeaponScript {
 
         if (emitter.parent == null || emitter.parent.destroyed || !object.children.contains(emitter)){
             object.addChild(emitter);
+        }
+
+        if (!live) return;
+
+        if(Input.isMouseDown(MouseEvent.BUTTON1)){
+            Point mouseWorldPosition = getMouseWorldPosition();
+            if (mouseWorldPosition == null) return;
+            fire(mouseWorldPosition);
+            shot = true;
+            target = mouseWorldPosition;
         }
     }
 
