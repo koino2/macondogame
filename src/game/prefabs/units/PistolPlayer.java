@@ -39,7 +39,8 @@ public class PistolPlayer extends Player {
     public PistolPlayer(float x, float y, float rot) {
         super(x, y, rot);
 
-        Pistol pistol = new Pistol(0, 0, 10, "player");
+        Pistol pistol = new Pistol(0, 0, 5, "player");
+        pistol.cooldown = 0.2f;
         pistol.offsetX = 60;
         pistol.offsetY = 5;
         pistol.bulletColor = new Color(255, 179, 50);

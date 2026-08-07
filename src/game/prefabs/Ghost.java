@@ -23,7 +23,6 @@ public class Ghost extends Object2D {
 
     public Ghost(Recording recording, List<WeaponRecording> weapons) {
         super(0, 0, 100, 100, 0);
-        System.out.println("ghost has been created");
 
         tags.add("player");
         tags.add("ghost");
