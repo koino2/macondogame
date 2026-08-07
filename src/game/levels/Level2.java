@@ -21,12 +21,11 @@ import lib.postProcessEffects.Vignette;
 import javax.imageio.ImageIO;
 import java.awt.*;
 
-public class Level1 extends Level {
+public class Level2 extends Level {
     boolean won = false;
     double winTimestamp = 0;
 
-    public Scene nextScene = new Level2();
-
+    public Scene nextScene = new SampleScene();
     @Override
     public void onWin(){
         if(!won) {
@@ -54,10 +53,10 @@ public class Level1 extends Level {
     public void buildObjects() {
 
         // players
-        playerOrder.add(new PistolPlayer(100, 300, 0));
-        playerOrder.add(new CannonPlayer(100, 300, 0));
-        playerOrder.add(new ChainsawPlayer(100, 300, 0));
         playerOrder.add(new FlamethrowerPlayer(100, 300, 0));
+        playerOrder.add(new ChainsawPlayer(100, 300, 0));
+        playerOrder.add(new CannonPlayer(100, 300, 0));
+        playerOrder.add(new PistolPlayer(100, 300, 0));
 
         // WALLS
         ambientColor = new Color(74, 74, 76);
