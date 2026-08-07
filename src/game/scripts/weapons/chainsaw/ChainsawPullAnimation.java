@@ -34,12 +34,12 @@ public class ChainsawPullAnimation extends Animation {
         //if (dist < 50) return;
 
         Point2D.Float pulledPoint = new Point2D.Float(
-                object.xPos + distX / 2,
-                object.yPos + distY / 2
+                object.xPos + distX / 1f,
+                object.yPos + distY / 1f
         );
 
         addKeyframe(
-                1,
+                0.5f,
                 pulledPoint.x,
                 pulledPoint.y,
                 object.xSize,

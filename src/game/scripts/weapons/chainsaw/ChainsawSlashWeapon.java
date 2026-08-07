@@ -1,11 +1,8 @@
 package game.scripts.weapons.chainsaw;
 
-import game.prefabs.Player;
-import game.scripts.animations.Animation;
 import game.scripts.misc.DelayedAction;
 import game.scripts.misc.HealthScript;
 import game.scripts.weapons.WeaponScript;
-import game.scripts.weapons.flamethrower.FlameDamageScript;
 import lib.Input;
 import lib.Object2D;
 import lib.Script;
@@ -15,14 +12,14 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-public class ChainsawPullWeapon extends WeaponScript {
+public class ChainsawSlashWeapon extends WeaponScript {
 
     public List<Object2D> damageable;
-    public String pullExclude;
 
-    public ChainsawPullWeapon(){
-        cooldown = 2;
+    public ChainsawSlashWeapon(){
+        cooldown = 0.5f;
     }
 
     @Override
@@ -37,16 +34,22 @@ public class ChainsawPullWeapon extends WeaponScript {
         return d < -180 ? d + 360 : d;
     }
 
-    Sound sound = new Sound("src/assets/audio/weapons/chainsaw/pull.wav", 1);
-
     @Override
     public void fire(Point target) {
         if (!canFire()) return;
         resetTimer();
 
+        String path = "src/assets/audio/weapons/chainsaw/slash1.wav";
+        Random r = new Random();
+        if (r.nextFloat() > 0.5f){
+            path = "src/assets/audio/weapons/chainsaw/slash2.wav";
+        }
+        Sound sound = new Sound(path, 1);
+        object.sounds.add(sound);
         sound.play();
 
-        object.addScript(new DelayedAction(0.5f){
+        object.addChild(new ChainsawSlashVFX());
+        object.addScript(new DelayedAction(0.3f){
             @Override
             public void action() {
                 if (fired) return;
@@ -56,7 +59,7 @@ public class ChainsawPullWeapon extends WeaponScript {
                     float dx = obj.xPos - object.xPos;
                     float dy = obj.yPos - object.yPos;
                     float dist = (float) Math.sqrt(dx * dx + dy * dy);
-                    if (dist > 150 + (obj.xSize+obj.ySize)/2 + (object.xSize+object.ySize)/2 ) continue;
+                    if (dist > -50 + (obj.xSize+obj.ySize)/2 + (object.xSize+object.ySize)/2 ) continue;
 
                     float angle = (float) Math.toDegrees(Math.atan2(dy, dx));
 
@@ -65,12 +68,7 @@ public class ChainsawPullWeapon extends WeaponScript {
 
                     for (Script script : new ArrayList<>(obj.scripts)){
                         if (script instanceof HealthScript){
-                            ((HealthScript) script).damage(20);
-
-                            if (obj.tags.contains(pullExclude)) continue;
-
-                            ChainsawPullAnimation anim = new ChainsawPullAnimation(object);
-                            obj.addScript(anim);
+                            ((HealthScript) script).damage(40);
                         }
                     }
                 }
@@ -83,7 +81,7 @@ public class ChainsawPullWeapon extends WeaponScript {
     public void behaviour(double deltaTime) {
         if (!live) return;
 
-        if(Input.isMouseDown(MouseEvent.BUTTON3)){
+        if(Input.isMouseDown(MouseEvent.BUTTON1)){
             Point mouseWorldPosition = getMouseWorldPosition();
             if (mouseWorldPosition == null) return;
             fire(mouseWorldPosition);

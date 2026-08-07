@@ -2,9 +2,8 @@ package game.prefabs.units;
 
 import game.levels.Level;
 import game.prefabs.Player;
-import game.scripts.weapons.cannon.Cannon;
-import game.scripts.weapons.chainsaw.Chainsaw;
 import game.scripts.weapons.chainsaw.ChainsawPullWeapon;
+import game.scripts.weapons.chainsaw.ChainsawSlashWeapon;
 import lib.Light;
 import lib.Script;
 import lib.StaticTextures;
@@ -40,13 +39,20 @@ public class ChainsawPlayer extends Player {
 
     public ChainsawPlayer(float x, float y, float rot){
         super(x, y, rot);
+
         ChainsawPullWeapon chainsawPullWeapon = new ChainsawPullWeapon();
-        initPlayer();
         addScript(chainsawPullWeapon);
+
+        ChainsawSlashWeapon chainsawSlashWeapon = new ChainsawSlashWeapon();
+        addScript(chainsawSlashWeapon);
+
+        initPlayer();
 
         healthScript.maxHealth = 500;
         healthScript.health = 500;
 
-        texture = StaticTextures.read("src/assets/textures/entities/cannon-robot-blue.png");
+        playerControllerScript.acceleration = 300;
+
+        texture = StaticTextures.read("src/assets/textures/entities/chainsaw.png");
     }
 }

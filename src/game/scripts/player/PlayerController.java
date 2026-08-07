@@ -13,7 +13,7 @@ public class PlayerController extends Script {
 
     Sound footstepsSound;
 
-    public WeaponScript weapon;
+    public float acceleration = 600;
 
     @Override
     public void start() {
@@ -41,7 +41,6 @@ public class PlayerController extends Script {
         player.xAcceleration = 0;
         player.yAcceleration = 0;
 
-        float acceleration = 600;
         float damping = 1f;
 
         if (Input.isKeyDown(KeyEvent.VK_W) || Input.isKeyDown(KeyEvent.VK_S)) {
