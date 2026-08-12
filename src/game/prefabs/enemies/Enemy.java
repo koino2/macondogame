@@ -7,7 +7,6 @@ import game.scripts.misc.HealthScript;
 public class Enemy extends Object2D {
 
     public CollisionScript collisionScript;
-    public Script enemyScript;
     public HealthScript healthScript;
 
     public Enemy(int x, int y, int rotation, int width, int height){
@@ -34,8 +33,27 @@ public class Enemy extends Object2D {
             }
         };
 
-        collisionScript.collidableTags.add("bullet");
-        collisionScript.collidableTags.add("wall");
+        /*collisionScript.collidableTags.add("bullet");
+        collisionScript.collidableTags.add("wall");*/
         addScript(collisionScript);
+    }
+
+    public Enemy(int x, int y, int rotation, int width, int height, CollisionScript collisionScript){
+        super(x, y, width, height, rotation);
+
+        tags.add("enemy");
+
+        healthScript = new HealthScript() {
+            @Override
+            public void onDamage(float damageAmount) {
+                if (health <= 0) {
+                    destroy();
+                }
+            }
+        };
+        addScript(healthScript);
+
+        this.collisionScript = collisionScript;
+        addScript(this.collisionScript);
     }
 }
