@@ -2,10 +2,7 @@ package game.prefabs.enemies;
 
 import lib.*;
 import lib.CollisionScript;
-import game.scripts.enemies.EnemyScript;
 import game.scripts.misc.HealthScript;
-
-import java.awt.*;
 
 public class Enemy extends Object2D {
 
@@ -13,8 +10,10 @@ public class Enemy extends Object2D {
     public Script enemyScript;
     public HealthScript healthScript;
 
-    public Enemy(int x, int y, int rotation, int width, int height, Script enemyScript){
+    public Enemy(int x, int y, int rotation, int width, int height){
         super(x, y, width, height, rotation);
+
+        tags.add("enemy");
 
         healthScript = new HealthScript() {
             @Override
@@ -37,10 +36,6 @@ public class Enemy extends Object2D {
 
         collisionScript.collidableTags.add("bullet");
         collisionScript.collidableTags.add("wall");
-        tags.add("enemy");
         addScript(collisionScript);
-
-        this.enemyScript = enemyScript;
-        addScript(this.enemyScript);
     }
 }

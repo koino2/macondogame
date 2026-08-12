@@ -3,7 +3,6 @@ package game.prefabs.enemies;
 import game.scripts.weapons.cannon.CannonExplosion;
 import lib.CollisionScript;
 import lib.Object2D;
-import lib.Script;
 import lib.StaticTextures;
 
 import java.awt.*;
@@ -11,17 +10,7 @@ import java.awt.*;
 public class Bomb extends Enemy{
     public String exclude = "enemy";
     public Bomb(int x, int y, int rotation) {
-        super(x, y, rotation, 100, 100, new Script() {
-            @Override
-            public void start() {
-
-            }
-
-            @Override
-            public void update(double deltaTime) {
-
-            }
-        });
+        super(x, y, rotation, 100, 100);
 
         texture = StaticTextures.read("src/assets/textures/entities/bomb.png");
         tags.add("noCollision");
