@@ -1,5 +1,7 @@
 package game.levels;
 
+import game.prefabs.doors.Spawnpoint;
+import game.prefabs.enemies.Bomb;
 import game.prefabs.enemies.ShooterEnemy;
 import game.prefabs.enemies.Turret;
 import game.prefabs.units.CannonPlayer;
@@ -8,19 +10,25 @@ import game.prefabs.units.FlamethrowerPlayer;
 import game.prefabs.units.PistolPlayer;
 import game.scripts.animations.AnimatedTexture;
 import game.scripts.misc.Settings;
+import game.scripts.weapons.cannon.Cannon;
+import game.scripts.weapons.pistol.Pistol;
 import lib.*;
 import lib.postProcessEffects.Bloom;
+import game.prefabs.enemies.Enemy;
 import game.prefabs.Player;
 import game.scripts.ui.DebugText;
 import lib.postProcessEffects.Vignette;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 
-public class Level2 extends Level {
+public class DevelopmentLevel extends Level {
     boolean won = false;
     double winTimestamp = 0;
 
-    public Scene nextScene = new SampleScene();
+    public Scene nextScene = new Level2();
+
     @Override
     public void onWin(){
         if(!won) {
@@ -44,20 +52,6 @@ public class Level2 extends Level {
     public void onLose(){
         System.exit(1);
     }
-
-    public void doshit(float x, float y, float xS, float yS, float rot, Color color){
-        Object2D object2D = new Object2D(
-                x + xS * 0.5f,
-                y + yS * 0.5f,
-                xS,
-                yS,
-                rot
-        );
-
-        object2D.color = color;
-        addObject(object2D);
-    }
-
     @Override
     public void buildObjects() {
 
@@ -67,59 +61,48 @@ public class Level2 extends Level {
         playerOrder.add(new ChainsawPlayer(100, 300, 0));
         playerOrder.add(new FlamethrowerPlayer(100, 300, 0));
 
+        // WALLS
         ambientColor = new Color(74, 74, 76);
+        Color wallColor = new Color(86, 156, 216);
+        Color floorColor = new Color(65, 73, 73);
+        int wallWidth = engine.getWidth();
+        int wallHeight = engine.getHeight();
+        int wallThickness = 50;
 
-        Object2D floor = new Object2D(
-                284 + 1350   * 0.5f,
-                33 + 498 * 0.5f,
-                1350,
-                498,
-                0
-        );
-        floor.color = new Color(27, 37, 48);
+        Object2D wall1 = new Object2D(0, wallHeight / 2f, wallThickness, wallHeight + wallThickness, 0);
+        wall1.setColor(wallColor);
+        wall1.tags.add("wall");
+        addObject(wall1);
+
+        Object2D wall2 = new Object2D(wallWidth, wallHeight / 2f, wallThickness, wallHeight + wallThickness, 0);
+        wall2.setColor(wallColor);
+        wall2.tags.add("wall");
+        addObject(wall2);
+
+        Object2D wall3 = new Object2D(wallWidth / 2f, 0, wallWidth + wallThickness, wallThickness, 0);
+        wall3.setColor(wallColor);
+        wall3.tags.add("wall");
+        addObject(wall3);
+
+        Object2D wall4 = new Object2D(wallWidth / 2f, wallHeight, wallWidth + wallThickness, wallThickness, 0);
+        wall4.setColor(wallColor);
+        wall4.tags.add("wall");
+        addObject(wall4);
+
+        Object2D wall5 = new Object2D(400, wallHeight / 2f, wallThickness, (wallHeight + wallThickness) / 2f, 0);
+        wall5.setColor(new Color(101, 255, 145, 255));
+        wall5.tags.add("wall");
+        addObject(wall5);
+
+        Object2D floor = new Object2D(wallWidth / 2f, wallHeight / 2f, wallWidth, wallHeight, 0);
+        floor.setColor(floorColor);
         floor.tags.add("noCollision");
+        floor.zIndex = -100;
         addObject(floor);
-        Object2D floor2 = new Object2D(
-                36 + 248/2f,
-                217 + 130/2f,
-                248,
-                130,
-                0
-        );
-        floor2.color = new Color(27, 37, 48);
-        floor2.tags.add("noCollision");
-        addObject(floor2);
 
-        Object2D fallback = new Object2D(floor.xPos, floor.yPos, 0, 0, 0);
+        Object2D fallback = new Object2D((float) wallWidth / 2, (float) wallHeight / 2, 0, 0, 0);
         addObject(fallback);
         cameraFallbackObject = fallback;
-
-        Color red = new Color(84, 42, 57);
-        Color blue = new Color(51, 120, 152);
-
-        doshit(36, 347, 248, 33, 0, red);
-        doshit(36, 184, 248, 33, 0, red);
-        doshit(869, 414, 33, 117, 0, blue);
-        doshit(1281, 160, 33, 371, 0, blue);
-        doshit(1075, 33, 33, 371, 0, blue);
-        doshit(869, 33, 33, 117, 0, blue);
-        doshit(663, 414, 33, 117, 0, blue);
-        doshit(663, 33, 33, 117, 0, blue);
-        doshit(457, 414, 33, 117, 0, blue);
-        doshit(457, 33, 33, 117, 0, blue);
-        doshit(251, 380, 33, 151, 0, red);
-        doshit(251, 531, 1416, 33, 0, red);
-        doshit(251, 0, 1416, 33, 0, red);
-        doshit(1634, 33, 33, 498, 0, red);
-        doshit(251, 33, 33, 151, 0, red);
-
-        /*doshit(-52-240, 684-684, 33, 564, 0, red);
-        doshit(-19-240, 684-684, 33, 259, -90, red);
-        doshit(-19-240, 1215-684, 33, 259, -90, red);
-        doshit(210-240, 717-684, 33, 151, 0, red);
-        doshit(210-240, 1064-684, 33, 151, 0, red);*/
-
-        //ambientColor = new Color(255, 255, 255);
 
         Bloom bloom = new Bloom();
         postProcessEffects.add(bloom);
@@ -127,38 +110,25 @@ public class Level2 extends Level {
         Vignette vignette = new Vignette();
         postProcessEffects.add(vignette);
 
-        fallback.addScript(new DebugText());
+        wall1.addScript(new DebugText());
+
+        Spawnpoint spawnpoint = new Spawnpoint(120, wallHeight/2f);
+        addObject(spawnpoint);
     }
 
     @Override
     public void initEnemies() {
-        ShooterEnemy enemy = new ShooterEnemy(321, 42, -90);
+        /*ShooterEnemy enemy = new ShooterEnemy(800, 200, 0);
         enemy.collisionScript.collidableObjects = objects;
         levelEnemies.add(enemy);
 
-        ShooterEnemy enemy2 = new ShooterEnemy(527, 42, -90);
+        Turret enemy2 = new Turret(800, 500, 0);
         enemy2.collisionScript.collidableObjects = objects;
-        levelEnemies.add(enemy2);
+        levelEnemies.add(enemy2);*/
 
-        ShooterEnemy enemy3 = new ShooterEnemy(733, 42, 90);
-        enemy3.collisionScript.collidableObjects = objects;
-        levelEnemies.add(enemy3);
-
-        ShooterEnemy enemy4 = new ShooterEnemy(321, 423, 90);
-        enemy4.collisionScript.collidableObjects = objects;
-        levelEnemies.add(enemy4);
-
-        ShooterEnemy enemy5 = new ShooterEnemy(527, 423, 90);
-        enemy5.collisionScript.collidableObjects = objects;
-        levelEnemies.add(enemy5);
-
-        ShooterEnemy enemy6 = new ShooterEnemy(733, 423, 90);
-        enemy6.collisionScript.collidableObjects = objects;
-        levelEnemies.add(enemy6);
-
-        Turret turret = new Turret(1374, 500, 0);
-        turret.collisionScript.collidableObjects = objects;
-        levelEnemies.add(turret);
+        Bomb bomb = new Bomb(800, 500, 0);
+        bomb.collisionScript.collidableObjects = objects;
+        levelEnemies.add(bomb);
     }
 
     @Override
@@ -188,5 +158,20 @@ public class Level2 extends Level {
         });
 
         return p;
+    }
+
+    public static void main(String[] args) {
+        JFrame window = new JFrame("Untitled Macondo Game");
+        window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        window.setSize(1200, 700);
+        window.setLocationRelativeTo(null);
+
+        DevelopmentLevel scene = new DevelopmentLevel();
+        Engine engine = new Engine(scene);
+        window.setContentPane(engine);
+        window.setVisible(true);
+
+        // RANDOM COMMENT TO SEE IF MY VCS FIXED
+        // it fixed :D
     }
 }

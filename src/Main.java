@@ -1,4 +1,5 @@
 import game.levels.Level1;
+import game.levels.Level2;
 import lib.Engine;
 import javax.swing.*;
 
@@ -9,7 +10,7 @@ public class Main {
         window.setSize(1200, 700);
         window.setLocationRelativeTo(null);
 
-        Level1 scene = new Level1();
+        Level2 scene = new Level2();
         Engine engine = new Engine(scene);
         window.setContentPane(engine);
         window.setVisible(true);
