@@ -2,7 +2,8 @@ package game.prefabs.enemies;
 
 import game.prefabs.explosion.Explosion;
 import game.scripts.misc.DelayedAction;
-import game.scripts.weapons.cannon.CannonExplosion;
+import game.scripts.misc.LifetimeScript;
+import game.scripts.weapons.flamethrower.FlamethrowerParticleEmitter;
 import lib.*;
 
 import java.awt.*;
@@ -36,6 +37,20 @@ public class Bomb extends Enemy{
             public void action() {
                 Explosion explosion = new Explosion(globalX, globalY);
                 scene.addObject(explosion);
+
+                FlamethrowerParticleEmitter emitter = new FlamethrowerParticleEmitter(){
+                    @Override
+                    public void onObjectStart() {
+                        addScript(new LifetimeScript(0.25f));
+                    }
+                };
+                emitter.xPos = object.globalX;
+                emitter.yPos = object.globalY;
+                emitter.spread = 360;
+                emitter.spawnTime = 0.05f;
+                emitter.particlesPerSpawn = 10;
+                object.scene.addObject(emitter);
+
                 destroy();
             }
         });

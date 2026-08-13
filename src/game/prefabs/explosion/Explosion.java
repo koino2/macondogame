@@ -1,6 +1,8 @@
 package game.prefabs.explosion;
 
+import game.scripts.misc.LifetimeScript;
 import game.scripts.weapons.cannon.CannonExplosionAnimation;
+import game.scripts.weapons.flamethrower.FlamethrowerParticleEmitter;
 import lib.*;
 
 import java.util.List;

@@ -24,6 +24,8 @@ public class ParticleEmitter extends Object2D {
 
     public float speedRandomness = 20;
 
+    public int particlesPerSpawn = 1;
+
     public static Point getPointInDirection(float rotation, float distance){
         double rad = Math.toRadians(rotation);
 
@@ -47,7 +49,7 @@ public class ParticleEmitter extends Object2D {
         addScript(new Script() {
             @Override
             public void start() {
-
+                timeSinceLastSpawn = spawnTime;
             }
 
             double time = 0;
@@ -59,18 +61,20 @@ public class ParticleEmitter extends Object2D {
                 timeSinceLastSpawn += deltaTime;
 
                 if (timeSinceLastSpawn > spawnTime && enabled){
-                    Object2D particle = particle(x, y);
+                    for (int i = 0; i < particlesPerSpawn; i++) {
+                        Object2D particle = particle(x, y);
 
-                    float angle = direction + rng.nextFloat(-spread / 2f, spread / 2f);
-                    Point dir = getPointInDirection(angle, speed);
+                        float angle = direction + rng.nextFloat(-spread / 2f, spread / 2f);
+                        Point dir = getPointInDirection(angle, speed);
 
-                    particle.xVelocity = dir.x;
-                    particle.yVelocity = dir.y;
-                    particle.xAcceleration = (acceleration * dir.x / speed) + rng.nextFloat(-speedRandomness, speedRandomness);
-                    particle.yAcceleration = (acceleration * dir.y / speed) + rng.nextFloat(-speedRandomness, speedRandomness);
-                    particleHolder.addChild(particle);
+                        particle.xVelocity = dir.x;
+                        particle.yVelocity = dir.y;
+                        particle.xAcceleration = (acceleration * dir.x / speed) + rng.nextFloat(-speedRandomness, speedRandomness);
+                        particle.yAcceleration = (acceleration * dir.y / speed) + rng.nextFloat(-speedRandomness, speedRandomness);
+                        particleHolder.addChild(particle);
 
-                    particlesSpawned += 1;
+                        particlesSpawned += 1;
+                    }
                     timeSinceLastSpawn = 0;
                 }
             }
