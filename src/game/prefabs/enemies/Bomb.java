@@ -1,5 +1,6 @@
 package game.prefabs.enemies;
 
+import game.prefabs.explosion.Explosion;
 import game.scripts.misc.DelayedAction;
 import game.scripts.weapons.cannon.CannonExplosion;
 import lib.*;
@@ -33,7 +34,7 @@ public class Bomb extends Enemy{
         addScript(new DelayedAction(1){
             @Override
             public void action() {
-                CannonExplosion explosion = new CannonExplosion(xPos, yPos);
+                Explosion explosion = new Explosion(globalX, globalY);
                 scene.addObject(explosion);
                 destroy();
             }
