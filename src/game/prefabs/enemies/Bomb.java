@@ -66,6 +66,9 @@ public class Bomb extends Enemy{
                 if(!other.tags.contains("noCollision") && !other.tags.contains(exclude)) {
                     explode();
                 }
+                if (other.tags.contains("bullet")){
+                    explode();
+                }
             }
         };
         addScript(collisionScript);

@@ -98,9 +98,12 @@ public abstract class Scene {
         bufferGraphics.scale(camera.scale, camera.scale);
         bufferGraphics.translate(-camera.globalX, -camera.globalY);
 
-        objects.sort(Comparator.comparingInt(o -> o.zIndex));
-        for (int i = 0; i < objects.size(); i++) {
-            objects.get(i).render(bufferGraphics);
+        List<Object2D> object2DNotNull = new ArrayList<>(objects);
+        object2DNotNull.removeIf(o -> o == null);
+        
+        object2DNotNull.sort(Comparator.comparingInt(o -> o.zIndex));
+        for (Object2D object : object2DNotNull){
+            object.render(bufferGraphics);
         }
 
         objectRenderTime = System.nanoTime() - startTime;
