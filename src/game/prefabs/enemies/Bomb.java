@@ -3,6 +3,7 @@ package game.prefabs.enemies;
 import game.prefabs.explosion.Explosion;
 import game.scripts.misc.DelayedAction;
 import game.scripts.misc.LifetimeScript;
+import game.scripts.misc.Settings;
 import game.scripts.weapons.flamethrower.FlamethrowerParticleEmitter;
 import lib.*;
 
@@ -28,7 +29,8 @@ public class Bomb extends Enemy{
         glow.color = new Color(250, 50, 50, 200);
         addChild(glow);
 
-        Sound beep = new Sound("src/assets/audio/enemies/mine/beep.wav", 1);
+        Sound beep = new Sound("src/assets/audio/enemies/mine/beep.wav", 1, Settings.volume);
+        beep.setVolume(beep.defaultVolume);
         sounds.add(beep);
         beep.play();
 

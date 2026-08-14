@@ -51,12 +51,16 @@ public class Sound{
         clip.stop();
         clip.setFramePosition(0);
         clip.start();
+
+        System.out.println("playing a sound.");
     }
     public void pause(){
         clip.stop();
     }
     public void resume(){
         clip.start();
+
+        System.out.println("resuming a sound");
     }
     public void stop(){
         clip.stop();

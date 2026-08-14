@@ -1,6 +1,5 @@
 package game.scripts.weapons.flamethrower;
 
-import game.prefabs.Player;
 import game.scripts.misc.HealthScript;
 import game.scripts.weapons.WeaponScript;
 import lib.Input;
@@ -47,6 +46,7 @@ public class Flamethrower extends WeaponScript {
 
         flamethrowerSound = new Sound("src/assets/audio/weapons/flamethrower/flamethrower.wav", 1);
         object.sounds.add(flamethrowerSound);
+        flamethrowerSound.stop();
         end = new Sound("src/assets/audio/weapons/flamethrower/flamethrower-end.wav", 1);
         object.sounds.add(end);
         end.stop();
@@ -110,6 +110,8 @@ public class Flamethrower extends WeaponScript {
         timeSinceLastSpawn += deltaTime;
         timeSinceLastDamage += deltaTime;
 
+        if (object.destroyed ) return;
+
         boolean firingLastFrame = firing;
 
         if (timeSinceFire < 0.1f){
@@ -161,5 +163,11 @@ public class Flamethrower extends WeaponScript {
     public void fire(Point target) {
         timeSinceFire = 0;
         firedBefore = true;
+    }
+
+    @Override
+    public void onDestroy(){
+        flamethrowerSound.stop();
+        System.out.println("STOP!");
     }
 }
