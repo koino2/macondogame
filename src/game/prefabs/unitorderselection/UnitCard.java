@@ -19,10 +19,6 @@ public class UnitCard extends Object2D {
 
     public List<UnitCard> cards = new ArrayList<>();
 
-    public void whatTheFuckAmIWitnessing(int whyIsThisAThing){ // I understand why people dislike java now.
-        position = whyIsThisAThing;
-    }
-
     public UnitCard(Point[] snapPositions, int position) {
         super(snapPositions[position].x, snapPositions[position].y, 180, 180, 0);
         this.snapPositions = snapPositions;
@@ -50,16 +46,18 @@ public class UnitCard extends Object2D {
                 boolean snapped = false;
 
                 for (int i = 0; i < snapPositions.length; i++) {
-                    if (Math.abs(object.xPos - snapPositions[i].x) <= snapSize && Math.abs(object.yPos - snapPositions[i].y) <= snapSize){
-                        whatTheFuckAmIWitnessing(i);
+                    if (Math.abs(object.globalX - snapPositions[i].x) <= snapSize && Math.abs(object.globalY - snapPositions[i].y) <= snapSize){
+                        UnitCard.this.position = i;
                         snapped = true;
                         System.out.println("snap!");
+                        System.out.println(UnitCard.this.position);
+                        System.out.println(i);
                         break;
                     }
                 }
-                if (!snapped) {
-                    object.xPos = snapPositions[position].x;
-                    object.yPos = snapPositions[position].y;
+                if (snapped) {
+                    object.xPos = snapPositions[UnitCard.this.position].x;
+                    object.yPos = snapPositions[UnitCard.this.position].y;
                 }
 
                 for (UnitCard card : cards) {

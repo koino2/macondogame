@@ -33,7 +33,7 @@ public class UnitOrderSelector extends Object2D {
         for (int i = 0; i < 4; i++) {
             UnitCard unitCard = new UnitCard(points, i);
             unitCard.color = new Color(new Random().nextInt(0, 255), new Random().nextInt(0, 255), new Random().nextInt(0, 255));
-            scene.addObject(unitCard);
+            addChild(unitCard);
             cards.add(unitCard);
         }
         for (UnitCard card : cards){
