@@ -212,7 +212,7 @@ public abstract class Level extends Scene {
         addObject(trash);
 
         buildObjects();
-        startNewRun();
+        //startNewRun();
 
         scriptObject = new Object2D(0, 0, 0, 0, 0);
         addObject(scriptObject);
@@ -237,7 +237,9 @@ public abstract class Level extends Scene {
     public void update(double deltaTime) {
         time += deltaTime;
         updateCamera();
-        checkRunState(deltaTime);
+        if (runNumber > 0) {
+            checkRunState(deltaTime);
+        }
 
         selfDestructTime += deltaTime;
         if(Input.isKeyDown(KeyEvent.VK_X) && selfDestructTime > 1f){

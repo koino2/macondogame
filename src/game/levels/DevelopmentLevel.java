@@ -4,6 +4,7 @@ import game.prefabs.doors.Spawnpoint;
 import game.prefabs.enemies.Bomb;
 import game.prefabs.enemies.ShooterEnemy;
 import game.prefabs.enemies.Turret;
+import game.prefabs.unitorderselection.UnitOrderSelector;
 import game.prefabs.units.CannonPlayer;
 import game.prefabs.units.ChainsawPlayer;
 import game.prefabs.units.FlamethrowerPlayer;
@@ -56,10 +57,10 @@ public class DevelopmentLevel extends Level {
     public void buildObjects() {
 
         // players
-        playerOrder.add(new FlamethrowerPlayer(100, 300, 0));
         playerOrder.add(new PistolPlayer(100, 300, 0));
         playerOrder.add(new CannonPlayer(100, 300, 0));
         playerOrder.add(new ChainsawPlayer(100, 300, 0));
+        playerOrder.add(new FlamethrowerPlayer(100, 300, 0));
 
         // WALLS
         ambientColor = new Color(74, 74, 76);
@@ -114,6 +115,13 @@ public class DevelopmentLevel extends Level {
 
         Spawnpoint spawnpoint = new Spawnpoint(120, wallHeight/2f);
         addObject(spawnpoint);
+
+        UnitOrderSelector selector = new UnitOrderSelector(0, 0);
+        addObject(selector);
+        Light light = new Light(0, 0, selector.xSize*2);
+        selector.addChild(light);
+        bloom.enabled = false;
+        cameraFallbackObject = selector;
     }
 
     @Override
