@@ -7,6 +7,7 @@ import lib.StaticTextures;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -57,6 +58,7 @@ public class UnitOrderSelector extends Object2D {
                 UnitOrderSelector.this.onSelected(playerList);
 
                 ((Level)(scene)).playerOrder = playerList;
+                System.out.println(Arrays.toString(((Level) (scene)).playerOrder.toArray()));
                 ((Level)(scene)).startNewRun();
                 UnitOrderSelector.this.destroy();
             }

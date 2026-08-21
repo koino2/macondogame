@@ -8,6 +8,7 @@ import lib.Script;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public abstract class UnitOrderSelectorNextButton extends Object2D {
@@ -56,6 +57,9 @@ public abstract class UnitOrderSelectorNextButton extends Object2D {
                         if (!card.isSnapped){
                             return;
                         }
+                    }
+                    cards.sort(Comparator.comparingInt(card -> card.position));
+                    for (UnitCard card : cards){
                         playerList.add(card.cardPlayer);
                     }
 
