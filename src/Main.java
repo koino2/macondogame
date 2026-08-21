@@ -10,7 +10,7 @@ public class Main {
         window.setSize(1200, 700);
         window.setLocationRelativeTo(null);
 
-        Level2 scene = new Level2();
+        Level1 scene = new Level1();
         Engine engine = new Engine(scene);
         window.setContentPane(engine);
         window.setVisible(true);

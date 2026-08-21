@@ -1,5 +1,6 @@
 package game.prefabs.enemies;
 
+import game.levels.Level;
 import game.prefabs.explosion.Explosion;
 import game.scripts.misc.DelayedAction;
 import game.scripts.misc.LifetimeScript;
@@ -52,6 +53,8 @@ public class Bomb extends Enemy{
                 emitter.spawnTime = 0.05f;
                 emitter.particlesPerSpawn = 10;
                 object.scene.addObject(emitter);
+
+                ((Level)(Bomb.this.scene)).cameraController.shake(20, 0.5f);
 
                 destroy();
             }

@@ -118,6 +118,11 @@ public class DevelopmentLevel extends Level {
         cardPlayers.add(new PistolPlayer(100, 300, 0));
         cardPlayers.add(new CannonPlayer(100, 300, 0));
 
+        playerOrder.add(new FlamethrowerPlayer(100, 300, 0));
+        playerOrder.add(new ChainsawPlayer(100, 300, 0));
+        playerOrder.add(new PistolPlayer(100, 300, 0));
+        playerOrder.add(new CannonPlayer(100, 300, 0));
+
         UnitOrderSelector selector = new UnitOrderSelector(0, 0, cardPlayers){
             @Override
             public void onSelected(List<Player> playerList) {
