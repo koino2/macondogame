@@ -6,6 +6,7 @@ import lib.Object2D;
 import lib.Script;
 
 import java.awt.*;
+import java.util.Random;
 
 public class CameraController extends Script {
     public Object2D target;
@@ -19,6 +20,14 @@ public class CameraController extends Script {
     public float targetX;
     public float targetY;
     public float moveSmoothing = 5f;
+
+    public float shakeTime = 0;
+    public float shakeStrength = 0;
+
+    public float shakeX = 0;
+    public float shakeY = 0;
+
+    Random rng = new Random();
 
     public CameraController(Object2D target){
         this.target = target;
@@ -57,10 +66,28 @@ public class CameraController extends Script {
 
         camera.xPos += (targetX - camera.xPos) * (1f - (float)Math.exp(-moveSmoothing * deltaTime));
         camera.yPos += (targetY - camera.yPos) * (1f - (float)Math.exp(-moveSmoothing * deltaTime));
+
+        if (shakeTime > 0){
+            shakeTime -= (float) deltaTime;
+            float amount = shakeStrength * (shakeTime/0.2f);
+            shakeX = rng.nextFloat(0, 1)*amount;
+            shakeY = rng.nextFloat(0, 1)*amount;
+        } else{
+            shakeX = 0;
+            shakeY = 0;
+        }
+
+        camera.xPos += shakeX;
+        camera.yPos += shakeY;
     }
 
     @Override
     public void renderUI(Graphics g) {
 
+    }
+
+    public void shake(float strength, float duration){
+        shakeStrength = Math.max(strength, shakeStrength);
+        shakeTime = Math.max(duration, shakeStrength);
     }
 }
