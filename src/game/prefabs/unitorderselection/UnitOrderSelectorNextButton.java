@@ -16,6 +16,8 @@ public abstract class UnitOrderSelectorNextButton extends Object2D {
 
     public abstract void onSelected(List<Player> playerList);
 
+    boolean fired = false;
+
     public Point getMouseWorldPosition(){
         Point point = Input.getMousePosition();
         float mouseWorldX;
@@ -44,8 +46,10 @@ public abstract class UnitOrderSelectorNextButton extends Object2D {
                 if (
                         mouse.x > globalX-object.xSize/2 && mouse.x < globalX+object.xSize/2 &&
                         mouse.y > globalY-object.ySize/2 && mouse.y < globalY+object.ySize/2 &&
-                        Input.isMouseReleased(MouseEvent.BUTTON1)
+                        Input.isMouseReleased(MouseEvent.BUTTON1) && !fired
                 ) {
+
+                    fired = true;
 
                     List<Player> playerList = new ArrayList<>();
                     for (UnitCard card : cards) {
