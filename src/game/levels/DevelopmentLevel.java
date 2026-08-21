@@ -23,6 +23,8 @@ import lib.postProcessEffects.Vignette;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DevelopmentLevel extends Level {
     boolean won = false;
@@ -55,12 +57,6 @@ public class DevelopmentLevel extends Level {
     }
     @Override
     public void buildObjects() {
-
-        // players
-        playerOrder.add(new PistolPlayer(100, 300, 0));
-        playerOrder.add(new CannonPlayer(100, 300, 0));
-        playerOrder.add(new ChainsawPlayer(100, 300, 0));
-        playerOrder.add(new FlamethrowerPlayer(100, 300, 0));
 
         // WALLS
         ambientColor = new Color(74, 74, 76);
@@ -116,7 +112,18 @@ public class DevelopmentLevel extends Level {
         Spawnpoint spawnpoint = new Spawnpoint(120, wallHeight/2f);
         addObject(spawnpoint);
 
-        UnitOrderSelector selector = new UnitOrderSelector(0, 0);
+        List<Player> cardPlayers = new ArrayList<>();
+        cardPlayers.add(new FlamethrowerPlayer(100, 300, 0));
+        cardPlayers.add(new ChainsawPlayer(100, 300, 0));
+        cardPlayers.add(new PistolPlayer(100, 300, 0));
+        cardPlayers.add(new CannonPlayer(100, 300, 0));
+
+        UnitOrderSelector selector = new UnitOrderSelector(0, 0, cardPlayers){
+            @Override
+            public void onSelected(List<Player> playerList) {
+                bloom.enabled = true;
+            }
+        };
         addObject(selector);
         Light light = new Light(0, 0, selector.xSize*2);
         selector.addChild(light);

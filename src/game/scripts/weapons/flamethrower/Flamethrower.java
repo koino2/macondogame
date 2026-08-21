@@ -168,6 +168,5 @@ public class Flamethrower extends WeaponScript {
     @Override
     public void onDestroy(){
         flamethrowerSound.stop();
-        System.out.println("STOP!");
     }
 }

@@ -1,7 +1,10 @@
 package game.prefabs.unitorderselection;
 
+import game.prefabs.Player;
+import game.scripts.npc.LookAtMouseScript;
 import game.scripts.objects.DragScript;
 import lib.Object2D;
+import lib.StaticTextures;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -13,16 +16,22 @@ public class UnitCard extends Object2D {
 
     public int position;
 
-    public int snapSize = 50;
+    public int snapSize = 100;
 
     DragScript script;
 
     public List<UnitCard> cards = new ArrayList<>();
 
+    public boolean isSnapped = true;
+
+    public Player cardPlayer;
+
     public UnitCard(Point[] snapPositions, int position) {
         super(snapPositions[position].x, snapPositions[position].y, 180, 180, 0);
         this.snapPositions = snapPositions;
         this.position = position;
+
+        this.texture = StaticTextures.read("src/assets/textures/objects/unitselection/card.png");
 
         script = (new DragScript(){
             @Override
@@ -36,6 +45,8 @@ public class UnitCard extends Object2D {
                     }
                 }
 
+                isSnapped = false;
+
                 zIndex += 10;
             }
             @Override
@@ -46,12 +57,10 @@ public class UnitCard extends Object2D {
                 boolean snapped = false;
 
                 for (int i = 0; i < snapPositions.length; i++) {
-                    if (Math.abs(object.globalX - snapPositions[i].x) <= snapSize && Math.abs(object.globalY - snapPositions[i].y) <= snapSize){
+                    if (Math.abs(object.xPos - snapPositions[i].x) <= snapSize && Math.abs(object.yPos - snapPositions[i].y) <= snapSize){
                         UnitCard.this.position = i;
                         snapped = true;
-                        System.out.println("snap!");
-                        System.out.println(UnitCard.this.position);
-                        System.out.println(i);
+                        isSnapped = true;
                         break;
                     }
                 }
@@ -62,6 +71,10 @@ public class UnitCard extends Object2D {
 
                 for (UnitCard card : cards) {
                     card.script.canDrag = true;
+
+                    if (card.position == UnitCard.this.position && card != UnitCard.this && card.isSnapped){
+                        card.yPos = snapPositions[position].y + 200;
+                    }
                 }
 
                 zIndex -= 10;
@@ -69,5 +82,18 @@ public class UnitCard extends Object2D {
         });
 
         addScript(((((((((((((script))))))))))))); // idk i got carried away
+    }
+
+    @Override
+    public void onObjectStart() {
+        try {
+            Object2D visual = new Object2D(0, 0, 150, 150, 0);
+            visual.texture = cardPlayer.texture;
+            visual.zIndex = 11;
+            visual.addScript(new LookAtMouseScript());
+            addChild(visual);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
