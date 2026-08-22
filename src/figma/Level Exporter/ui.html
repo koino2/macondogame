@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            margin: 0;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #status {
+            margin-top: 15px;
+            white-space: pre-wrap;
+        }
+
+        .error {
+            color: #d33;
+        }
+
+        .success {
+            color: #2a8;
+        }
+    </style>
+</head>
+
+<body>
+
+<button id="export">Export Level</button>
+
+<div id="status"></div>
+
+<script>
+    const status = document.getElementById("status");
+
+    document.getElementById("export").onclick = () => {
+        status.className = "";
+        status.textContent = "Exporting...";
+
+        parent.postMessage({
+            pluginMessage: {
+                type: "export"
+            }
+        }, "*");
+    };
+
+    window.onmessage = (event) => {
+        const msg = event.data.pluginMessage;
+
+        if (!msg) {
+            return;
+        }
+
+        if (msg.type === "error") {
+            status.className = "error";
+            status.textContent = msg.message;
+            return;
+        }
+
+        if (msg.type === "download") {
+            const blob = new Blob(
+                [msg.text],
+                { type: "text/plain" }
+            );
+
+            const url = URL.createObjectURL(blob);
+
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = msg.filename;
+
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+
+            URL.revokeObjectURL(url);
+
+            status.className = "success";
+            status.textContent =
+                `Exported ${msg.filename}`;
+        }
+    };
+</script>
+
+</body>
+</html>

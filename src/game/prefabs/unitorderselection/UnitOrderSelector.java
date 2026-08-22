@@ -2,6 +2,7 @@ package game.prefabs.unitorderselection;
 
 import game.levels.Level;
 import game.prefabs.Player;
+import lib.Light;
 import lib.Object2D;
 import lib.StaticTextures;
 
@@ -63,5 +64,8 @@ public class UnitOrderSelector extends Object2D {
             }
         };
         addChild(nextButton);
+
+        Light light = new Light(0, 0, 750);
+        addChild(light);
     }
 }
