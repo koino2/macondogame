@@ -1,5 +1,6 @@
 package game.scripts.weapons.pistol;
 
+import game.levels.Level;
 import game.prefabs.Bullet;
 import game.scripts.weapons.WeaponScript;
 import lib.Object2D;
@@ -62,6 +63,8 @@ public class Pistol extends WeaponScript {
             bullet.zIndex = 100;
             bullet.collisionScript.collidableObjects = object.scene.objects;
             object.scene.addObject(bullet);
+
+            ((Level)(object.scene)).cameraController.shake(1, 0.2f);
 
             resetTimer();
         }

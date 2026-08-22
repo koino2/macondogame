@@ -1,5 +1,6 @@
 package game.scripts.weapons.flamethrower;
 
+import game.levels.Level;
 import game.scripts.misc.HealthScript;
 import game.scripts.weapons.WeaponScript;
 import lib.Input;
@@ -138,6 +139,10 @@ public class Flamethrower extends WeaponScript {
         emitter.enabled = timeSinceFiringStarted > 1;
         emitter.xPos = ParticleEmitter.getPointInDirection(object.rotation, 40).x;
         emitter.yPos = ParticleEmitter.getPointInDirection(object.rotation, 40).y;
+
+        if (timeSinceFiringStarted > 1) {
+            ((Level) (object.scene)).cameraController.shake(1, 0.2f);
+        }
 
         if (firing && timeSinceLastDamage > 0.1f && timeSinceFiringStarted > 1) {
             damage();

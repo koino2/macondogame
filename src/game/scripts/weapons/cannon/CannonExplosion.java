@@ -1,5 +1,6 @@
 package game.scripts.weapons.cannon;
 
+import game.levels.Level;
 import lib.*;
 
 import java.util.List;
@@ -35,5 +36,10 @@ public class CannonExplosion extends Object2D {
 
         CannonExplosionAnimation anim = new CannonExplosionAnimation();
         addScript(anim);
+    }
+
+    @Override
+    public void onObjectStart() {
+        ((Level)(scene)).cameraController.shake(5, 0.5f);
     }
 }

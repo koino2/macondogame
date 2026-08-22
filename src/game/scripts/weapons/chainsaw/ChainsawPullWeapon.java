@@ -1,5 +1,6 @@
 package game.scripts.weapons.chainsaw;
 
+import game.levels.Level;
 import game.prefabs.Player;
 import game.scripts.animations.Animation;
 import game.scripts.misc.DelayedAction;
@@ -89,6 +90,8 @@ public class ChainsawPullWeapon extends WeaponScript {
             fire(mouseWorldPosition);
             shot = true;
             target = mouseWorldPosition;
+
+            ((Level)(object.scene)).cameraController.shake(2, 2f);
         }
     }
 }
