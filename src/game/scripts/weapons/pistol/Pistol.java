@@ -22,6 +22,8 @@ public class Pistol extends WeaponScript {
     public int offsetY = 0;
     public float damage = 10;
 
+    public boolean shake = false;
+
     public Pistol(){}
 
     public Pistol(int randomness, float prediction, float damage, String excludeTag){
@@ -64,7 +66,9 @@ public class Pistol extends WeaponScript {
             bullet.collisionScript.collidableObjects = object.scene.objects;
             object.scene.addObject(bullet);
 
-            ((Level)(object.scene)).cameraController.shake(1, 0.2f);
+            if (shake) {
+                ((Level) (object.scene)).cameraController.shake(1, 0.2f);
+            }
 
             resetTimer();
         }

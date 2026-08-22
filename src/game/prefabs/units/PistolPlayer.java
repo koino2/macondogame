@@ -44,6 +44,7 @@ public class PistolPlayer extends Player {
         pistol.offsetX = 60;
         pistol.offsetY = 5;
         pistol.bulletColor = new Color(255, 179, 50);
+        pistol.shake = true;
         initPlayer();
         addScript(pistol);
         this.texture = StaticTextures.read("src/assets/textures/entities/robot1-blue.png");
