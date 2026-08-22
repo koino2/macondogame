@@ -1,6 +1,7 @@
 package game.prefabs.unitorderselection;
 
 import game.prefabs.Player;
+import game.scripts.misc.ZIndexOffsetScript;
 import game.scripts.npc.LookAtMouseScript;
 import game.scripts.objects.DragScript;
 import lib.Object2D;
@@ -89,7 +90,7 @@ public class UnitCard extends Object2D {
         try {
             Object2D visual = new Object2D(0, 0, 150, 150, 0);
             visual.texture = cardPlayer.texture;
-            visual.zIndex = 11;
+            visual.addScript(new ZIndexOffsetScript(10));
             visual.addScript(new LookAtMouseScript());
             addChild(visual);
         } catch (Exception e){

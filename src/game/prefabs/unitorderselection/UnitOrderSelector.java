@@ -58,7 +58,6 @@ public class UnitOrderSelector extends Object2D {
                 UnitOrderSelector.this.onSelected(playerList);
 
                 ((Level)(scene)).playerOrder = playerList;
-                System.out.println(Arrays.toString(((Level) (scene)).playerOrder.toArray()));
                 ((Level)(scene)).startNewRun();
                 UnitOrderSelector.this.destroy();
             }

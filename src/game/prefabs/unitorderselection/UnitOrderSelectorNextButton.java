@@ -32,7 +32,10 @@ public abstract class UnitOrderSelectorNextButton extends Object2D {
     }
 
     public UnitOrderSelectorNextButton(Object2D parent, List<UnitCard> cards) {
-        super((parent.xSize/2), (parent.ySize/2), 100, 25, 0);
+        super(0, 232, 178, 49, 0);
+
+        this.color = new Color(0, 0, 0, 0);
+
         this.cards = cards;
 
         addScript(new Script() {

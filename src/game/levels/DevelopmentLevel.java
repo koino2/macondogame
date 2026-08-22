@@ -2,8 +2,6 @@ package game.levels;
 
 import game.prefabs.doors.Spawnpoint;
 import game.prefabs.enemies.Bomb;
-import game.prefabs.enemies.ShooterEnemy;
-import game.prefabs.enemies.Turret;
 import game.prefabs.unitorderselection.UnitOrderSelector;
 import game.prefabs.units.CannonPlayer;
 import game.prefabs.units.ChainsawPlayer;
@@ -11,16 +9,12 @@ import game.prefabs.units.FlamethrowerPlayer;
 import game.prefabs.units.PistolPlayer;
 import game.scripts.animations.AnimatedTexture;
 import game.scripts.misc.Settings;
-import game.scripts.weapons.cannon.Cannon;
-import game.scripts.weapons.pistol.Pistol;
 import lib.*;
 import lib.postProcessEffects.Bloom;
-import game.prefabs.enemies.Enemy;
 import game.prefabs.Player;
 import game.scripts.ui.DebugText;
 import lib.postProcessEffects.Vignette;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -109,8 +103,8 @@ public class DevelopmentLevel extends Level {
 
         wall1.addScript(new DebugText());
 
-        Spawnpoint spawnpoint = new Spawnpoint(120, wallHeight/2f);
-        addObject(spawnpoint);
+        /*Spawnpoint spawnpoint = new Spawnpoint(120, wallHeight/2f);
+        addObject(spawnpoint);*/
 
         List<Player> cardPlayers = new ArrayList<>();
         cardPlayers.add(new FlamethrowerPlayer(100, 300, 0));
