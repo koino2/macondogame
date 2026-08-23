@@ -90,10 +90,15 @@ A turret stays in its place and doesn't move. It is more accurate and does more 
 Walk through it, and it explodes. The explosion damages everything near it, including other enemies.
 
 ### Running
-todo: instructions here
+- Download the zip from the release (https://github.com/koino2/macondogame/releases/tag/release)
+- Extract it
+- Open macondogame
+- Run DeadAgain.exe
+
+You should not move the exe somewhere without all the other stuff in the folder because it has many important assets and stuff required.
 
 ### Building
-todo: instructions here
+Clone the repo and compile it with Main as the main class. Ensure the ```assets``` and ```figma``` are inside a "src" folder and kept in the working directory.
 
 ## Technical Documentation
 
