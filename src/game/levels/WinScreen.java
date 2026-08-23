@@ -144,7 +144,6 @@ public class WinScreen extends Scene {
 
                 object.xPos = (xP-0.5f)*20;
                 object.yPos = (yP-0.5f)*20;
-                System.out.println(object.scripts.size());
             }
         });
         addObject(camera);

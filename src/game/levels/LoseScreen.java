@@ -4,13 +4,14 @@ import lib.*;
 import lib.postProcessEffects.Vignette;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.Random;
 
 public class LoseScreen extends Scene {
     @Override
     public void start() {
         Object2D text = new Object2D(0, 0, 1, 1, 0);
-        text.texture = StaticTextures.read("src/assets/textures/objects/screen/win.png");
+        text.texture = StaticTextures.read("src/assets/textures/objects/screen/lose.png");
         text.xSize = text.texture.getWidth();
         text.ySize = text.texture.getHeight();
         addObject(text);
@@ -143,7 +144,6 @@ public class LoseScreen extends Scene {
 
                 object.xPos = (xP-0.5f)*20;
                 object.yPos = (yP-0.5f)*20;
-                System.out.println(object.scripts.size());
             }
         });
         addObject(camera);
@@ -151,7 +151,9 @@ public class LoseScreen extends Scene {
 
     @Override
     public void update(double deltaTime) {
-
+        if (Input.isKeyReleased(KeyEvent.VK_R)){
+            engine.changeScene(new MainLevel());
+        }
     }
 
     @Override
