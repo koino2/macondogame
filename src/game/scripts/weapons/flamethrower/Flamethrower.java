@@ -2,6 +2,7 @@ package game.scripts.weapons.flamethrower;
 
 import game.levels.Level;
 import game.scripts.misc.HealthScript;
+import game.scripts.misc.Settings;
 import game.scripts.weapons.WeaponScript;
 import lib.Input;
 import lib.Object2D;
@@ -45,11 +46,13 @@ public class Flamethrower extends WeaponScript {
 
         object.tags.add("player");
 
-        flamethrowerSound = new Sound("src/assets/audio/weapons/flamethrower/flamethrower.wav", 1);
+        flamethrowerSound = new Sound("src/assets/audio/weapons/flamethrower/flamethrower.wav", 0.5f, Settings.volume);
         object.sounds.add(flamethrowerSound);
+        flamethrowerSound.setVolume(flamethrowerSound.defaultVolume);
         flamethrowerSound.stop();
-        end = new Sound("src/assets/audio/weapons/flamethrower/flamethrower-end.wav", 1);
+        end = new Sound("src/assets/audio/weapons/flamethrower/flamethrower-end.wav", 0.5f, Settings.volume);
         object.sounds.add(end);
+        flamethrowerSound.setVolume(flamethrowerSound.defaultVolume);
         end.stop();
     }
 
