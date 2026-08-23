@@ -48,27 +48,32 @@ public class TurretScript extends Script {
             int xDist = (int) (closest.globalX - object.globalX);
             int yDist = (int) (closest.globalY - object.globalY);
             object.rotation = (float) Math.toDegrees(Math.atan2(yDist, xDist));
-        }
-        if (closest != null) {
-            Object2D target = closest;
-            float distX = (target.xPos - object.xPos);
-            float distY = (target.yPos - object.yPos);
 
-            float distance = (float) Math.hypot(distX, distY);
+            float hyp = (float) Math.sqrt(xDist * xDist + yDist * yDist);
 
-            float travelTime = distance / bulletSpeed;
+            if (hyp < 1500) {
 
-            int predictedX = (int) (target.xPos + (target.xVelocity * travelTime * prediction));
-            int predictedY = (int) (target.yPos + (target.yVelocity * travelTime * prediction));
 
-            int targetX = predictedX;
-            int targetY = predictedY;
+                Object2D target = closest;
+                float distX = (target.xPos - object.xPos);
+                float distY = (target.yPos - object.yPos);
 
-            if(randomness != 0) {
-                targetX = predictedX + rng.nextInt(-randomness, randomness);
-                targetY = predictedY + rng.nextInt(-randomness, randomness);
+                float distance = (float) Math.hypot(distX, distY);
+
+                float travelTime = distance / bulletSpeed;
+
+                int predictedX = (int) (target.xPos + (target.xVelocity * travelTime * prediction));
+                int predictedY = (int) (target.yPos + (target.yVelocity * travelTime * prediction));
+
+                int targetX = predictedX;
+                int targetY = predictedY;
+
+                if (randomness != 0) {
+                    targetX = predictedX + rng.nextInt(-randomness, randomness);
+                    targetY = predictedY + rng.nextInt(-randomness, randomness);
+                }
+                weaponScript.fire(new Point(targetX, targetY));
             }
-            weaponScript.fire(new Point(targetX, targetY));
         }
     }
 }

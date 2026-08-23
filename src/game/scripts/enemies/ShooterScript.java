@@ -23,9 +23,14 @@ public class ShooterScript extends Script {
             int xDist = (int) (closest.globalX - object.globalX);
             int yDist = (int) (closest.globalY - object.globalY);
             object.rotation = (float) Math.toDegrees(Math.atan2(yDist, xDist));
-        }
-        if (closest != null) {
-            weaponScript.fire(new Point((int) closest.xPos, (int) closest.yPos));
+
+            float hyp = (float) Math.sqrt(xDist*xDist + yDist*yDist);
+            if (hyp < 500){
+                weaponScript.fire(new Point((int) closest.xPos, (int) closest.yPos));
+                cts.moveScript.speed = 100;
+            } else {
+                cts.moveScript.speed = 0;
+            }
         }
     }
 }
