@@ -1,6 +1,6 @@
 # Dead Again
 
-![Gameplay GIF](https://cdn.hackclub.com/01a02eff-1cd2-7770-bb3c-6b44862e7c41/Dead%20Again.gif)
+[Gameplay GIF](https://cdn.hackclub.com/01a02eff-1cd2-7770-bb3c-6b44862e7c41/Dead%20Again.gif)
 
 Dead Again is a 2D top down shooter game made from scratch in Java where your previous attempts are recorded and replayed as ghosts that help you finish the level.
 
