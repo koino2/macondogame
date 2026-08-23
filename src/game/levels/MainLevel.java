@@ -21,10 +21,6 @@ import java.util.List;
 import java.util.Random;
 
 public class MainLevel extends Level {
-    boolean won = false;
-    double winTimestamp = 0;
-
-    public Scene nextScene = new Level2();
 
     @Override
     public void onWin(){
