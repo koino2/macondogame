@@ -1,11 +1,15 @@
 package game.prefabs.enemies;
 
+import game.prefabs.Bullet;
 import game.scripts.enemies.ShooterScript;
 import game.scripts.npc.ClosestTargetScript;
 import game.scripts.weapons.pistol.Pistol;
+import lib.CollisionScript;
+import lib.Object2D;
 import lib.StaticTextures;
 
 import java.awt.*;
+import java.util.Arrays;
 
 public class Nanobot extends Enemy{
     public Nanobot(int x, int y, int rot){
@@ -26,6 +30,15 @@ public class Nanobot extends Enemy{
         shooterScript.weaponScript.soundPath = "src/assets/audio/enemies/nanobot/nanobot-shoot.wav";
         addScript(shooterScript);
 
-        tags.add("noCollision");
+        //tags.add("noCollision");
+
+        addScript(new CollisionScript() {
+            @Override
+            public void onCollide(Object2D other) {
+                if (other instanceof Bullet){
+                    healthScript.damage(((Bullet)(other)).damage);
+                }
+            }
+        });
     }
 }

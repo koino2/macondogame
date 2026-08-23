@@ -63,7 +63,8 @@ public class Flamethrower extends WeaponScript {
 
     public void damage(){
         for (Object2D obj : damageable){
-            if (obj.tags.contains(exclude)) return;/*
+
+            if (obj.tags.contains(exclude)) continue;/*
             for (int i = 0; i < obj.tags.size(); i++) {
                 System.out.println(obj.tags.get(i));
             }*/

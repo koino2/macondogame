@@ -89,8 +89,8 @@ public class CameraController extends Script {
     }
 
     public void shake(float strength, float duration){
-        shakeStrength = Math.max(strength, shakeStrength);
-        shakeTime = Math.max(duration, shakeDuration);
+        shakeStrength = strength;
+        shakeTime = duration;
         shakeDuration = duration;
     }
 }

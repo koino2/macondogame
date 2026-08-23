@@ -32,12 +32,12 @@ public class MainLevel extends Level {
     }
 
     public void next(){
-
+        engine.changeScene(new WinScreen());
     }
 
     @Override
     public void onLose(){
-        System.exit(1);
+        engine.changeScene(new LoseScreen());
     }
 
     void wall(float x, float y, float width, float height, Color color) {
@@ -54,13 +54,8 @@ public class MainLevel extends Level {
     public void buildObjects() {
 
         ambientColor = new Color(74, 74, 76);
-        Color wallColor = new Color(86, 156, 216);
-        Color floorColor = new Color(65, 73, 73);
-        int wallWidth = engine.getWidth();
-        int wallHeight = engine.getHeight();
-        int wallThickness = 50;
 
-        plate = new PressurePlate(0, 0, 0) {
+        plate = new PressurePlate(200, 600, 0) {
             @Override
             public void onTrigger() {
                 next();
@@ -68,11 +63,19 @@ public class MainLevel extends Level {
         };
         addObject(plate);
 
-        levelParser = new LevelParser("src/figma/levels/mainLevel-v5-2.level", plate);
+        levelParser = new LevelParser("src/figma/levels/mainLevel-v6.level", plate);
         levelParser.parse();
         for (int i = 0; i < levelParser.objects.size(); i++) {
             addObject(levelParser.objects.get(i));
         }
+
+        plate.xPos = levelParser.pressurePlate.xPos;
+        plate.yPos = levelParser.pressurePlate.yPos;
+        plate.color = levelParser.pressurePlate.color;
+        plate.rotation = levelParser.pressurePlate.rotation;
+        plate.xSize = levelParser.pressurePlate.xSize;
+        plate.yPos = levelParser.pressurePlate.ySize;
+        plate.zIndex = 100;
 
         String path = "src/assets/textures/objects/background/1.png";
         Random random = new Random();
@@ -87,7 +90,7 @@ public class MainLevel extends Level {
         sky.ySize = sky.texture.getHeight();
         sky.zIndex = -1000;
         sky.tags.add("noCollision");
-        sky.color = new Color(50, 50, 50);
+        sky.color = new Color(150, 150, 150);
         sky.addScript(new SkyScript());
         addObject(sky);
 
@@ -113,8 +116,8 @@ public class MainLevel extends Level {
             @Override
             public void onSelected(List<Player> playerList) {
                 bloom.enabled = true;
-                fallback.xPos = (float) wallWidth / 2;
-                fallback.yPos = (float) wallHeight / 2;
+                fallback.xPos = levelParser.cameraFallback.xPos;
+                fallback.yPos = levelParser.cameraFallback.yPos;
             }
         };
         addObject(selector);

@@ -17,6 +17,7 @@ public class LevelParser {
     public List<Enemy> enemies = new ArrayList<>();
     public Object2D spawnPoint;
     public Object2D pressurePlate;
+    public Object2D cameraFallback;
 
     public File level;
 
@@ -41,6 +42,8 @@ public class LevelParser {
 
             if (line.isEmpty() || line.startsWith("#")) continue;
 
+            System.out.println("Parsing "+line);
+
             String[] parts = line.split(" ");
 
             String type = parts[0];
@@ -51,7 +54,6 @@ public class LevelParser {
                 float xSize = Math.round(Float.parseFloat(parts[3])+2);
                 float ySize = Math.round(Float.parseFloat(parts[4])+2);
                 float rot = Float.parseFloat(parts[5]);
-                System.out.println(parts[6]);
                 Color color = Color.decode(parts[6].substring(0, 7));
 
                 Object2D object = new Object2D(xPos, yPos, xSize, ySize, rot);
@@ -62,6 +64,19 @@ public class LevelParser {
                 }
 
                 objects.add(object);
+            }
+            if (type.equals("CameraFallback")) {
+                float xPos = Float.parseFloat(parts[1]);
+                float yPos = Float.parseFloat(parts[2]);
+                float xSize = Math.round(Float.parseFloat(parts[3]) + 2);
+                float ySize = Math.round(Float.parseFloat(parts[4]) + 2);
+                float rot = Float.parseFloat(parts[5]);
+                Color color = Color.decode(parts[6].substring(0, 7));
+
+                Object2D object = new Object2D(xPos, yPos, xSize, ySize, rot);
+                object.color = color;
+                object.tags.add("noCollision");
+                cameraFallback = object;
             }
             if (type.equals("Spawnpoint")){
                 float xPos = Float.parseFloat(parts[1]);
@@ -93,7 +108,6 @@ public class LevelParser {
                 pressurePlate.tags.add("noCollision");
             }
             if (Objects.equals(type, "Enemy")) {
-                System.out.println(line);
                 String enemyType = parts[1];
                 float xPos = Float.parseFloat(parts[2]);
                 float yPos = Float.parseFloat(parts[3]);
