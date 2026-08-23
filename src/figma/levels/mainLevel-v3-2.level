@@ -1,0 +1,4 @@
+# DEAD AGAIN LEVEL
+# type centerX centerY width height rotation color
+
+Enemy Shooter 50.00 50.00 100.00 100.00 180.00 #FFFFFFFF

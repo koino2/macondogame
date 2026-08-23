@@ -20,7 +20,7 @@ public class Pistol extends WeaponScript {
     public Color bulletColor = new Color(255, 99, 99);
     public int offsetX = 0;
     public int offsetY = 0;
-    public float damage = 10;
+    public float damage;
 
     public boolean shake = false;
 
@@ -61,6 +61,7 @@ public class Pistol extends WeaponScript {
             }
 
             PistolBullet bullet = new PistolBullet(new Point(targetX, targetY), getRotatedPosition(), excludeTag);
+            bullet.damage = damage;
             bullet.setColor(bulletColor);
             bullet.zIndex = 100;
             bullet.collisionScript.collidableObjects = object.scene.objects;

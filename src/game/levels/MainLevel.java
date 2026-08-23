@@ -1,8 +1,7 @@
 package game.levels;
 
-import game.prefabs.doors.Spawnpoint;
-import game.prefabs.enemies.ShooterEnemy;
-import game.prefabs.enemies.Turret;
+import figma.parser.LevelParser;
+import game.prefabs.misc.PressurePlate;
 import game.prefabs.unitorderselection.UnitOrderSelector;
 import game.prefabs.units.CannonPlayer;
 import game.prefabs.units.ChainsawPlayer;
@@ -10,6 +9,7 @@ import game.prefabs.units.FlamethrowerPlayer;
 import game.prefabs.units.PistolPlayer;
 import game.scripts.animations.AnimatedTexture;
 import game.scripts.misc.Settings;
+import game.scripts.misc.SkyScript;
 import lib.*;
 import lib.postProcessEffects.Bloom;
 import game.prefabs.Player;
@@ -18,6 +18,7 @@ import lib.postProcessEffects.Vignette;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class MainLevel extends Level {
     boolean won = false;
@@ -27,22 +28,11 @@ public class MainLevel extends Level {
 
     @Override
     public void onWin(){
-        if(!won) {
-            winTimestamp = time;
-            for (int i = 0; i < objects.size(); i++) {
-                for (int j = 0; j < objects.get(i).getDescendants().size(); j++) {
-                    objects.get(i).getDescendants().get(j).addScript(new AnimatedTexture("src/assets/textures/objects/boom.png", 2));
-                }
-                objects.get(i).addScript(new AnimatedTexture("src/assets/textures/objects/boom.png", 2));
-            }
-            won = true;
-            Sound sound = new Sound("src/assets/spawn.wav", 1, Settings.volume);
-            player.sounds.add(sound);
-            sound.play();
-        }
-        if(time > winTimestamp+2){
-            engine.changeScene(nextScene);
-        }
+        plate.enabled = true;
+    }
+
+    public void next(){
+
     }
 
     @Override
@@ -57,6 +47,9 @@ public class MainLevel extends Level {
         addObject(wall);
     }
 
+    LevelParser levelParser;
+    PressurePlate plate;
+
     @Override
     public void buildObjects() {
 
@@ -67,7 +60,36 @@ public class MainLevel extends Level {
         int wallHeight = engine.getHeight();
         int wallThickness = 50;
 
-        wall(100, 300, 200, 200, wallColor);
+        plate = new PressurePlate(0, 0, 0) {
+            @Override
+            public void onTrigger() {
+                next();
+            }
+        };
+        addObject(plate);
+
+        levelParser = new LevelParser("src/figma/levels/mainLevel-v5-2.level", plate);
+        levelParser.parse();
+        for (int i = 0; i < levelParser.objects.size(); i++) {
+            addObject(levelParser.objects.get(i));
+        }
+
+        String path = "src/assets/textures/objects/background/1.png";
+        Random random = new Random();
+        int num = random.nextInt(0, 4);
+        if (num == 0){path = "src/assets/textures/objects/background/1.png";}
+        if (num == 1){path = "src/assets/textures/objects/background/2.png";}
+        if (num == 2){path = "src/assets/textures/objects/background/2.png";}
+        if (num == 3){path = "src/assets/textures/objects/background/3.png";}
+        Object2D sky = new Object2D(0, 0, 1, 1, 0);
+        sky.texture = StaticTextures.read(path);
+        sky.xSize = sky.texture.getWidth();
+        sky.ySize = sky.texture.getHeight();
+        sky.zIndex = -1000;
+        sky.tags.add("noCollision");
+        sky.color = new Color(50, 50, 50);
+        sky.addScript(new SkyScript());
+        addObject(sky);
 
         Object2D fallback = new Object2D(0, 0, 0, 0, 0);
         addObject(fallback);
@@ -83,10 +105,10 @@ public class MainLevel extends Level {
         fallback.addScript(new DebugText());
 
         List<Player> cardPlayers = new ArrayList<>();
-        cardPlayers.add(new FlamethrowerPlayer(100, 300, 0));
-        cardPlayers.add(new ChainsawPlayer(100, 300, 0));
-        cardPlayers.add(new PistolPlayer(100, 300, 0));
-        cardPlayers.add(new CannonPlayer(100, 300, 0));
+        cardPlayers.add(new FlamethrowerPlayer(levelParser.spawnPoint.xPos, levelParser.spawnPoint.yPos, 0));
+        cardPlayers.add(new ChainsawPlayer(levelParser.spawnPoint.xPos, levelParser.spawnPoint.yPos, 0));
+        cardPlayers.add(new PistolPlayer(levelParser.spawnPoint.xPos, levelParser.spawnPoint.yPos, 0));
+        cardPlayers.add(new CannonPlayer(levelParser.spawnPoint.xPos, levelParser.spawnPoint.yPos, 0));
         UnitOrderSelector selector = new UnitOrderSelector(0, 0, cardPlayers){
             @Override
             public void onSelected(List<Player> playerList) {
@@ -100,13 +122,11 @@ public class MainLevel extends Level {
 
     @Override
     public void initEnemies() {
-        ShooterEnemy enemy = new ShooterEnemy(800, 200, 0);
-        enemy.collisionScript.collidableObjects = objects;
-        levelEnemies.add(enemy);
-
-        Turret enemy2 = new Turret(800, 500, 0);
-        enemy2.collisionScript.collidableObjects = objects;
-        levelEnemies.add(enemy2);
+        levelParser.parse();
+        for (int i = 0; i < levelParser.enemies.size(); i++) {
+            levelParser.enemies.get(i).collisionScript.collidableObjects = objects;
+            levelEnemies.add(levelParser.enemies.get(i));
+        }
     }
 
     @Override
